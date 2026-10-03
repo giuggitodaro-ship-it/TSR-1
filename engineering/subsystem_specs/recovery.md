@@ -17,7 +17,7 @@ WHY THIS TECHNOLOGY:  TS-05: anchored winching raises recoverable fraction from 
 WHY THIS MATERIAL:    line mass 0.03 kg/m vs 0.15 kg/m steel rope; low creep
 
 ALTERNATIVES CONSIDERED: direct towing only; steel rope
-WHY REJECTED:         traction-limited (≤ 0.2 kN on 15°); 5× line mass
+WHY REJECTED:         traction-limited (215 N drawbar pull on 15°); 5× line mass
 
 DIMENSIONS:           ≈ 0.45 × 0.3 × 0.3 m
 MASS:                 CBE 25.7 kg; predicted 32.0 kg incl. MGA (2 configuration item(s); engineering/mass_budget.csv)

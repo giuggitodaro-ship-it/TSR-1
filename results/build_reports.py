@@ -523,6 +523,7 @@ def verdict(D) -> str:
 # ===================================================================================== EXEC SUMMARY
 def exec_summary(D) -> str:
     b, val, m, rec, en = D["base"], D["val"], D["mob"], D["rec"], D["en"]
+    man = {a["architecture"][:2]: a for a in D["tr"]["manipulators"]}
     vb = val["base"]
     d = Doc()
     d.h("TODARO CORP. TSR-1 — Executive Summary", 1)
@@ -531,11 +532,13 @@ def exec_summary(D) -> str:
         "south-polar infrastructure (power, communication, science and robotic assets) working: inspect it, restore power to "
         "disabled assets, replace robot-serviceable modules, clean dust, and recover immobilised vehicles — without crew EVA.")
     d.p(f"**What the study found it must be.** A {b['delivered']:.0f} kg (delivered) six-wheel rocker-bogie rover with body lowering; "
-        "two identical 20 kg-class dexterous arms plus a 150 kg cable-stayed crane (a heavy arm was rejected: ~110 kg heavier); "
+        f"two identical 20 kg-class dexterous arms plus a 150 kg cable-stayed crane (a heavy arm was rejected: {man['A3']['mass_kg'] - man['A4']['mass_kg']:.0f} kg heavier than "
+        "a dexterous arm plus crane); "
         "a 3 kW ISPSIS-compatible 120 VDC power-transfer module with a 25 m tether and deployable keep-alive modules; a 4 kN "
-        "anchored winch with rear spades and helical anchors (towing was rejected on slopes: < 0.2 kN available on 15°); "
+        f"anchored winch with rear spades and helical anchors (towing was rejected on slopes: only {m['tow_capacity'][3]['nominal_N']:.0f} N of "
+        "drawbar pull on 15°); "
         f"a {b['battery']['usable_eol_kwh']:.0f} kWh battery plus vertical solar panels; supervised autonomy behind a deterministic safety layer.")
-    d.p(f"**Performance.** {m['slopes_deg']['nominal']:.0f}° slopes (nominal soil; {m['slopes_deg']['conservative']:.0f}° conservative), 10 km service radius, "
+    d.p(f"**Performance.** {m['slopes_deg']['nominal']:.1f}° slopes (nominal soil; {m['slopes_deg']['conservative']:.1f}° conservative), 10 km service radius, "
         f"{en['survival_full_battery_h']:.0f} h darkness survival (indefinite in sunlight), recovery of {rec['p_env']['R4 winch + 2 spades + 2 helical anchors']['mid']*100:.0f} % "
         "of sampled immobilisation cases, ORU swaps up to 150 kg.")
     d.p(f"**Value.** At 30 assets over 10 years: availability {vb['A0']['mean']:.2f} → {vb['A1']['mean']:.2f}, preventable asset losses {vb['plost0']['mean']:.1f} → {vb['plost1']['mean']:.1f}, "

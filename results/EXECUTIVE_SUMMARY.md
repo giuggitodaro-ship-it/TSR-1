@@ -4,9 +4,9 @@
 
 **What it is.** TSR-1 is a concept for an autonomous lunar service-and-recovery rover whose job is to keep distributed south-polar infrastructure (power, communication, science and robotic assets) working: inspect it, restore power to disabled assets, replace robot-serviceable modules, clean dust, and recover immobilised vehicles — without crew EVA.
 
-**What the study found it must be.** A 1207 kg (delivered) six-wheel rocker-bogie rover with body lowering; two identical 20 kg-class dexterous arms plus a 150 kg cable-stayed crane (a heavy arm was rejected: ~110 kg heavier); a 3 kW ISPSIS-compatible 120 VDC power-transfer module with a 25 m tether and deployable keep-alive modules; a 4 kN anchored winch with rear spades and helical anchors (towing was rejected on slopes: < 0.2 kN available on 15°); a 15 kWh battery plus vertical solar panels; supervised autonomy behind a deterministic safety layer.
+**What the study found it must be.** A 1207 kg (delivered) six-wheel rocker-bogie rover with body lowering; two identical 20 kg-class dexterous arms plus a 150 kg cable-stayed crane (a heavy arm was rejected: 113 kg heavier than a dexterous arm plus crane); a 3 kW ISPSIS-compatible 120 VDC power-transfer module with a 25 m tether and deployable keep-alive modules; a 4 kN anchored winch with rear spades and helical anchors (towing was rejected on slopes: only 215 N of drawbar pull on 15°); a 15 kWh battery plus vertical solar panels; supervised autonomy behind a deterministic safety layer.
 
-**Performance.** 21° slopes (nominal soil; 16° conservative), 10 km service radius, 183 h darkness survival (indefinite in sunlight), recovery of 92 % of sampled immobilisation cases, ORU swaps up to 150 kg.
+**Performance.** 20.7° slopes (nominal soil; 15.6° conservative), 10 km service radius, 183 h darkness survival (indefinite in sunlight), recovery of 92 % of sampled immobilisation cases, ORU swaps up to 150 kg.
 
 **Value.** At 30 assets over 10 years: availability 0.69 → 0.76, preventable asset losses 21.7 → 8.9, Earth replacement mass 13.0 → 9.5 t; logistics break-even at ≈ 12 assets. EVA savings are modest. Value depends overwhelmingly on assets having standard robotic interfaces; at large or failure-prone bases the limiting resource is the inventory of deployable keep-alive modules, not the rover.
 
