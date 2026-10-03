@@ -4,15 +4,15 @@
  "sinkage_m": 0.018278586456175912,
  "contact_pressure_kPa": 6.643713728071454,
  "slopes_deg": {
-  "nominal": 20.682951458729807,
-  "conservative": 15.611621299758554,
-  "weak": 10.301353549584746,
-  "one_wheel_out": 17.552581694908437,
-  "two_wheels_out": 13.642503283917904,
-  "nominal_20pct": 14.070382509380577
+  "nominal": 20.688257412984964,
+  "conservative": 15.620919093489642,
+  "weak": 10.311049609445034,
+  "one_wheel_out": 17.428388586267832,
+  "two_wheels_out": 13.360515651293099,
+  "nominal_20pct": 14.065958331339063
  },
- "wheel_energy_Wh_per_km": 78.7786529772598,
- "calibrated_wheel_energy_Wh_per_km": 49.10686221347126,
+ "wheel_energy_Wh_per_km": 78.78941096962636,
+ "calibrated_wheel_energy_Wh_per_km": 49.113568233806376,
  "dp_curves": {
   "nominal": {
    "slip": [
@@ -276,84 +276,84 @@
  "slope_power": [
   {
    "slope_deg": 0,
-   "slip": 0.032019292669362695,
-   "drive_power_W": 126.27478854892613
+   "slip": 0.03201153530674663,
+   "drive_power_W": 126.2920326012164
   },
   {
    "slope_deg": 2,
-   "slip": 0.04852919153015381,
-   "drive_power_W": 161.71119745670853
+   "slip": 0.04853163621590089,
+   "drive_power_W": 161.70639108139926
   },
   {
    "slope_deg": 4,
-   "slip": 0.06662983900707933,
-   "drive_power_W": 198.62501204649294
+   "slip": 0.06664511678673551,
+   "drive_power_W": 198.5979735651955
   },
   {
    "slope_deg": 6,
-   "slip": 0.086629438193696,
-   "drive_power_W": 237.2634844152266
+   "slip": 0.08665974338054729,
+   "drive_power_W": 237.21403306088962
   },
   {
    "slope_deg": 8,
-   "slip": 0.10901804512568705,
-   "drive_power_W": 278.16210238546955
+   "slip": 0.10906471458248922,
+   "drive_power_W": 278.0897665434258
   },
   {
    "slope_deg": 10,
-   "slip": 0.13447342061667683,
-   "drive_power_W": 322.1138397560105
+   "slip": 0.13453699419286322,
+   "drive_power_W": 322.01861673940704
   },
   {
    "slope_deg": 12,
-   "slip": 0.16388797743344333,
-   "drive_power_W": 370.2217550651033
+   "slip": 0.16396588498924827,
+   "drive_power_W": 370.10108488595637
   },
   {
    "slope_deg": 14,
-   "slip": 0.19865521760330593,
-   "drive_power_W": 424.43682804288864
+   "slip": 0.1987400177856859,
+   "drive_power_W": 424.28451954094
   },
   {
    "slope_deg": 16,
-   "slip": 0.2409881922634035,
-   "drive_power_W": 488.2351304612847
+   "slip": 0.24106182066839352,
+   "drive_power_W": 488.03391500152577
   },
   {
    "slope_deg": 18,
-   "slip": 0.2947634038980246,
-   "drive_power_W": 568.685873020928
+   "slip": 0.2947823230626796,
+   "drive_power_W": 568.3844281159401
   },
   {
    "slope_deg": 20,
-   "slip": 0.367787345320967,
-   "drive_power_W": 683.149088672907
+   "slip": 0.3676371478074535,
+   "drive_power_W": 682.5656653980034
   }
  ],
  "tow_capacity": [
   {
    "slope_deg": 0,
-   "nominal_N": 765.7480728209325,
-   "conservative_N": 565.4674103668267
+   "nominal_N": 765.8184082365132,
+   "conservative_N": 565.5683626973234
   },
   {
    "slope_deg": 5,
-   "nominal_N": 586.1887424282577,
-   "conservative_N": 386.7299782101292
+   "nominal_N": 586.2941031863472,
+   "conservative_N": 386.90453449592127
   },
   {
    "slope_deg": 10,
-   "nominal_N": 402.08218614998395,
-   "conservative_N": 205.25168033532168
+   "nominal_N": 402.2220607861775,
+   "conservative_N": 205.50350979632708
   },
   {
    "slope_deg": 15,
-   "nominal_N": 214.83226563647634,
-   "conservative_N": 22.396079460462943
+   "nominal_N": 215.00387589913623,
+   "conservative_N": 22.72674307171428
   },
   {
    "slope_deg": 20,
-   "nominal_N": 25.864925750131192,
+   "nominal_N": 26.06285561381435,
    "conservative_N": 0.0
   }
  ],

@@ -27,6 +27,7 @@
 | Structure | equivalent-box beam, no FEM; launch loads assumed | primary-structure mass ±30 % |
 | Power | mode-average loads; no transient/inrush/power-quality analysis | PCDU/PTM sizing first-order |
 | Value model | assumed fault rates (no lunar data), assumed task-step success probabilities, simplified crew and logistics processes, no patrol/pre-detection benefit, no cost model | results are comparative, not predictive; conclusions rely on robust trends (sign, scale dependence, standardisation dependence), not on absolute values |
+| Keep-alive module | asset survival power, site illumination and dark periods are assumed distributions (A-33..A-35); average-energy criterion without an hour-by-hour illumination time series | P(sustain) 0.56–0.89 over a ×1.5/×0.67 asset-power change; value results scale with it |
 | Reliability | exponential failures, independent units, calendar rates (ESTIMATE) | P(capable) optimistic if common-cause dust failures dominate |
 
 ## 3. Scope exclusions
@@ -39,6 +40,8 @@
 ## 4. What would change the conclusions
 - A demonstrated lunar regolith anchor capacity well below the model (TG-03) would remove most slope-recovery capability.
 - Assets designed without robotic servicing interfaces would reduce TSR-1 to an inspection/emergency-power/recovery
-  role (ΔA ≈ 2 pp for a legacy base).
+  role (ΔA ≈ 3 pp for a legacy base, against ≈ 13 pp for a standardised one).
 - A utility-rover host with guaranteed response availability would make the dedicated carrier unnecessary (CDR-01).
 - Asset fault rates much lower than MTBF ≈ 10 yr would remove the value case at any base size.
+- Parked assets needing much more than ≈ 230 W survival power (or dark periods well beyond 1–2 days) would defeat the keep-alive module, the single largest loss-prevention mechanism; the value would fall toward the "no keep-alive" case of TS-07b.
+- The value model counts operating exposure honestly: a kept-alive asset can fail again. Total losses and total Earth mass can therefore rise with TSR-1 at very high fault loads even though preventable losses and mass per available asset-year fall (CDR-19); conclusions are stated on the normalised metrics.

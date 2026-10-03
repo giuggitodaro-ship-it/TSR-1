@@ -218,37 +218,62 @@ def main(quick: bool = False):
 
     # ------------------------------------------------------------------ value model
     log("value model Monte Carlo")
+    # every value sub-study reuses the reference seed: replicate k draws the same epistemic scenario in all studies
+    # (common random numbers across studies), so rows of different tables are paired and directly comparable
     vcfg = cfgfile["value_model"]
-    sc_base = VM.Scenario(n_assets=vcfg["ref_assets"], keepalive_modules=vcfg["keepalive_modules"],
-                          recovery_envelope_p=p_env_base)
+    ka_ref = (VM.keepalive_inventory_for_base(vcfg["ref_assets"]) if vcfg["keepalive_modules"] == "rule"
+              else int(vcfg["keepalive_modules"]))
+    sc_base = VM.Scenario(n_assets=vcfg["ref_assets"], keepalive_modules=ka_ref, recovery_envelope_p=p_env_base)
     mc_base = VM.monte_carlo(sc_base, n=mc["value_runs"], seed=cfgfile["seeds"]["value"])
     sweep = []
     for N in vcfg["asset_sweep"]:
-        r = VM.monte_carlo(replace(sc_base, n_assets=N), n=mc["value_runs_sweep"], seed=cfgfile["seeds"]["value"] + N)
-        sweep.append(dict(n_assets=N, **{f"{k}_mean": float(np.mean(r[k])) for k in r},
+        ka_n = VM.keepalive_inventory_for_base(N)       # inventory scaled with the base (CDR-19 rule)
+        r = VM.monte_carlo(replace(sc_base, n_assets=N, keepalive_modules=ka_n), n=mc["value_runs_sweep"],
+                           seed=cfgfile["seeds"]["value"])
+        sweep.append(dict(n_assets=N, keepalive_modules=ka_n, **{f"{k}_mean": float(np.mean(r[k])) for k in r},
                           **{f"{k}_p10": float(np.percentile(r[k], 10)) for k in ("dA", "mass0", "mass1")},
                           **{f"{k}_p90": float(np.percentile(r[k], 90)) for k in ("dA", "mass0", "mass1")}))
     level_mixes = {"legacy (L0-heavy)": (0.5, 0.3, 0.15, 0.05), "mixed (baseline)": (0.20, 0.30, 0.35, 0.15),
                    "standardised (L2/L3)": (0.05, 0.10, 0.45, 0.40)}
     mixes = []
     for nm, mix in level_mixes.items():
-        r = VM.monte_carlo(replace(sc_base, level_mix=mix), n=mc["value_runs_sweep"], seed=cfgfile["seeds"]["value"] + 7)
+        r = VM.monte_carlo(replace(sc_base, level_mix=mix), n=mc["value_runs_sweep"], seed=cfgfile["seeds"]["value"])
         mixes.append(dict(level_mix=nm, **{f"{k}_mean": float(np.mean(r[k])) for k in r}))
     ka = []
-    for k in (0, 1, 2, 4):
-        r = VM.monte_carlo(replace(sc_base, keepalive_modules=k), n=mc["value_runs_sweep"], seed=cfgfile["seeds"]["value"] + 11)
-        ka.append(dict(keepalive_modules=k, **{f"{kk}_mean": float(np.mean(r[kk])) for kk in r}))
+    m_ka = TO.ka_mass()
+    for k in (0, 2, 4, 6, 8):
+        r = VM.monte_carlo(replace(sc_base, keepalive_modules=k), n=mc["value_runs_sweep"], seed=cfgfile["seeds"]["value"])
+        ka.append(dict(keepalive_modules=k, inventory_mass_kg=k * m_ka,
+                       **{f"{kk}_mean": float(np.mean(r[kk])) for kk in r}))
+    # TS-07b keep-alive module option x inventory trade (CDR-20)
+    ka_trade = TO.keepalive_module_trade()
+    ka_opt = []
+    for o in ka_trade["options"]:
+        for k in (2, 4, 6):
+            with override({"ka_sustain_p": o["p_sustain"]}):
+                r = VM.monte_carlo(replace(sc_base, keepalive_modules=k), n=mc["value_runs_sweep"],
+                                   seed=cfgfile["seeds"]["value"])
+            av = float(np.mean(r["mass0"] - r["mass1"]))
+            ka_opt.append(dict(option=o["option"], module_kg=o["mass_kg"], p_sustain=o["p_sustain"], n_modules=k,
+                               dA_mean=float(np.mean(r["dA"])), plost1_mean=float(np.mean(r["plost1"])),
+                               mass_avoided_mean=av, net_after_inventory=av - k * o["mass_kg"],
+                               ka_denied_mean=float(np.mean(r["ka_denied"]))))
+    ka_trade["value_trade"] = ka_opt
     crew = []
     for c in (0.0, 1.0, 2.0):
         r = VM.monte_carlo(replace(sc_base, crew_missions_per_yr=c), n=mc["value_runs_sweep"],
-                           seed=cfgfile["seeds"]["value"] + 13, sample=False)
+                           seed=cfgfile["seeds"]["value"], sample=False)
         crew.append(dict(crew_missions_per_yr=c, **{f"{kk}_mean": float(np.mean(r[kk])) for kk in r}))
-    two = VM.monte_carlo(replace(sc_base, n_tsr=2, n_assets=60), n=mc["value_runs_sweep"], seed=cfgfile["seeds"]["value"] + 17)
+    two = VM.monte_carlo(replace(sc_base, n_tsr=2, n_assets=60, keepalive_modules=VM.keepalive_inventory_for_base(60)),
+                         n=mc["value_runs_sweep"], seed=cfgfile["seeds"]["value"])
     # TSR life-cycle Earth mass for break-even
-    tsr_life_mass = cfg.delivered_mass + vcfg["tsr_spares_kg_per_yr"] * 10 + vcfg["keepalive_modules"] * 23.0
+    tsr_life_mass = cfg.delivered_mass + vcfg["tsr_spares_kg_per_yr"] * 10 + ka_ref * m_ka
+    kg_ay = {f"kg_per_asset_yr{j}": dict(mean=float(np.mean(mc_base[f"mass{j}"] / mc_base[f"asset_yr{j}"])))
+             for j in (0, 1)}
     for s_ in sweep:
         s_["mass_avoided_mean"] = s_["mass0_mean"] - s_["mass1_mean"]
-        s_["net_mass_benefit"] = s_["mass_avoided_mean"] - tsr_life_mass
+        s_["tsr_lifecycle_mass_kg"] = cfg.delivered_mass + vcfg["tsr_spares_kg_per_yr"] * 10 + s_["keepalive_modules"] * m_ka
+        s_["net_mass_benefit"] = s_["mass_avoided_mean"] - s_["tsr_lifecycle_mass_kg"]
         s_["eva_avoided_mean"] = s_["eva0_mean"] - s_["eva1_mean"]
     # break-even (interpolate)
     xs = [s_["n_assets"] for s_ in sweep]
@@ -269,7 +294,8 @@ def main(quick: bool = False):
                                                           p50=float(np.percentile(v_, 50)),
                                                           p90=float(np.percentile(v_, 90))) for k, v_ in mc_base.items()}),
                  asset_sweep=sweep, level_mix=mixes, keepalive=ka, crew=crew, two_tsr_60_assets={k: float(np.mean(v_)) for k, v_ in two.items()},
-                 tsr_lifecycle_mass_kg=tsr_life_mass, break_even_assets=be, sensitivity_corr=sens)
+                 tsr_lifecycle_mass_kg=tsr_life_mass, break_even_assets=be, sensitivity_corr=sens,
+                 keepalive_module_kg=m_ka, keepalive_trade=ka_trade, **kg_ay)
     jdump("value_model.json", value)
     np.savez_compressed(RES / "value_mc_base.npz", **mc_base)
     csv_dump("value_asset_sweep.csv", sweep)
@@ -280,14 +306,14 @@ def main(quick: bool = False):
     skill = []
     for kf in cdrc["skill_factors"]:
         with override({"robot_step_factor": kf}):
-            r = VM.monte_carlo(sc_base, n=mc["value_runs_sweep"], seed=cfgfile["seeds"]["value"] + 19)
+            r = VM.monte_carlo(sc_base, n=mc["value_runs_sweep"], seed=cfgfile["seeds"]["value"])
             from tsr1.reliability.servicing import task_success as _ts
             l2 = _ts("oru_replace", "L2", "robot")
         skill.append(dict(robot_step_factor=kf, p_oru_L2=l2, **{f"{k}_mean": float(np.mean(r[k])) for k in r}))
     host = []
     for hc in cdrc["host_cases"]:
         r = VM.monte_carlo(replace(sc_base, host_busy_frac=hc["host_busy_frac"], host_delay_h=hc["host_delay_h"]),
-                           n=mc["value_runs_sweep"], seed=cfgfile["seeds"]["value"] + 23)
+                           n=mc["value_runs_sweep"], seed=cfgfile["seeds"]["value"])
         host.append(dict(case=hc["label"], **{f"{k}_mean": float(np.mean(r[k])) for k in r}))
     speed_radius = []
     for vk in cdrc["speeds_kmh"]:
@@ -301,6 +327,11 @@ def main(quick: bool = False):
         speed_radius.append(dict(speed_kmh=vk, max_service_radius_km=dmax, drm2_10km_kwh=e10))
     kit = TO.service_kit(cfg)
     jdump("cdr_analyses.json", dict(skill_factor=skill, host_cases=host, speed_radius=speed_radius, service_kit=kit))
+
+    # ------------------------------------------------------------------ capacity study (CDR-19)
+    log("capacity study (fault load vs rovers vs keep-alive modules)")
+    import capacity_study  # simulations/capacity_study.py (same directory as this script)
+    capacity_study.main(n_runs=mc["capacity_runs"], verbose=False)
 
     # ------------------------------------------------------------------ trades
     log("trade studies")
@@ -329,8 +360,12 @@ def main(quick: bool = False):
     mass_names = ["act_torque_density", "batt_spec_energy", "harness_frac", "system_margin", "mga_mechanism",
                   "mga_structure", "mga_harness", "wheel_rim_t", "batt_eol_fade", "batt_dod", "motorisation_factor"]
     sens_mass = tornado(lambda: build(base_opts, iterate=12).delivered_mass, mass_names, "delivered mass [kg]")
-    sens_energy = tornado(lambda: SC.evaluate(cfg, [x for x in SC.drm_library(cfg, 10.0) if x.id == "DRM-2"][0]).energy_kwh,
-                          ["drive_eff", "drive_duty", "tsr_speed_eff", "conv_eff", "p_keepalive_w"], "DRM-2 energy [kWh]")
+    def drm2_energy():
+        # rebuild: drive and conversion efficiencies enter the mode powers at build time
+        c_ = build(base_opts, iterate=12)
+        return SC.evaluate(c_, [x for x in SC.drm_library(c_, 10.0) if x.id == "DRM-2"][0]).energy_kwh
+    sens_energy = tornado(drm2_energy, ["drive_eff", "drive_duty", "tsr_speed_eff", "conv_eff", "p_keepalive_w"],
+                          "DRM-2 energy [kWh]")
     rec_names = ["spade_shape_factor", "helix_Nq", "recovery_fos", "p_brake_release"]
     sens_rec = tornado(lambda: TR.envelope_probability(cfg, "R4 winch + 2 spades + 2 helical anchors", rcases),
                        rec_names, "recovery envelope probability")

@@ -18,7 +18,7 @@ programme data were retrieved in this study.
 | **4 Thermal-vacuum and dust testing** | subsystem and system TVAC (40–390 K), dust chamber with charged simulant, EDS performance, radiator degradation | Stage 2 (subsystems), Stage 3 (system) | survival ≥ 120 h demonstrated; WEB within limits at 3 kW transfer; mechanism torque growth within margin | TG-01/07 |
 | **5 Reduced-gravity / mechanism qualification** | parabolic-flight wheel and anchor tests; crane load-swing control; launch-load qualification once a lander is selected | Stages 1–4 | lunar-g traction penalty quantified; anchors validated in reduced g; qualification to lander environments | TG-03/06 |
 | **6 Flight demonstrator** | reduced TSR (one dex arm, PTM, recovery kit, keep-alive module) delivered to a Moon Base site; services cooperative L2/L3 demo assets | Stage 5 + asset owner agreement on interfaces | in-situ ORU swap, power rescue, anchored winch recovery of a demo vehicle; dust/thermal life telemetry | all |
-| **7 Operational system** | full TSR-1 (or service-kit variant on a utility-rover host, CDR-01) supporting a base with ≥ ~10 serviceable assets | Stage 6 + standardised assets in the base | availability gain measured against the value model | — |
+| **7 Operational system** | full TSR-1 (or service-kit variant on a utility-rover host, CDR-01) supporting a base above the logistics break-even (≈ a dozen serviceable assets, paper §21) | Stage 6 + standardised assets in the base | availability gain measured against the value model | — |
 
 **Dependency logic.** Stage 6 must not proceed before the asset-interface question (TG-05) has an agreed answer:
 without L2/L3 assets the demonstrator would only prove inspection and emergency power. The anchor and actuator-life

@@ -244,6 +244,15 @@ battery than better motors.
     # ------------------------------------------------------------------ TS-07
     sm = T["service_modules"]
     ka = val["keepalive"]
+    kt = val["keepalive_trade"]
+    cap = json.loads((RES / "capacity_study.json").read_text())
+    cap_den = {(c["n_assets"], c["mtbf_yr"], c["keepalive_modules"]): c["ka_denied"] for c in cap if c["n_tsr"] == 1}
+    unsat = [c for c in cap if c["n_tsr"] == 1 and c["keepalive_modules"] == 8 and c["faults_per_yr_nominal"] <= 20]
+    cap_park = sum(c["park_fraction"] for c in unsat) / len(unsat)
+    cap_hold = sum(c["ka_hold_yr"] for c in unsat) / len(unsat)
+    ka_opt_rows = {o["option"]: o for o in kt["options"]}
+    kc4 = next(r for r in kt["value_trade"] if r["option"].startswith("KA-C") and r["n_modules"] == 4)
+    kd4 = next(r for r in kt["value_trade"] if r["option"].startswith("KA-D") and r["n_modules"] == 4)
     body = table(sm["modules"], [("name", "Module"), ("mass_kg", "Mass [kg]"), ("function", "Function"),
                                  ("carry_fraction", "Fraction of sorties carrying it")],
                  {"mass_kg": lambda v: f(v, 1), "carry_fraction": lambda v: f(v, 2)})
@@ -255,13 +264,59 @@ battery than better motors.
 | Deployable modules (MOD-KA left at assets) | impossible | yes |
 | Reuse on other hosts (utility rover, LTV uncrewed mode) | no | yes, if host carries the slot standard |
 
-**Value of keep-alive modules (value model, {val['base_scenario']['n_assets']} assets, 10 yr):**
+**TS-07b — MOD-KA keep-alive module sizing (CDR-20).** A keep-alive module is left connected to a disabled asset
+until its spare is fitted. It must supply the asset's survival power on average (two back-to-back vertical panels, one
+face lit at a time) and bridge the longest dark period with its battery plus the asset's own thermal inertia. Asset
+survival power (A-33, log-uniform 40–250 W), site illumination (A-34, 0.5–0.92) and dark-period length (A-35,
+24–120 h) are sampled; the battery uses the TSR-1 pack rules (160 Wh/kg, DoD 0.8, 20 % fade, 28s strings).
 
-| MOD-KA count | ΔA [pp] | Assets lost (with TSR-1) | Earth mass with TSR-1 [kg] | Crew EVA [crew-h] |
+""" + table(kt["options"], [("option", "Option"), ("battery_kg", "Battery [kg]"), ("pv_kg", "PV [kg]"),
+                            ("mass_kg", "Module mass incl. 20 % MGA [kg]"), ("p_sustained_nominal_w", "Sustained output, nominal site [W]"),
+                            ("bridge_nominal_h", "Battery bridging at 100 W [h]"), ("p_sustain", "P(sustains asset)"),
+                            ("p_sustain_low", "P, assets ×1.5 power"), ("p_sustain_high", "P, assets ×0.67 power")],
+            {"battery_kg": lambda v: f(v, 1), "pv_kg": lambda v: f(v, 1), "mass_kg": lambda v: f(v, 1),
+             "p_sustained_nominal_w": lambda v: f(v, 0), "bridge_nominal_h": lambda v: f(v, 0),
+             "p_sustain": lambda v: f(v, 2), "p_sustain_low": lambda v: f(v, 2), "p_sustain_high": lambda v: f(v, 2)}) + f"""
+The pre-CDR placeholder (2 kWh, 0.75 m², **23 kg**) was physically inconsistent: 2 kWh usable at end of life needs
+≈ 20 kg of cells alone, and that module sustains only ≈ 40 % of plausible parked assets.
+
+**Option × inventory value trade** ({val['base_scenario']['n_assets']} assets, 10 yr, sampled uncertainty; net = Earth mass avoided − inventory mass):
+
+| Option | Modules | P(sustain) | ΔA [pp] | Preventable losses (TSR) | Mass avoided [kg] | Net after inventory [kg] | Requests with no module free |
+|---|---|---|---|---|---|---|---|
+""" + "".join(f"| {r['option']} | {r['n_modules']} | {r['p_sustain']:.2f} | {100*r['dA_mean']:.1f} | {r['plost1_mean']:.1f} | "
+              f"{r['mass_avoided_mean']:.0f} | {r['net_after_inventory']:.0f} | {r['ka_denied_mean']:.2f} |\n"
+              for r in kt["value_trade"]) + f"""
+**Inventory sweep with the selected module ({kt['selected']}, {val['keepalive_module_kg']:.1f} kg):**
+
+| MOD-KA count | Inventory mass [kg] | ΔA [pp] | Preventable losses (TSR) | Earth mass with TSR-1 [kg] | Requests with no module free |
+|---|---|---|---|---|---|
+""" + "".join(f"| {k['keepalive_modules']} | {k['inventory_mass_kg']:.0f} | {100*k['dA_mean']:.1f} | {k['plost1_mean']:.1f} | "
+              f"{k['mass1_mean']:.0f} | {k['ka_denied_mean']:.2f} |\n" for k in ka) + f"""
+Keep-alive modules buy **losses and logistics mass, not availability**: a parked asset is still down while it waits
+for its spare, so ΔA is flat (or slightly lower, because a lost asset returns as a new replacement while a parked one
+waits for a spare and, for L0/L1, for crew), whereas preventable losses and Earth-supplied mass fall steeply until
+the inventory stops being exhausted.
+
+**Inventory rule (CDR-19).** By Little's law the mean number of modules deployed is
+L = f_park · p_KA · F · T_hold, with F the fault rate, f_park ≈ {cap_park:.2f} the fraction of faults that leave a
+stabilised but unrepaired asset (capacity study), p_KA = {kt['selected_row']['p_sustain']:.2f} and T_hold ≈ {cap_hold:.1f} yr the mean
+deployment time (longer than the 0.5 yr spare lead time because L0/L1 assets wait for crew). The inventory is the
+Poisson 95th percentile of L (`value_model.keepalive_inventory`). For base sizing the fault rate is the expected value
+over the MTBF prior, F = N · E[1/MTBF] (`keepalive_inventory_for_base`): """ + ", ".join(f"{s_['n_assets']} assets → {s_['keepalive_modules']}" for s_ in val['asset_sweep']) + f""".
+The capacity study (nominal scenarios, fixed MTBF) checks the rule against simulated keep-alive demand:
+
+| Assets | MTBF [yr] | Fault rate [1/yr] | Rule (q95) | Requests with no module free over 10 yr: 2 / 4 / 8 modules |
 |---|---|---|---|---|
-""" + "".join(f"| {k['keepalive_modules']} | {100*k['dA_mean']:.1f} | {k['lost1_mean']:.1f} | {k['mass1_mean']:.0f} | {k['eva1_mean']:.0f} |\n" for k in ka) + """
-**Decision: modular service spine (6 slots) with two MOD-KA keep-alive modules in the base inventory.** Modularity is
-justified functionally (deployable keep-alive, host portability), not by mass alone. **Fluid servicing is not
+""" + "".join(f"| {c['n_assets']} | {c['mtbf_yr']} | {c['faults_per_yr_nominal']:.1f} | {c['ka_rule_q95']} | "
+              f"{cap_den[(c['n_assets'], c['mtbf_yr'], 2)]:.1f} / {cap_den[(c['n_assets'], c['mtbf_yr'], 4)]:.1f} / "
+              f"{cap_den[(c['n_assets'], c['mtbf_yr'], 8)]:.1f} |\n" for c in cap if c['n_tsr'] == 1 and c['keepalive_modules'] == 4) + f"""
+**Decision: modular service spine (6 slots); MOD-KA = {kt['selected']} ({val['keepalive_module_kg']:.0f} kg); inventory
+{val['base_scenario']['keepalive_modules']} modules at the {val['base_scenario']['n_assets']}-asset reference base, scaled with the rule; at most two carried at once
+(2 × {val['keepalive_module_kg']:.0f} kg ≤ 150 kg spine).** KA-D gives a slightly larger net benefit at four modules
+({kd4['net_after_inventory'] - kc4['net_after_inventory']:+.0f} kg, {100 * (kd4['net_after_inventory'] / kc4['net_after_inventory'] - 1):+.0f} %) but each module is
+{ka_opt_rows['KA-D 1.5 m² / 6 kWh']['mass_kg']:.0f} kg, so only one fits the spine with ORUs. Modularity is justified
+functionally (deployable keep-alive, host portability), not by mass alone. **Fluid servicing is not
 baselined**: no fluid-serviceable asset class was identified in the Moon Base architecture context; it remains an
 optional future module.
 """

@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from tsr1.design.configuration import MODES, Options, build  # noqa: E402
 from tsr1.common.params import REGISTRY as R  # noqa: E402
+import tsr1.reliability.value_model  # noqa: E402,F401  (registers MOD-KA and value parameters)
 
 RES = ROOT / "simulations" / "results"
 OUT = ROOT / "engineering" / "subsystem_specs"
@@ -25,6 +26,14 @@ OUT = ROOT / "engineering" / "subsystem_specs"
 def J(n):
     return json.loads((RES / n).read_text())
 
+
+_PENV = J("recovery.json")["p_env"]
+_MOBJ = J("mobility.json")["slopes_deg"]
+_B, _EN, _TR = J("baseline_summary.json"), J("energy_power_thermal.json"), J("trades.json")
+_MOB = {x["candidate"][:2]: x for x in _TR["mobility"]}
+_ACT = [_MOB[k]["delivered_mass_kg"] - _MOB["M2"]["delivered_mass_kg"] for k in ("M3", "M4")]
+_MAN = {a["architecture"][:2]: a for a in _TR["manipulators"]}
+_WEIGHT = _B["vehicle"]["mass"] * 1.62
 
 # key: (subsystem file, [config component names or prefixes], curated fields)
 SPECS = {}
@@ -45,7 +54,7 @@ spec("mobility", ["wheel_"], COMPONENT="Wheel (×6)", FUNCTION="Support vehicle 
      DIM="Ø0.90 m, width 0.40 m, grouser height 0.020 m", TEMP="−230 °C to +120 °C (non-operating extremes); no limit for operation",
      LOADS="static wheel load ≈ 330 N (lunar); design 3 g lunar dynamic + launch 6 g/3 g on locks",
      RAD="none (metallic)", DUST="no enclosed volume; grousers shed regolith; fender + skirt limit ejecta",
-     LIFE="10 yr / ≥ 1500 km traverse (no flight data at this distance)", RED="6 wheels; mobility with 4/6 driven (13.6°)",
+     LIFE="10 yr / ≥ 1500 km traverse (no flight data at this distance)", RED=f"6 wheels; mobility with 5/6 driven ({_MOBJ['one_wheel_out']:.1f}°) or 4/6 driven ({_MOBJ['two_wheels_out']:.1f}°)",
      FAIL="rim crack (fatigue), grouser wear, spoke buckling on rock impact", MAINT="wheel+drive ORU at hub flange (II-04); body lowering unloads wheel",
      TRL="6 (rigid lunar/Mars wheels flown; this size/material in lunar dust not qualified)", HER="VIPER, Yutu, Pragyan, MSL/M2020 rigid wheels",
      ASM="A-03 soil; wheel_rim_t ESTIMATE", UNC="rim thickness for 10-yr fatigue (±50 %); grouser effectiveness (first-order model)")
@@ -71,7 +80,7 @@ spec("mobility", ["suspension_rocker_bogie", "differential_lock", "body_lowering
      FUNCTION="Equalise wheel loads on rough terrain; lower chassis onto belly skid; lock body attitude for manipulation",
      TECH="Passive 6-wheel rocker-bogie (differential bar), two lead-screw actuators at rocker pivots lowering the body 0.35 m, differential brake",
      MAT="Al 7075-T7351 links, Ti-6Al-4V pivots, BMG lead-screw nuts",
-     WHY_T="TS-01: same slope capability as active designs (traction-limited, 19.8°) at 80–100 kg less mass; lowering enables wheel-drive ORU swap and lower CoM",
+     WHY_T=f"TS-01: slope capability within {_MOB['M3']['max_slope_nom_deg'] - _MOB['M2']['max_slope_nom_deg']:.1f}° of active designs (traction-limited, {_MOB['M2']['max_slope_nom_deg']:.1f}°) at {min(_ACT):.0f}–{max(_ACT):.0f} kg less delivered mass; lowering enables wheel-drive ORU swap and lower CoM",
      WHY_M="stiff, light, machinable Al links; Ti pivots for bearing CTE compatibility",
      ALT="passive rocker-bogie; fully active 6-leg; 4-wheel active", REJ="passive: no wheel unloading for self-repair; active: +80–100 kg, +3–6 actuators, no slope gain",
      DIM="wheelbase 2.6 m, track 2.0 m, clearance 0.45 m (0.10 m lowered)", TEMP="structure: any; actuators as drive actuator",
@@ -108,7 +117,7 @@ spec("manipulation", ["dexterous_arm", "dexterous_arm_2"], COMPONENT="Dexterous 
      FUNCTION="ORU ≤ 20 kg swaps, connector/fastener work, probing, cleaning, tow rigging, anchor installation, guiding crane loads; bimanual tasks",
      TECH="7-DOF serial arm (3 pitch joints + 4 roll/yaw), 1.6 m reach, wrist 6-axis F/T sensor, tool changer, macro camera",
      MAT="Ti-6Al-4V link tubes and joint housings; strain-wave gears; BMG gears in wrist joints; MoS2",
-     WHY_T="TS-03: two identical dexterous arms + crane give 0.96 weighted task coverage at 71 kg vs 158 kg for heavy+dex; second arm removes the arm SPF (λ 0.08/yr)",
+     WHY_T=f"TS-03: two identical dexterous arms + crane give {_MAN['A7']['weighted_coverage']:.2f} weighted task coverage at {_MAN['A7']['mass_kg']:.0f} kg vs {_MAN['A3']['mass_kg']:.0f} kg for heavy+dex; second arm removes the arm SPF (λ {R.v('lambda_dexterous_arm'):.2f}/yr)",
      WHY_M="arm mass actuator-dominated; Ti tougher for contact work and avoids bonded CFRP joints over 40–390 K",
      ALT="one general 100 kg arm; heavy+dexterous asymmetric pair; single dex arm + crane", REJ="general arm 102 kg with 0.83 coverage; asymmetric pair +113 kg for +4 % coverage; single arm leaves SPF",
      DIM="links 0.75/0.70/0.15 m; shoulder Ø≈0.12 m", TEMP="operate −55/+70 °C (BMG wrist to −173 °C, S040)", LOADS="20 kg rated payload at full reach (lunar g), tip deflection ≤ 3 mm; ≤ 150 N contact force",
@@ -118,7 +127,7 @@ spec("manipulation", ["dexterous_arm", "dexterous_arm_2"], COMPONENT="Dexterous 
      ASM="motorisation factor 2 (L024), torque density 25 N·m/kg", UNC="actuator mass ±40 %; contact-task success rates (servicing.py)")
 spec("manipulation", ["crane_boom"], COMPONENT="Crane boom (cable-stayed luffing, slewing)", FUNCTION="Lift/place ORUs and modules ≤ 150 kg, support damaged equipment, lift target vehicle corners, route lines",
      TECH="2.6 m CFRP boom + A-frame, luff and hoist winches, 360° slew turntable; cooperative placement with dex arm",
-     MAT="CFRP tubes, Ti end fittings, Vectran lines", WHY_T="TS-03/M-4: ~20 kg vs 133 kg for an equivalent heavy serial arm (LSMS principle S015)",
+     MAT="CFRP tubes, Ti end fittings, Vectran lines", WHY_T=f"TS-03/M-4: {_B['crane']['mass']:.0f} kg CBE vs ≈ {_MAN['A3']['mass_kg'] - _MAN['A2']['mass_kg'] / 2:.0f} kg for an equivalent heavy serial arm (LSMS principle S015)",
      WHY_M="buckling-driven member → specific stiffness; low CTE", ALT="heavy 6-DOF arm; no heavy lift", REJ="mass; coverage loss of T02/T03/T10/T11",
      DIM="boom 2.6 m Ø≥50 mm; reach 2.56 m at 10° luff", TEMP="as actuators", LOADS="150 kg hook (243 N) + boom; side load 10 %; luff tension ≈ 0.8 kN",
      RAD="n/a", DUST="sheave guards; line wiper", LIFE="10 yr", RED="none (DM-4)", FAIL="F-06", MAINT="winch/slew ORUs; spare line in MOD-REC", TRL="4",
@@ -133,15 +142,15 @@ spec("manipulation", ["ft_sensor_and_tool_changer"], COMPONENT="End effector: F/
 # ------------------------------------------------------------------------------------------- service spine & modules
 spec("service_spine", ["service_spine"], COMPONENT="Modular service spine", FUNCTION="Carry, power and exchange ORUs, spares and service modules; standard interface shared with assets and host vehicles",
      TECH="Rail with 6 androgynous latch slots (HOTDOCK-class), 120 VDC/1 kW and Ethernet per slot", MAT="Al 7075 rail, Ti latches",
-     WHY_T="TS-07: −40 kg average carried mass per sortie vs integrated; deployable modules (MOD-KA) inherently modular; portability to other hosts (CDR-01)",
+     WHY_T=f"TS-07: −{_TR['service_modules']['mass_saving_per_sortie_kg']:.0f} kg average carried mass per sortie vs integrated; deployable modules (MOD-KA) inherently modular; portability to other hosts (CDR-01)",
      WHY_M="light rail; Ti latches for wear", ALT="integrated fixed mounts", REJ="carries all kits always; no reuse on other vehicles",
-     DIM="1.6 × 0.5 m footprint; module ≤ 0.6 × 0.45 × 0.45 m, ≤ 40 kg; total ≤ 150 kg", TEMP="−150/+110 °C (modules self-heated)",
+     DIM="2 × 3 grid of 0.45 m slots, 0.90 × 1.35 m on the mid-deck (design.layout, CDR-21); ≤ 40 kg and ≤ 0.45 × 0.45 × 0.6 m (high) per occupied slot (double-slot modules such as MOD-KA ≤ 80 kg over two adjacent latches); total ≤ 150 kg", TEMP="−150/+110 °C (modules self-heated)",
      LOADS="150 kg × launch 6 g (modules launch-locked separately)", RAD="n/a", DUST="latch covers", LIFE="10 yr, 2000 latch cycles",
      RED="6 slots", FAIL="latch jam (F-23)", MAINT="latches ORU", TRL="5", HER="HOTDOCK (S048), FLEX payload interfaces (S037)", ASM="—", UNC="—")
 # ------------------------------------------------------------------------------------------- recovery
 spec("recovery", ["recovery_winch", "recovery_line"], COMPONENT="Recovery winch and line", FUNCTION="Pull immobilised vehicles/elements while TSR-1 is anchored",
      TECH="4 kN electric winch, drum Ø0.12 m, level-wind, load cell, auto tension limiting; 50 m Vectran line; low fairlead (0.25 m)",
-     MAT="Ti drum, steel gear, Vectran with aramid/PTFE jacket", WHY_T="TS-05: anchored winching raises recoverable fraction from 0.23 (direct tow) to 0.91",
+     MAT="Ti drum, steel gear, Vectran with aramid/PTFE jacket", WHY_T=f"TS-05: anchored winching raises recoverable fraction from {_PENV['R0 direct towing (drive)']['mid']:.2f} (direct tow) to {_PENV['R4 winch + 2 spades + 2 helical anchors']['mid']:.2f}",
      WHY_M="line mass 0.03 kg/m vs 0.15 kg/m steel rope; low creep", ALT="direct towing only; steel rope", REJ="traction-limited (≤ 0.2 kN on 15°); 5× line mass",
      DIM="≈ 0.45 × 0.3 × 0.3 m", TEMP="operate −55/+70 °C", LOADS="4 kN line pull × FoS 1.4 at hard point; snap-back keep-out",
      RAD="n/a", DUST="fairlead wiper; drum cover", LIFE="10 yr; 500 pulls", RED="none (DM-5)", FAIL="F-07, F-08", MAINT="ORU; spare line in MOD-REC",
@@ -149,7 +158,7 @@ spec("recovery", ["recovery_winch", "recovery_line"], COMPONENT="Recovery winch 
 spec("recovery", ["spade_", "helical_anchor_", "tow_hardpoints_front_rear"], COMPONENT="Ground-reaction system: rear spades, helical anchors, hard points",
      FUNCTION="Resist line pull and overturning moment during winching",
      TECH="2 rear spades 0.6 × 0.3 m (pressed by body lowering, self-embedding under pull); 2 Ø0.15 m helical anchors at 0.6 m depth installed by dex arm; front hold-down straps",
-     MAT="Ti-6Al-4V with TiN edges", WHY_T="M-5: 4 kN pull is 2.3× TSR lunar weight; spades+anchors give ≈5.9 kN restraint and tipping factor ≥ 1.5",
+     MAT="Ti-6Al-4V with TiN edges", WHY_T=f"M-5: 4 kN pull is {4000 / _WEIGHT:.1f}× TSR lunar weight ({_WEIGHT:.0f} N); spades+anchors give the restraint and tipping factor ≥ 1.5 (stability case C7a/b)",
      WHY_M="strength/mass, non-magnetic", ALT="outriggers; braked wheels only; 4 anchors", REJ="outriggers do not resist sliding; braked wheels ≈1.6 kN only; 4 anchors +0.02 p_env",
      DIM="spade plate 0.6 × 0.3 × 0.006 m; anchor shaft 0.7 m Ø25 mm", TEMP="any", LOADS="spade 1.3 kN each (P50 soil); anchor 0.92 kN axial; install torque 28 N·m",
      RAD="n/a", DUST="n/a (ground-engaging)", LIFE="10 yr; anchors reusable", RED="spare anchors in MOD-REC", FAIL="F-09, F-10", MAINT="spades ORU",
@@ -158,7 +167,7 @@ spec("recovery", ["spade_", "helical_anchor_", "tow_hardpoints_front_rear"], COM
 # ------------------------------------------------------------------------------------------- power
 spec("power", ["battery_pack"], COMPONENT="Battery", FUNCTION="Energy storage for sorties, emergency power and survival",
      TECH="Li-ion 18650 PPR pack, 4 modules, 28s strings (≈101 V nominal), BMS with module isolation", MAT="NCA/NMC cells, Al 6061 interstitial heat sinks, mica sleeves",
-     WHY_T="TS-06: DRM-2 at 10 km + 50 h reserve needs 13.8 kWh usable EOL", WHY_M="passive propagation resistance (S070)",
+     WHY_T=f"TS-06: DRM-2 at 10 km ({_EN['drms'][1]['energy_kwh']:.1f} kWh) + 50 h reserve ({_EN['reserve_kwh']:.1f} kWh) needs {_EN['drms'][1]['energy_kwh'] + _EN['reserve_kwh']:.1f} kWh usable EOL (CDR-06)", WHY_M="passive propagation resistance (S070)",
      ALT="RFC; RPS (MMRTG); larger PV", REJ="RFC TRL 4 and hazards; RPS availability/approval; PV insufficient alone in shadow",
      DIM="≈ 0.8 × 0.5 × 0.18 m in WEB", TEMP="charge 0/+30 °C, discharge −20/+40 °C (S071)", LOADS="launch 6 g/3 g; mounted to WEB baseplate",
      RAD="cells insensitive at ~0.1 krad; BMS rad-tolerant", DUST="inside WEB", LIFE="10 yr, 20 % fade at EOL (A-16)", RED="4 modules (3/4 usable)",
@@ -179,7 +188,7 @@ spec("power", ["power_transfer_module", "power_tether_and_reel", "dust_tolerant_
      FAIL="F-13, F-14", MAINT="PTM ORU; connector head on arm tool changer", TRL="4 (DTC TRL 4–6; PTM 5)", HER="ISS power interfaces, Honeybee DTC",
      ASM="p_keepalive 300 W", UNC="ISPSIS surface power-quality limits not retrieved")
 spec("power", ["solar_arrays_vertical", "solar_array_regulator"], COMPONENT="Vertical solar arrays and MPPT", FUNCTION="Contingency charging and indefinite survival in sunlight",
-     TECH="two fixed vertical side panels 0.75 m² each, triple-junction cells; MPPT 600 W", MAT="IMM/TJ GaAs on CFRP", WHY_T="sun ≤ 1.54° elevation at the pole → vertical panels; ≈166 W average > 76 W survival (ENERGY-3)",
+     TECH="two fixed vertical side panels 0.75 m² each, triple-junction cells; MPPT 600 W", MAT="IMM/TJ GaAs on CFRP", WHY_T=f"sun ≤ 1.54° elevation at the pole → vertical panels; ≈ {_EN['solar_avg_W']:.0f} W average > {_EN['survival_power_W']:.0f} W survival (ENERGY-3)",
      WHY_M="heritage cells", ALT="no PV; deployable tracking mast (MOD-SOL)", REJ="stranded TSR would die in 7.7 days; mast only for no-grid scenario",
      DIM="2 × (1.5 × 0.5 m)", TEMP="−150/+110 °C", LOADS="launch", RAD="cell degradation small", DUST="vertical orientation low deposition; brushable", LIFE="10 yr (EOL factor 0.85)",
      RED="two panels", FAIL="string open", MAINT="panel ORU", TRL="7", HER="spacecraft arrays, VIPER side arrays", ASM="sortie_sunlit_frac 0.5", UNC="shadowing by own mast/crane")
@@ -188,7 +197,7 @@ spec("thermal", ["mli_blankets", "radiator_panel_eds", "loop_heat_pipe_switch", 
      FUNCTION="Hold WEB/battery in limits; reject peak dissipation; survive darkness and PSR excursions",
      TECH="MLI-insulated WEB (2.86 m²) inside chassis; zenith radiator with OSR + EDS film coupled by LHP with thermal switch; redundant heaters",
      MAT="Kapton/Mylar/Beta MLI; Al 6063 heat-pipe panel, Ag-FEP/OSR, ITO EDS film; SS/Al LHP (ammonia)",
-     WHY_T="variable conductance needed: 380 W hot case vs ≈ 82 W leak in PSR cold case", WHY_M="materials matrix",
+     WHY_T=f"variable conductance needed: 380 W hot case vs ≈ {_EN['thermal']['leak_cold_w']:.0f} W leak in PSR cold case", WHY_M="materials matrix",
      ALT="louvers; phase-change storage; RHUs", REJ="louvers dust-sensitive; PCM mass for multi-hour peaks (WEB capacity suffices, THERMAL-1b); RHUs need Pu-238",
      DIM="radiator ≈ 1.6 m²", TEMP="WEB −20/+40 °C", LOADS="launch", RAD="FEP minor darkening", DUST="EDS restores α (S019); zenith orientation; fenders",
      LIFE="10 yr", RED="dual heater circuits, two heat-pipe paths", FAIL="F-21, F-22", MAINT="heater controllers ORU", TRL="5 (EDS 6 after lunar demo)",
@@ -326,6 +335,54 @@ UNCERTAINTIES:        {k['UNC']}
 ```
 """
         files.setdefault(f, []).append(txt)
+    # MOD-KA keep-alive module (base inventory item, not part of the TSR-1 mass budget) — values from TS-07b
+    val = J("value_model.json")
+    ka = val["keepalive_trade"]["selected_row"]
+    files.setdefault("service_spine", []).append(f"""### MOD-KA keep-alive power module (base inventory ×{val['base_scenario']['keepalive_modules']})
+```
+COMPONENT:            MOD-KA keep-alive power module ({val['keepalive_trade']['selected']})
+SUBSYSTEM:            service_spine (deployable module; base inventory, not in the TSR-1 mass budget)
+FUNCTION:             Left connected to a disabled asset whose repair failed, supplying survival power until a spare is
+                      fitted (robotically after the Earth spare arrives, or by crew for L0/L1 assets)
+
+SELECTED TECHNOLOGY:  Li-ion PPR battery {ka['usable_kwh']:.0f} kWh usable at EOL (28s strings, 120 V ISPSIS output), two
+                      back-to-back fold-out vertical PV panels {ka['face_m2']:.1f} m² each, MPPT + isolated output stage,
+                      ISPSIS-compatible connector on 10 m cable, double-slot spine latch, crane lift point, fiducials
+SELECTED MATERIAL(S): Al 7075 frame, CFRP panel substrates, MLI on battery enclosure, Ti latch/hinge fittings
+
+WHY THIS TECHNOLOGY:  TS-07b: highest net Earth-mass benefit per handled module; KA-D (+50 % battery) gains less than the
+                      Monte Carlo scatter at +27 kg per module and only one fits the spine
+WHY THIS MATERIAL:    same family as TSR-1 structure and arrays (shared qualification)
+
+ALTERNATIVES CONSIDERED: KA-A 0.75 m²/2 kWh, KA-B 1.0 m²/3 kWh, KA-D 1.5 m²/6 kWh; TSR-1 staying at the asset
+WHY REJECTED:         KA-A/KA-B sustain too few assets (P = 0.40/0.57); staying ties up the only servicing vehicle
+
+DIMENSIONS:           stowed 0.9 × 0.45 × 0.45 m (two slots); deployed panel height ≈ 1.6 m
+MASS:                 CBE {ka['mass_cbe_kg']:.1f} kg; predicted {ka['mass_kg']:.1f} kg incl. 20 % MGA (battery {ka['battery_kg']:.1f} kg, PV {ka['pv_kg']:.1f} kg)
+OPERATING POWER:      output to asset = asset survival power (A-33, 40–250 W); self-consumption {R.v('ka_self_w'):.0f} W
+PEAK POWER:           {ka['p_sunlit_w']:.0f} W PV output with the lit face normal to the Sun
+
+PERFORMANCE:          sustained {ka['p_sustained_nominal_w']:.0f} W at a 0.75-illuminated site; {ka['bridge_nominal_h']:.0f} h darkness bridging at
+                      100 W; P(sustains a sampled asset) = {ka['p_sustain']:.2f} (asset power ×1.5: {ka['p_sustain_low']:.2f}; ×0.67: {ka['p_sustain_high']:.2f})
+OPERATING TEMPERATURE: battery 0–40 °C (self-heated under MLI); panels −180/+120 °C
+MECHANICAL LOADS:     launch 6 g on locks; crane lift 1.5 × weight
+RADIATION CONSIDERATIONS: rad-tolerant MPPT/BMS electronics (TID ≥ 20 krad)
+DUST CONSIDERATIONS:  vertical panels (low deposition); connector with self-closing cover; brushed at each TSR-1 visit
+
+EXPECTED LIFE:        10 yr; ≥ 20 deployments
+REDUNDANCY:           inventory of {val['base_scenario']['keepalive_modules']} (rule value_model.keepalive_inventory, CDR-19)
+FAILURE MODES:        battery cell string failure (graceful), panel hinge jam, connector contamination
+MAINTENANCE METHOD:   recovered by TSR-1 when the asset is repaired; battery/electronics swappable at the base depot
+
+TRL:                  5 (space Li-ion, PV and MPPT TRL 9; robot-deployed lunar surface power module not flown)
+HERITAGE:             small-lander power systems; ISPSIS interface concept (S011)
+
+SOURCE DATA:          S011, S030, A-15, A-16
+CALCULATED VALUES:    trades.other_trades.keepalive_module_sizing; value_model.json keepalive_trade
+ASSUMPTIONS:          A-33 asset survival power, A-34 site illumination, A-35 dark period, pv_areal_density (ESTIMATE)
+UNCERTAINTIES:        asset survival power (no data), dark-period statistics at actual asset sites
+```
+""")
     # tools table into tools file
     tool_lines = ["| Tool | Function | Material | Mass CBE [kg] | Power peak [W] | Attachment | Operating limits | Compatibility | Storage |",
                   "|---|---|---|---|---|---|---|---|---|"]

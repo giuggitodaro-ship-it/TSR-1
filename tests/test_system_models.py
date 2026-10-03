@@ -72,3 +72,40 @@ def test_tsr_self_reliability_redundancy_helps():
     with_rep = simulate_tsr(n_runs=300, seed=3)
     no_rep = simulate_tsr(n_runs=300, seed=3, p_spare_tsr=0.0)
     assert with_rep.p_capable_10yr > no_rep.p_capable_10yr
+
+
+def test_keepalive_inventory_rule():
+    from tsr1.reliability.value_model import keepalive_inventory
+    assert keepalive_inventory(0.0, 0.14, 1.0) == 0
+    # Poisson(1.0) 95th percentile is 3; rule must grow with fault load
+    assert keepalive_inventory(10.0, 0.1, 1.0) == 3
+    assert keepalive_inventory(40.0, 0.14, 1.5, 0.77) > keepalive_inventory(7.5, 0.14, 1.0, 0.77)
+
+
+def test_keepalive_module_sizing_consistent():
+    import tsr1.reliability.value_model  # noqa: F401
+    from tsr1.trades.other_trades import KA_OPTIONS, keepalive_module_sizing
+    rows = [keepalive_module_sizing(*v, n_mc=4000) for v in KA_OPTIONS.values()]
+    for r in rows:
+        assert r["battery_kg"] < r["mass_cbe_kg"] < r["mass_kg"]
+        assert r["p_sustain_low"] <= r["p_sustain"] <= r["p_sustain_high"]
+        # usable 2 kWh at EOL cannot weigh less than its cells at 160 Wh/kg, DoD 0.8, 20 % fade
+        assert r["battery_kg"] >= r["usable_kwh"] * 1000 / (0.8 * 0.8 * 160) - 1e-6
+    # more PV and battery -> higher probability of sustaining a parked asset
+    assert rows[0]["p_sustain"] < rows[2]["p_sustain"] <= rows[3]["p_sustain"]
+
+
+def test_value_model_loss_accounting():
+    r = monte_carlo(Scenario(n_assets=10, keepalive_modules=2), n=6, seed=5, sample=False)
+    assert np.all(r["plost0"] <= r["lost0"]) and np.all(r["plost1"] <= r["lost1"])
+    assert np.all(r["ka_used"] <= r["ka_demand"]) and np.all(r["ka_denied"] <= r["ka_demand"])
+    assert np.all(r["ka_hours"] >= 0)
+    # without modules every keep-alive request is denied
+    r0 = monte_carlo(Scenario(n_assets=10, keepalive_modules=0), n=6, seed=5, sample=False)
+    assert np.all(r0["ka_used"] == 0) and np.all(r0["ka_denied"] == r0["ka_demand"])
+
+
+def test_keepalive_inventory_scales_with_base():
+    from tsr1.reliability.value_model import keepalive_inventory_for_base
+    inv = [keepalive_inventory_for_base(n) for n in (3, 10, 30, 60)]
+    assert inv == sorted(inv) and inv[0] >= 1 and inv[-1] > inv[0]

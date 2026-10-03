@@ -117,16 +117,19 @@
   ]
  ],
  "com_stowed": [
-  0.0120513440662144,
-  0.0028008763043974806,
-  0.7738005003202455
+  0.0299551267979634,
+  0.01275349815015101,
+  0.7625455833784824
  ],
  "vehicle": {
   "mass": 1249.5226579444775,
-  "h_cg": 0.7738005003202455,
-  "x_cg": 0.0120513440662144
+  "h_cg": 0.7625455833784824,
+  "x_cg": 0.0299551267979634
  },
  "derived_keys": [
+  "layout",
+  "deck_top",
+  "crane_base",
   "drive_torque_soil",
   "drive_rating",
   "p_drive_nom",
@@ -135,6 +138,7 @@
   "steer_torque",
   "chassis",
   "dex",
+  "arm_base",
   "crane",
   "heavy",
   "spine_payload_pos",

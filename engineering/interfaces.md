@@ -22,13 +22,13 @@ explicit variable in the value model.
 | EI-08 | PNT | LunaNet augmented navigation, local beacons | LANS/Moonlight (S017, S018) | sun sensor/star tracker, IMU, VO, LiDAR map matching | base-frame localisation ≤ 1 m |
 | EI-09 | Lander accommodation | Argonaut-/Mk1-class cargo lander | lander user guides (S075, values not retrieved) | 4 launch locks under chassis box; deploy via ramp/offloader | stowed 3.6 × 2.4 × 1.2 m (mast folded); delivered 1.19 t incl. 5 % accommodation; f₁ ≥ 35 Hz on locks |
 | EI-10 | Crew interface | surface crew | NASA-STD-3001 maintainability practice (S049) | EVA handles, manual brake/spade/latch releases, status lights | speed ≤ 0.2 m/s and EE force ≤ 50 N within 10 m of crew |
-| EI-11 | Keep-alive module (MOD-KA) | disabled assets | EI-01 | 23 kg module with its own 120 VDC connector, 2 kWh battery, 0.75 m² vertical PV | delivers ≤ 300 W keep-alive; indefinite in sun (~100–160 W PV), ~13 h in darkness at 150 W |
+| EI-11 | Keep-alive module (MOD-KA, KA-C) | disabled assets | EI-01 | ≈ 73 kg double-slot module with its own 120 VDC connector on 10 m cable, 4 kWh usable battery, two back-to-back fold-out vertical PV panels 1.5 m² each (TS-07b) | sustains ≈ 230 W average at a 0.75-illuminated site; ≈ 38 h darkness bridging at 100 W; P(sustains a sampled asset) ≈ 0.77 (CDR-20; spec sheet in subsystem_specs/service_spine.md) |
 
 ## 2. Internal interfaces
 
 | ID | Interface | Between | Definition |
 |---|---|---|---|
-| II-01 | Service-spine slot | spine ↔ modules/ORUs | androgynous latch on ISO 9409-1-derived pattern; 120 VDC ≤ 1 kW per slot; 100 Mbit/s Ethernet (TSN); 1-wire ID; passive thermal pad; module ≤ 40 kg, ≤ 0.6 × 0.45 × 0.45 m |
+| II-01 | Service-spine slot | spine ↔ modules/ORUs | androgynous latch on ISO 9409-1-derived pattern; 120 VDC ≤ 1 kW per slot; 100 Mbit/s Ethernet (TSN); 1-wire ID; passive thermal pad; ≤ 40 kg and ≤ 0.45 × 0.45 m footprint × 0.6 m height per occupied slot (2 × 3 slot grid, CDR-21); double-slot modules (MOD-KA) ≤ 80 kg over two adjacent latches |
 | II-02 | Arm tool changer | dex arm ↔ tools | ISO 9409-1 pattern + power/data pass-through (28 V/120 V tools); tool ID; change time ≤ 5 min |
 | II-03 | Arm base | arm ↔ deck | ORU interface: 4 captive bolts, blind-mate connector, grapple handle — arm replaceable by the other arm (with crane assist) or by a peer TSR |
 | II-04 | Wheel drive unit | drive ORU ↔ bogie | 4 captive fasteners on a hub flange, blind-mate connector; unload the wheel by body lowering (M2 suspension) |

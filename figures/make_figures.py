@@ -51,7 +51,11 @@ def J(name):
 
 
 def save(fig, name):
-    fig.text(0.01, 0.005, FOOT, fontsize=7, color=MUTED, ha="left", va="bottom")
+    # place the footer below everything already drawn (incl. rotated tick labels) so it never overlaps a label
+    fig.canvas.draw()
+    bb = fig.get_tightbbox(fig.canvas.get_renderer())
+    y = min(-0.01, bb.y0 / fig.get_figheight() - 0.01)
+    fig.text(0.01, y, FOOT, fontsize=7, color=MUTED, ha="left", va="top")
     fig.savefig(OUT / name, bbox_inches="tight")
     plt.close(fig)
     print("wrote", name)
@@ -79,10 +83,11 @@ def fig_system_architecture():
     ax.set_xlim(0, 12)
     ax.set_ylim(0, 7.4)
     ax.set_title("TSR-1 system architecture and external interfaces")
+    bat_kwh = J("baseline_summary.json")["battery"]["usable_eol_kwh"]
     box(ax, 3.4, 2.6, 5.2, 2.4, "", fc="#f4f3f0")
     ax.text(6.0, 4.8, "TSR-1 vehicle", ha="center", fontsize=10, fontweight="bold")
     subs = [("Mobility\n6-wheel rocker-bogie\nbody lowering", 3.55, 3.6), ("Manipulation\n2× 7-DOF dex arms\n+ 150 kg crane", 5.25, 3.6),
-            ("Service spine\n6 standard slots\n150 kg", 6.95, 3.6), ("Power\n14 kWh Li-ion\n120 VDC bus · PTM", 3.55, 2.75),
+            ("Service spine\n6 standard slots\n150 kg", 6.95, 3.6), (f"Power\n{bat_kwh:.0f} kWh Li-ion (EOL)\n120 VDC bus · PTM", 3.55, 2.75),
             ("Avionics & autonomy\nHPSC + 2× safety RT", 5.25, 2.75), ("Recovery\n4 kN winch, spades,\nhelical anchors", 6.95, 2.75)]
     for t, x, y in subs:
         box(ax, x, y, 1.55, 0.78, t, fs=7.5)
@@ -97,7 +102,7 @@ def fig_system_architecture():
     for t, x, y, col in ext:
         box(ax, x, y, 2.5, 1.0, t, ec=col, fs=7.5)
     arrow(ax, (8.6, 3.8), (9.3, 3.8), style="<|-|>")
-    ax.text(8.95, 4.0, "mech · power\ndata · inspect", fontsize=6.5, ha="center", color=INK2)
+    ax.text(8.95, 3.88, "mech · power\ndata · inspect", fontsize=6.5, ha="center", va="bottom", color=INK2)
     arrow(ax, (2.7, 5.1), (3.4, 4.6), style="<|-|>")
     arrow(ax, (2.7, 3.5), (3.4, 3.5), style="<|-|>")
     arrow(ax, (2.7, 1.9), (3.4, 2.8), style="<|-|>")
@@ -120,7 +125,7 @@ def fig_rover_configuration(cfg, base):
     ax.axhline(0, color=INK2, lw=1)
     gc = o.ground_clearance
     ax.add_patch(Rectangle((-o.wheelbase / 2, gc), o.wheelbase, 0.45, fc="#e9eef6", ec=INK2, lw=1))
-    ax.text(0, gc + 0.22, "chassis torque box / WEB", ha="center", fontsize=7.5, color=INK2)
+    ax.text(0, gc + 0.32, "chassis torque box / WEB", ha="center", va="center", fontsize=7.5, color=INK2)
     for x in xs:
         ax.add_patch(Circle((x, r), r, fc="#d9d8d3", ec=INK2, lw=1))
         ax.add_patch(Circle((x, r), 0.08, fc=INK2, ec=INK2))
@@ -143,7 +148,8 @@ def fig_rover_configuration(cfg, base):
     ax.plot([xm - 0.05, 0.55, 0.9], [gc + 0.55, gc + 0.62, gc + 0.62], color=C[0], lw=3)
     # winch & spades
     ax.add_patch(Rectangle((-o.wheelbase / 2 - 0.25, 0.18), 0.2, 0.18, fc=C[3], ec="none"))
-    ax.text(-o.wheelbase / 2 - 0.15, 0.05, "winch\nfairlead 0.25", ha="center", va="top", fontsize=7)
+    ax.annotate("winch, fairlead 0.25", xy=(-o.wheelbase / 2 - 0.15, 0.27), xytext=(-2.35, 1.15), fontsize=7,
+                arrowprops=dict(arrowstyle="-", color=INK2, lw=0.6))
     ax.plot([-o.wheelbase / 2 - 0.2, -o.wheelbase / 2 - 0.35], [gc + 0.1, 0.05], color=C[1], lw=3)
     # dims
     L = o.wheelbase + 2 * r + 0.1
@@ -155,7 +161,7 @@ def fig_rover_configuration(cfg, base):
     ax.text(2.1, 1.1, "mast height 2.19", fontsize=7, rotation=90, va="center")
     ax.annotate("", (-1.65, 0), (-1.65, gc), arrowprops=dict(arrowstyle="<->", color=INK2, lw=0.8))
     ax.text(-1.75, gc / 2, f"clearance {gc:.2f}\n(lowered 0.10)", fontsize=7, ha="right", va="center")
-    ax.text(xs[0], 2 * r + 0.15, f"Ø{2*r:.1f} × {b:.2f} Ti wheels", fontsize=7, ha="center")
+    ax.text(0.0, r - 0.24, f"Ø{2*r:.2f} × {b:.2f}\nTi wheels", fontsize=6.5, ha="center", va="center")
     ax.set_xlim(-2.4, 2.5)
     ax.set_ylim(-0.5, 2.5)
     ax.grid(False)
@@ -186,62 +192,96 @@ def fig_rover_configuration(cfg, base):
     ax.text(-2.05, 0, f"overall width {W:.2f}\ntrack {o.track:.2f}", rotation=90, va="center", ha="right", fontsize=7)
     ax.set_xlim(-2.5, 2.2)
     ax.set_ylim(-1.5, 1.5)
-    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.1), ncol=4, fontsize=7.5)
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.17), ncol=4, fontsize=7.5)
     ax.set_xlabel("x [m]")
     ax.set_ylabel("y [m]")
     save(fig, "fig02_rover_configuration_dimensions.png")
 
 
 def fig_layout_table(cfg):
-    fig, ax = plt.subplots(figsize=(11, 5.6))
-    blank(ax)
-    ax.set_xlim(0, 11)
-    ax.set_ylim(0, 5.6)
-    ax.set_title("Subsystem layout: deck and Warm Electronics Box allocation (plan view, schematic to scale)")
-    L, Wd = cfg.opts.wheelbase, 1.5
-    sx, ox, oy = 3.4, 0.6, 0.5
-    ax.add_patch(Rectangle((ox, oy), L * sx, Wd * sx, fc="#f4f3f0", ec=INK2))
-    a = cfg.derived["a_rad"]
-    items = [("Radiator (zenith, EDS film)\n%.2f m²" % a, -1.3, -0.55, a / 1.1, 1.1, C[0]),
-             ("Service spine\n6 slots, 150 kg", -0.2 - 0.7 + 0.5, -0.25, 1.4, 0.5, C[1]),
-             ("Crane turntable\n+ A-frame", 0.15, 0.35, 0.45, 0.4, C[2]),
-             ("Dex arm R base", 0.95, -0.7, 0.3, 0.3, C[3]), ("Dex arm L base", 0.95, 0.4, 0.3, 0.3, C[3]),
-             ("Mast", 0.95, 0.05, 0.25, 0.25, C[4]), ("Tool rack", -0.4, 0.35, 0.5, 0.35, C[5]),
-             ("WEB below deck\n1.0 × 0.8 × 0.35 m\nbattery · PCDU · PTM · avionics", -0.5, -0.75, 1.0, 0.8, MUTED)]
-    for t, x, y, w, h, col in items:
-        X = ox + (x + L / 2) * sx
-        Y = oy + (y + Wd / 2) * sx
-        ax.add_patch(Rectangle((X, Y), w * sx, h * sx, fc=SURF, ec=col, lw=1.6, ls="--" if "WEB" in t else "-"))
-        ax.text(X + w * sx / 2, Y + h * sx / 2, t, ha="center", va="center", fontsize=7)
-    ax.text(ox + L * sx / 2, oy - 0.3, f"deck {L:.1f} × {Wd:.1f} m  (front → right)", ha="center", fontsize=8, color=INK2)
+    """Plan view of the deck drawn from design.layout (the same geometry the mass model and closure use)."""
+    from tsr1.common.params import REGISTRY as R
+    from tsr1.design.layout import tool_rack
+    lay = cfg.derived["layout"]
+    L, Wd = cfg.opts.wheelbase, min(cfg.opts.track - 0.5, 1.5)
+    fig, ax = plt.subplots(figsize=(11, 6.4))
+    ax.set_aspect("equal")
+    ax.set_title("Deck layout, plan view to scale (front → right); WEB below deck shown dashed")
+    ax.add_patch(Rectangle((-L / 2, -Wd / 2), L, Wd, fc="#f4f3f0", ec=INK2, lw=1.2))
+    styles = {"radiator": (C[0], "Radiator (zenith, OSR + EDS film)"), "service_spine": (C[1], "Service spine\n2 × 3 slots of 0.45 m"),
+              "crane_turntable": (C[2], "Crane\nturntable"), "sensor_mast_base": (C[4], "Mast"),
+              "dex_arm_R_base": (C[3], "Dex arm R\n(upright stow)"), "dex_arm_L_base": (C[3], "Dex arm L\n(upright stow)")}
+    for k, it in lay.items():
+        col, lab = styles[k]
+        ax.add_patch(Rectangle((it.x0, it.y0), it.x1 - it.x0, it.y1 - it.y0, fc=SURF, ec=col, lw=1.8, zorder=2))
+        cx, cy = it.centre
+        txt = f"{lab}\n{it.area:.2f} m²" if k in ("radiator", "service_spine") else lab
+        dy = {"radiator": 0.56, "service_spine": 0.36}.get(k, 0.0)          # keep clear of the boom line and WEB outline
+        ax.text(cx, cy + dy, txt, ha="center", va="center", fontsize=7 if it.area > 0.1 else 6, zorder=6,
+                bbox=dict(fc=SURF, ec="none", pad=1.5) if dy else None)
+    sp = lay["service_spine"]
+    for r_ in range(2):
+        for c_ in range(3):
+            ax.add_patch(Rectangle((sp.x0 + r_ * 0.45 + 0.02, sp.y0 + c_ * 0.45 + 0.02), 0.41, 0.41, fc="none",
+                                   ec=C[1], lw=0.6, ls=":", zorder=2))
+    # stowed crane boom (rearward over the spine)
+    xb = cfg.derived["crane_base"][0]
+    ax.plot([xb, xb - cfg.opts.crane_boom], [0, 0], color=C[2], lw=2.5, alpha=0.8, zorder=4)
+    ax.text(-0.75, -0.07, "crane boom (stowed, rearward)", fontsize=6.5, color=INK2, ha="center", va="top", zorder=6)
+    # WEB below deck
+    wl, ww = R.v("web_L"), R.v("web_W")
+    wx = R.v("web_x")
+    ax.add_patch(Rectangle((wx - wl / 2, -ww / 2), wl, ww, fc="none", ec=MUTED, lw=1.2, ls="--", zorder=5))
+    ax.text(wx, -ww / 2 + 0.05, f"WEB below deck {wl:.1f} × {ww:.1f} × {R.v('web_H'):.2f} m", ha="center", va="bottom", fontsize=6.5,
+            color=MUTED)
+    tr = tool_rack(L, Wd)
+    ax.add_patch(Rectangle((tr.x0, tr.y0), tr.x1 - tr.x0, tr.y1 - tr.y0, fc=C[5], ec="none", alpha=0.6))
+    ax.text(tr.x1 + 0.05, 0, "tool rack on\nfront face", fontsize=6.5, va="center")
+    ax.annotate("", (-L / 2, -Wd / 2 - 0.25), (L / 2, -Wd / 2 - 0.25), arrowprops=dict(arrowstyle="<->", color=INK2, lw=0.8))
+    ax.text(0, -Wd / 2 - 0.3, f"deck {L:.1f} m", ha="center", va="top", fontsize=8)
+    ax.annotate("", (-L / 2 - 0.35, -Wd / 2), (-L / 2 - 0.35, Wd / 2), arrowprops=dict(arrowstyle="<->", color=INK2, lw=0.8))
+    ax.text(-L / 2 - 0.4, 0, f"{Wd:.1f} m", rotation=90, ha="right", va="center", fontsize=8)
+    from tsr1.design.layout import check_layout
+    chk = check_layout(lay, L, Wd)
+    ax.text(0, -Wd / 2 - 0.5, f"deck items {chk['used_area']:.2f} of {chk['deck_area']:.2f} m²; "
+            f"{'no overlaps' if chk['ok'] else 'OVERLAPS: ' + str(chk['overlaps'])} (closure GEOM-5)",
+            ha="center", va="top", fontsize=7, color=INK2)
+    ax.set_xlim(-L / 2 - 0.6, L / 2 + 0.45)
+    ax.set_ylim(-Wd / 2 - 0.65, Wd / 2 + 0.15)
+    ax.set_xlabel("x [m]")
+    ax.set_ylabel("y [m]")
     save(fig, "fig03_subsystem_layout.png")
 
 
 def fig_service_spine():
-    fig, ax = plt.subplots(figsize=(11, 4.6))
+    fig, ax = plt.subplots(figsize=(13, 2.9))
     blank(ax)
-    ax.set_xlim(0, 11)
-    ax.set_ylim(0, 4.6)
+    ax.set_xlim(0, 13)
+    ax.set_ylim(1.75, 3.95)
     ax.set_title("Modular service spine: slot interface and module library")
     ax.add_patch(Rectangle((0.5, 2.0), 6.2, 0.35, fc="#e9eef6", ec=INK2))
     ax.text(3.6, 2.17, "Al 7075 rail · 120 VDC (≤ 1 kW/slot) · Ethernet/TSN data · 1-wire ID · passive thermal pad",
             ha="center", va="center", fontsize=7.5)
-    mods = [("MOD-ORU\ncradle", C[1]), ("MOD-KA\nkeep-alive", C[3]), ("MOD-REC\nrecovery kit", C[2]),
-            ("MOD-RPT\nrepeater", C[0]), ("ORU spare", C[4]), ("free slot", MUTED)]
-    for i, (t, col) in enumerate(mods):
-        x = 0.6 + i * 1.02
-        ax.add_patch(Rectangle((x, 2.4), 0.9, 1.0, fc=SURF, ec=col, lw=1.6))
-        ax.text(x + 0.45, 2.9, t, ha="center", va="center", fontsize=7)
-        ax.add_patch(Rectangle((x + 0.25, 2.35), 0.4, 0.07, fc=INK2))
-    ax.text(3.6, 3.65, "6 slots, each: androgynous latch (HOTDOCK-class) on ISO 9409-1-derived pattern; "
+    mods = [("MOD-ORU\ncradle", C[1], 1), ("MOD-KA keep-alive\n(double slot)", C[3], 2), ("MOD-REC\nrecovery kit", C[2], 1),
+            ("MOD-RPT\nrepeater", C[0], 1), ("ORU spare", C[4], 1)]
+    slot = 0
+    for t, col, n in mods:
+        x = 0.6 + slot * 1.02
+        w = 0.9 + (n - 1) * 1.02
+        ax.add_patch(Rectangle((x, 2.4), w, 1.0, fc=SURF, ec=col, lw=1.6))
+        ax.text(x + w / 2, 2.9, t, ha="center", va="center", fontsize=7)
+        for k in range(n):
+            ax.add_patch(Rectangle((x + k * 1.02 + 0.25, 2.35), 0.4, 0.07, fc=INK2))
+        slot += n
+    ax.text(3.6, 3.65, "6 slots (drawn in a row; arranged 2 × 3 on the deck, Fig. 3), each: androgynous latch (HOTDOCK-class), "
             "robot-graspable handle + fiducial", ha="center", fontsize=7.5)
-    lib = ["Module limits: ≤ 40 kg, ≤ 0.6 × 0.45 × 0.45 m per slot; ≤ 150 kg total",
+    m_ka = J("value_model.json")["keepalive_module_kg"]
+    lib = [f"Module limits per slot: ≤ 40 kg, 0.45 × 0.45 m footprint, ≤ 0.6 m high (MOD-KA {m_ka:.0f} kg over 2 slots); ≤ 150 kg total",
            "Installation/removal by either dex arm (≤ 20 kg) or crane + arm (≤ 150 kg)",
-           "Same interface on asset ORUs (L2/L3) and on host vehicles → modules portable to",
-           "utility-rover / LTV hosts (service-kit option, CDR-01)",
+           "Same interface on asset ORUs (L2/L3) and on host vehicles → modules portable to\n   utility-rover / LTV hosts (service-kit option, CDR-01)",
            "Excluded: fluid servicing module (no fluid-serviceable asset identified)"]
     for i, t in enumerate(lib):
-        ax.text(7.1, 3.4 - i * 0.42, "• " + t, fontsize=7.5, color=INK)
+        ax.text(7.1, 3.55 - i * 0.42 - (0.12 if i == 3 else 0), "• " + t, fontsize=7.5, color=INK, va="top")
     save(fig, "fig04_service_spine.png")
 
 
@@ -249,36 +289,39 @@ def fig_workspace(cfg):
     from tsr1.manipulation.arm import workspace_samples
     dex = cfg.derived["dex"]
     crane = cfg.derived["crane"]
-    fig, axs = plt.subplots(1, 2, figsize=(12, 5))
+    fig, axs = plt.subplots(1, 2, figsize=(13, 5))
+    fig.subplots_adjust(wspace=0.3)
     ax = axs[0]
-    ax.set_title("Dexterous arm workspace (pitch plane, base at deck front)")
+    ax.set_title("Dexterous-arm workspace (pitch plane)")
     ax.set_aspect("equal")
     xa, za = cfg.opts.wheelbase / 2 - 0.15, 1.05
     pts = workspace_samples(dex.spec, base=(xa, za), n=45)
+    pts = pts[pts[:, 1] >= 0.0]                       # the ground bounds the workspace
     ax.scatter(pts[:, 0], pts[:, 1], s=2, color=C[0], alpha=0.25, label="reachable points (joint sweep)")
     ax.axhline(0, color=INK2, lw=1)
     ax.add_patch(Rectangle((-cfg.opts.wheelbase / 2, cfg.opts.ground_clearance), cfg.opts.wheelbase, 0.45,
                            fc="#e9eef6", ec=INK2))
     ax.plot(xa, za, "o", ms=8, color=INK, mec=SURF, mew=2)
     ax.text(xa + 0.05, za + 0.08, "shoulder", fontsize=7.5)
-    ax.text(xa + 1.3, 0.12, f"ground reach to x ≈ {xa + math.sqrt(max(dex.reach**2 - za**2, 0)):.2f} m", fontsize=7.5)
+    ax.text(xa + 0.2, -0.12, f"ground reach to x ≈ {xa + math.sqrt(max(dex.reach**2 - za**2, 0)):.2f} m", fontsize=7.5, va="top")
     ax.set_xlabel("x [m]")
     ax.set_ylabel("z [m]")
     ax.set_xlim(-1.6, 3.2)
-    ax.set_ylim(-0.2, 2.8)
+    ax.set_ylim(-0.35, 2.8)
     ax.legend(loc="upper left", fontsize=7.5)
     ax = axs[1]
     st = J("stability.json")
     lv = np.array(st["crane_capacity_level"])
     sl = np.array(st["crane_capacity_15deg"])
-    ax.set_title("Crane hook load limit vs reach (side lift, tipping factor ≥ 1.5)")
+    ax.set_title("Crane hook-load limit vs reach (side lift, TF ≥ 1.5)")
     ax.plot(lv[:, 0], lv[:, 1], color=C[0], label="stability limit, level")
     ax.plot(sl[:, 0], sl[:, 1], color=C[1], ls="--", label="stability limit, 15° lateral (load downhill)")
     ax.axhline(cfg.opts.heavy_payload, color=C[2], label=f"structural/winch rating {cfg.opts.heavy_payload:.0f} kg")
     ax.set_yscale("log")
     ax.set_xlabel("horizontal reach from crane base [m]")
     ax.set_ylabel("hook load [kg] (log scale)")
-    ax.legend(fontsize=8)
+    ax.set_ylim(100, 4000)
+    ax.legend(fontsize=8, loc="upper right")
     save(fig, "fig05_manipulator_workspace_crane_capacity.png")
 
 
@@ -351,7 +394,7 @@ def fig_comms():
     ax.set_ylim(0, 5.6)
     tr = J("trades.json")["comms"]
     ax.set_title("Communications architecture and link availability")
-    box(ax, 4.4, 2.2, 2.2, 1.0, "TSR-1\nS-band relay 5 W / 10 dBi\nsurface radio · UHF mesh", ec=C[0], bold=True)
+    box(ax, 4.3, 2.2, 2.4, 1.0, "TSR-1\nS-band relay 5 W / 10 dBi\nsurface radio · UHF mesh", ec=C[0], bold=True, fs=8)
     box(ax, 0.3, 3.9, 2.4, 0.9, "Surface comm towers\n~10 km cells (LTE-class)", ec=C[0])
     box(ax, 4.4, 4.4, 2.2, 0.9, "Lunar relay (LunaNet /\nMoonlight-class)", ec=C[0])
     box(ax, 8.3, 4.4, 2.4, 0.9, "Earth MOC (DSN/commercial)\nRTT ≈ 2.6 s + processing", ec=C[2])
@@ -371,10 +414,10 @@ def fig_comms():
 
 
 def fig_workflow():
-    fig, ax = plt.subplots(figsize=(12, 5.8))
+    fig, ax = plt.subplots(figsize=(12, 3.9))
     blank(ax)
     ax.set_xlim(0, 12)
-    ax.set_ylim(0, 6)
+    ax.set_ylim(0.4, 4.7)
     ax.set_title("Servicing workflow (DRM-2 electrical failure) with failure branches")
     steps = ["Fault telemetry /\nloss of signal", "Plan & approve\n(task level)", "Traverse\n(≈8 h @10 km)", "Stand-off\ninspection",
              "Connect ISPSIS\nkeep-alive 300 W", "Diagnose bus,\nidentify ORU", "Swap ORU\n(dex arm / crane)", "Functional\ntest", "Disconnect,\nreturn, report"]
@@ -383,12 +426,13 @@ def fig_workflow():
         box(ax, x, 3.6, 1.15, 0.9, s, ec=C[0], fs=7.2)
         if i < len(steps) - 1:
             arrow(ax, (x + 1.15, 4.05), (x + 1.3, 4.05))
-    br = [(4.1, "unpowered > t_survive\n→ asset lost (record)", CRIT), (5.4, "connector/port damaged\n→ L0 path: inspect only", WARN),
-          (6.7, "no spare / ORU fault\n→ leave MOD-KA, request spare", WARN), (8.0, "test fails\n→ retry once / escalate", WARN),
-          (2.8, "hazard on route\n→ re-plan / hold", WARN)]
-    for x, t, col in br:
-        box(ax, x - 0.3, 1.5, 1.5, 0.9, t, ec=col, fs=6.8)
-        arrow(ax, (x + 0.45, 3.6), (x + 0.45, 2.4), color=col, ls="--")
+    br = [(2, "hazard on route\n→ re-plan / hold", WARN), (3, "unpowered > t_survive\n→ asset lost\n(recorded)", CRIT),
+          (4, "connector/port\ndamaged → L0 path:\ninspect only", WARN),
+          (6, "no spare / ORU fault\n→ leave MOD-KA,\nrequest spare", WARN), (7, "test fails\n→ retry once /\nescalate", WARN)]
+    for i, t, col in br:
+        x = 0.2 + i * 1.3
+        box(ax, x - 0.04, 1.5, 1.23, 1.1, t, ec=col, fs=6.2)
+        arrow(ax, (x + 0.575, 3.6), (x + 0.575, 2.6), color=col, ls="--")
     ax.text(6.0, 0.7, "Hold points (human approval): power connection · fastener release on load path · ORU insertion · winch > 1 kN",
             ha="center", fontsize=8, color=INK2)
     save(fig, "fig09_servicing_workflow.png")
@@ -435,7 +479,7 @@ def fig_power_budget():
     ax.grid(axis="y", visible=False)
     ax = axs[1]
     drms = e["drms"]
-    use = 14.0
+    use = e["battery"]["usable_eol_kwh"]
     ids = [d["id"] for d in drms]
     en = [d["energy_kwh"] for d in drms]
     ens = [d["energy_with_solar_kwh"] for d in drms]
@@ -446,24 +490,26 @@ def fig_power_budget():
     ax.set_xticks(x, ids)
     ax.set_ylabel("sortie energy [kWh]")
     ax.set_title("DRM energy at the 10 km service edge")
+    ax.set_ylim(0, 1.25 * max(use - e["reserve_kwh"], max(en)))
     ax.legend(fontsize=7.5, loc="upper right")
     save(fig, "fig11_power_energy_budget.png")
 
 
 def fig_mobility():
     m = J("mobility.json")
-    fig, axs = plt.subplots(1, 3, figsize=(14, 4.4))
+    fig, axs = plt.subplots(1, 3, figsize=(16, 4.6))
+    fig.subplots_adjust(wspace=0.42)
     ax = axs[0]
     for i, (k, lab) in enumerate((("nominal", "nominal (Table 9.14)"), ("conservative", "conservative (lunar-g penalty)"),
                                   ("weak", "weak (lower bounds)"))):
         c = m["dp_curves"][k]
         ax.plot(c["slip"], c["dp_over_w"], color=C[i], ls=["-", "--", ":"][i], label=lab)
     ax.axvline(0.4, color=MUTED, lw=1)
-    ax.text(0.41, 0.02, "design slip limit", fontsize=7, color=INK2)
+    ax.text(0.41, 0.43, "design slip limit", fontsize=7, color=INK2)
     ax.set_xlabel("slip i")
     ax.set_ylabel("drawbar pull / wheel load")
-    ax.set_title("Single-wheel drawbar pull (Ø0.9 × 0.40 m)")
-    ax.legend(fontsize=7.5)
+    ax.set_title("Single-wheel drawbar pull (Ø0.9 × 0.40 m)", fontsize=10)
+    ax.legend(fontsize=7.5, loc="lower right")
     ax = axs[1]
     s = m["slopes_deg"]
     keys = ["nominal", "conservative", "weak", "one_wheel_out", "two_wheels_out", "nominal_20pct"]
@@ -487,24 +533,28 @@ def fig_mobility():
     ax.set_xlabel("slope [deg]")
     ax.set_ylabel("available pull [N]")
     ax.set_title("Direct towing vs anchored winching")
-    ax.legend(fontsize=7.5)
+    ax.set_ylim(-20, 8000)
+    ax.legend(fontsize=7.5, loc="lower left")
     save(fig, "fig12_mobility_results.png")
 
 
 def fig_recovery():
     r = J("recovery.json")
     fig, axs = plt.subplots(1, 2, figsize=(13, 4.8))
+    fig.subplots_adjust(wspace=0.28)
     for j, key in enumerate(("free_kg", "locked_kg")):
         ax = axs[j]
         for i, (name, cur) in enumerate(r["curves"]["curves"].items()):
             if name.startswith("R2"):
                 continue
-            ax.plot(cur["slopes"], np.maximum(cur[key], 1), color=C[i % 8], marker="o", ms=5, mec=SURF, mew=1.2,
+            yv = np.array(cur[key], float)
+            yv[yv < 1.0] = np.nan                     # no recoverable mass: leave the curve open instead of a 1 kg floor
+            ax.plot(cur["slopes"], yv, color=C[i % 8], marker="o", ms=5, mec=SURF, mew=1.2,
                     label=name.split(" ", 1)[1] if j == 0 else None)
         ax.set_yscale("log")
         ax.set_xlabel("slope [deg]")
         ax.set_ylabel("max recoverable target mass [kg] (log)")
-        ax.set_title(f"Recovery envelope — target {'free-rolling (brakes released)' if j == 0 else 'brakes locked'} (FoS 1.5)")
+        ax.set_title(f"{'Free-rolling target (brakes released)' if j == 0 else 'Brake-locked target'}, FoS 1.5")
         ax.axhline(450, color=MUTED, lw=1)
         ax.text(0.3, 480, "450 kg rover", fontsize=7, color=INK2)
         ax.axhline(1500, color=MUTED, lw=1)
@@ -521,14 +571,14 @@ def fig_recovery():
     y = np.arange(len(names))
     ax.barh(y, mid, height=0.5, color=C[0], label="mid extraction estimate")
     ax.errorbar(mid, y, xerr=[np.array(mid) - np.array(lo), np.array(hi) - np.array(mid)], fmt="none", ecolor=INK2,
-                capsize=3, lw=1, label="upper/lower-bound soil response")
+                capsize=3, lw=1, label="range over extraction-resistance bounds")
     ax.plot(weak, y, "D", color=C[1], ms=7, mec=SURF, mew=1.5, label="half-strength soil")
     ax.set_yticks(y, [n for n in names])
     ax.invert_yaxis()
     ax.set_xlim(0, 1)
     ax.set_xlabel("fraction of sampled immobilisation cases recoverable")
     ax.set_title("Recovery architecture trade (TS-05)")
-    ax.legend(fontsize=7.5, loc="lower right")
+    ax.legend(fontsize=7.5, loc="upper center", bbox_to_anchor=(0.5, -0.2), ncol=3, frameon=False)
     ax.grid(axis="y", visible=False)
     save(fig, "fig14_recovery_trade.png")
 
@@ -536,9 +586,10 @@ def fig_recovery():
 def fig_stability():
     st = J("stability.json")
     cases = [c for c in st["cases"] if not c["case"].startswith("C1 stowed, level")]
-    names = [c["case"][:58] for c in cases]
+    import textwrap
+    names = ["\n".join(textwrap.wrap(c["case"], 48)) for c in cases]
     tf = [min(float(c["tip_factor"]) if c["tip_factor"] != "inf" else 200.0, 200.0) for c in cases]
-    fig, ax = plt.subplots(figsize=(10, 5.4))
+    fig, ax = plt.subplots(figsize=(10, 6.4))
     y = np.arange(len(names))
     cols = [CRIT if t < 1.5 else C[0] for t in tf]
     ax.barh(y, tf, height=0.55, color=cols)
@@ -557,7 +608,8 @@ def fig_stability():
 def fig_servicing_reliability():
     s = J("servicing_success.json")
     rel = J("tsr_reliability.json")
-    fig, axs = plt.subplots(1, 2, figsize=(13, 4.6))
+    fig, axs = plt.subplots(1, 2, figsize=(14, 4.6))
+    fig.subplots_adjust(wspace=0.45)
     ax = axs[0]
     levels = ["L0", "L1", "L2", "L3"]
     x = np.arange(4)
@@ -616,14 +668,15 @@ def fig_value():
     save(fig, "fig17_montecarlo_results.png")
     sw = v["asset_sweep"]
     N = [s_["n_assets"] for s_ in sw]
-    fig, axs = plt.subplots(1, 3, figsize=(15, 4.4))
+    fig, axs = plt.subplots(1, 4, figsize=(20, 4.6))
+    fig.subplots_adjust(wspace=0.32)
     ax = axs[0]
     ax.plot(N, [100 * s_["dA_mean"] for s_ in sw], "o-", color=C[0], ms=6, mec=SURF, mew=1.5, label="mean")
     ax.fill_between(N, [100 * s_["dA_p10"] for s_ in sw], [100 * s_["dA_p90"] for s_ in sw], color=C[0], alpha=0.12,
                     label="P10–P90")
     ax.set_xlabel("number of distributed assets")
     ax.set_ylabel("ΔA [pp]")
-    ax.set_title("Availability gain vs infrastructure scale")
+    ax.set_title("Availability gain vs scale")
     ax.legend(fontsize=8)
     ax = axs[1]
     ax.plot(N, [s_["net_mass_benefit"] / 1000 for s_ in sw], "o-", color=C[2], ms=6, mec=SURF, mew=1.5)
@@ -633,17 +686,74 @@ def fig_value():
         ax.text(v["break_even_assets"], ax.get_ylim()[0] * 0.8 if ax.get_ylim()[0] < 0 else 0.1,
                 f" break-even ≈ {v['break_even_assets']:.0f} assets", fontsize=8)
     ax.set_xlabel("number of distributed assets")
-    ax.set_ylabel("net Earth mass benefit [t] (avoided − TSR-1 life-cycle)")
-    ax.set_title("Logistics break-even")
+    ax.set_ylabel("net Earth-mass benefit [t]")
+    ax.set_title("Net logistics benefit (avoided − TSR-1 life-cycle)", fontsize=10)
     ax = axs[2]
-    ax.plot(N, [s_["eva_avoided_mean"] for s_ in sw], "o-", color=C[1], ms=6, mec=SURF, mew=1.5, label="EVA crew-h avoided")
-    ax.plot(N, [s_["lost0_mean"] - s_["lost1_mean"] for s_ in sw], "s--", color=C[3], ms=6, mec=SURF, mew=1.5,
-            label="assets saved (count)")
+    ax.plot(N, [s_["eva_avoided_mean"] for s_ in sw], "o-", color=C[1], ms=6, mec=SURF, mew=1.5)
     ax.set_xlabel("number of distributed assets")
-    ax.set_ylabel("10-yr totals")
-    ax.set_title("Crew time and assets saved")
+    ax.set_ylabel("crew EVA avoided over 10 yr [crew-h]")
+    ax.set_title("Crew time avoided")
+    ax = axs[3]
+    ax.plot(N, [s_["plost0_mean"] for s_ in sw], "s--", color=C[1], ms=6, mec=SURF, mew=1.5, label="without TSR-1")
+    ax.plot(N, [s_["plost1_mean"] for s_ in sw], "o-", color=C[0], ms=6, mec=SURF, mew=1.5, label="with TSR-1")
+    ax.set_xlabel("number of distributed assets")
+    ax.set_ylabel("preventable asset losses over 10 yr")
+    ax.set_title("Preventable losses (excl. non-serviceable)", fontsize=10)
     ax.legend(fontsize=8)
     save(fig, "fig18_value_vs_infrastructure_scale.png")
+
+
+def fig_capacity():
+    cap = J("capacity_study.json")
+    loads = sorted({(c["n_assets"], c["mtbf_yr"]) for c in cap}, key=lambda k: k[0] / k[1])
+    fig, axs = plt.subplots(1, 3, figsize=(17, 5.0))
+    fig.subplots_adjust(wspace=0.3)
+    ax = axs[0]
+    for j, (n, m) in enumerate(loads):
+        rows = sorted([c for c in cap if c["n_assets"] == n and c["mtbf_yr"] == m and c["n_tsr"] == 1],
+                      key=lambda c: c["keepalive_modules"])
+        k = [c["keepalive_modules"] for c in rows]
+        ax.plot(k, [c["plost1"] for c in rows], "o-", color=C[j], ms=6, mec=SURF, mew=1.5,
+                label=f"{n} assets, MTBF {m:g} yr ({n / m:.0f} faults/yr)")
+        ax.plot([k[-1] + 0.6], [rows[0]["plost0"]], marker="s", color=C[j], ms=6, mec=SURF, mew=1.5, ls="none")
+    ax.set_xticks([2, 4, 8])
+    ax.set_xlabel("keep-alive modules in inventory (one TSR-1)")
+    ax.set_ylabel("preventable losses over 10 yr")
+    ax.set_title("Losses vs keep-alive inventory")
+    handles, labels = ax.get_legend_handles_labels()
+    handles.append(plt.Line2D([], [], marker="s", color=INK2, ls="none", ms=6))
+    labels.append("without TSR-1 (squares at right)")
+    fig.legend(handles, labels, loc="upper center", ncol=3, fontsize=8, frameon=False, bbox_to_anchor=(0.5, -0.07))
+    ax = axs[1]
+    for j, (n, m) in enumerate(loads):
+        rows = sorted([c for c in cap if c["n_assets"] == n and c["mtbf_yr"] == m and c["n_tsr"] == 1],
+                      key=lambda c: c["keepalive_modules"])
+        ax.plot([c["keepalive_modules"] for c in rows], [c["kg_per_asset_yr1"] for c in rows], "o-", color=C[j], ms=6,
+                mec=SURF, mew=1.5)
+        ax.plot([8.6], [rows[0]["kg_per_asset_yr0"]], marker="s", color=C[j], ms=6, mec=SURF, mew=1.5, ls="none")
+    ax.set_xticks([2, 4, 8])
+    ax.set_xlabel("keep-alive modules in inventory (one TSR-1)")
+    ax.set_ylabel("Earth mass per available asset-year [kg]")
+    ax.set_title("Earth mass per available asset-year")
+    ax = axs[2]
+    x = np.arange(len(loads))
+    r1 = [next(c for c in cap if (c["n_assets"], c["mtbf_yr"]) == L and c["n_tsr"] == 1 and c["keepalive_modules"] == 4)
+          for L in loads]
+    r2 = [next(c for c in cap if (c["n_assets"], c["mtbf_yr"]) == L and c["n_tsr"] == 2 and c["keepalive_modules"] == 4)
+          for L in loads]
+    ax.bar(x - 0.2, [c["response_h"] for c in r1], 0.38, color=C[0], label="one TSR-1")
+    ax.bar(x + 0.2, [c["response_h"] for c in r2], 0.38, color=C[1], label="two TSR-1")
+    for i in range(len(loads)):
+        ax.text(x[i], max(r1[i]["response_h"], r2[i]["response_h"]) + 0.3,
+                f"losses {r1[i]['plost1']:.0f} / {r2[i]['plost1']:.0f}", ha="center", fontsize=7, color=INK2)
+    ax.set_xticks(x)
+    ax.set_xticklabels([f"{n / m:.0f}/yr" for n, m in loads])
+    ax.set_ylim(0, 1.2 * max(c["response_h"] for c in r1))
+    ax.set_xlabel("fault load (4 keep-alive modules)")
+    ax.set_ylabel("mean response time [h]")
+    ax.set_title("Response time: one vs two rovers")
+    ax.legend(fontsize=8, loc="lower right")
+    save(fig, "fig22_capacity_study.png")
 
 
 def fig_sensitivity():
@@ -663,9 +773,9 @@ def fig_sensitivity():
         ax.set_yticks(range(len(rows)), [f"{r['parameter']} [{r['low']:.3g}, {r['high']:.3g}]" for r in rows], fontsize=7.5)
         ax.set_title(title, fontsize=10)
         ax.grid(axis="y", visible=False)
-    axs[0, 0].bar([], [], color=C[1], label="parameter at low bound")
-    axs[0, 0].bar([], [], color=C[0], label="parameter at high bound")
-    axs[0, 0].legend(fontsize=7.5, loc="lower right")
+    from matplotlib.patches import Patch
+    axs[0, 0].legend(handles=[Patch(color=C[1], label="parameter at low bound"), Patch(color=C[0], label="parameter at high bound")],
+                     fontsize=7.5, loc="lower right")
     fig.suptitle("One-at-a-time sensitivity (tornado) — bars show change from nominal", x=0.01, ha="left",
                  fontsize=12, fontweight="bold")
     fig.tight_layout()
@@ -733,6 +843,7 @@ def main():
     fig_stability()
     fig_servicing_reliability()
     fig_value()
+    fig_capacity()
     fig_sensitivity()
     fig_comparison()
     (ROOT / "paper" / "figures").mkdir(parents=True, exist_ok=True)

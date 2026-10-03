@@ -3,8 +3,8 @@
 > TSR-1 is an independent conceptual engineering study by Todaro Corp. References to NASA, ESA and other
 > organizations are used solely as technical and architectural context.
 
-Status: Phase-2 baseline (pre-modelling). Values marked **[TBD-n]** are resolved by the models in
-`src/tsr1/` and recorded in `DESIGN_FREEZE_V1.md`; nothing marked TBD is assumed to be feasible.
+Status: written as the Phase-2 baseline before modelling; the five values originally left as TBD-1..TBD-5 have since
+been resolved by the models in `src/tsr1/` (resolutions shown inline, frozen values in `DESIGN_FREEZE_V1.md`).
 
 ---
 
@@ -95,7 +95,10 @@ Quantified timelines, energies and risks for DRM-2 to DRM-5 are produced by
 - Local surface network (comm towers, ≈ 10 km cells, S054) available within the base area; mesh
   fallback between TSR-1, assets and towers.
 - Relay services (LunaNet/LCRNS, Moonlight; S017, S018) for Earth link; DTE ≈ 51 % availability (S073).
-- **Design case:** Earth link outages up to [TBD-1] h; local network outages up to [TBD-2] h. Delay
+- **Design case (TBD-1/2 resolved, MR-08, A-19):** Earth-link outages up to 72 h and local-network outages up to 24 h.
+  Autonomy continues to the next hold point and then safe-holds, so an outage costs time, not safety; the base
+  network + relay + mesh architecture gives ≈ 0.98 link availability (TS-08), against ≈ 0.51 for direct-to-Earth
+  alone. Delay
   tolerant (DTN, CCSDS bundle protocol, L020) store-and-forward for all non-real-time data.
 
 ### 7.3 Crew availability assumptions
@@ -103,9 +106,11 @@ Quantified timelines, energies and risks for DRM-2 to DRM-5 are produced by
   baseline 1 per year in the 2036–2041 epoch). TSR-1 must be fully useful when no crew are present.
 
 ### 7.4 Service area and response
-- Base service radius **R_s = [TBD-3] km** (initial working value 10 km from comm-tower cell size, S054;
-  excursions to [TBD-4] km).
-- Maintenance response time target **[TBD-5] h** (from availability model).
+- Base service radius **R_s = 10 km** (TBD-3 resolved: comm-tower cell size, S054; closed by battery sizing with a 50 h
+  reserve, CDR-06). Excursions beyond 10 km (TBD-4 resolved) are limited by the effective-speed rule of CDR-13 (e.g.
+  ≈ 6 km at 0.7 km/h, ≈ 22 km at 2.5 km/h) and by the 34 km single-charge range.
+- Response time **≤ 10 h** from task approval to arrival at the service edge (TBD-5 resolved, MR-15): 10 km at the
+  effective 1.26 km/h plus 2 h preparation, far inside the 24–120 h survival time of an unpowered asset.
 
 ### 7.5 Servicing frequency assumptions
 - Serviceable fault rate per asset is unknown (literature gap L-3); modelled as exponential with MTBF

@@ -67,10 +67,80 @@ def energy_alternatives(cfg) -> list[dict]:
     return rows
 
 
+# ============================================================================== TS-07 keep-alive module sizing
+R.define("asset_survival_w", "P_surv,a", 100.0, "W", "ASSUMPTION", "A-33 (no survival-power data retrieved for "
+         "candidate assets; small rover / infrastructure-box class)", "power",
+         "survival (heater + minimal avionics) power of a parked client asset, log-uniform", low=40.0, high=250.0)
+R.define("site_illum_frac", "f_ill,site", 0.75, "-", "ASSUMPTION", "A-34 (upper bound S030 best ridge 0.92 at 2 m; "
+         "lower bound for infrastructure off the ridges)", "power", "time-averaged illumination at a parked asset",
+         low=0.5, high=0.92)
+R.define("dark_period_h", "t_dark", 72.0, "h", "ASSUMPTION", "A-35 (S030: longest darkness 3-5 days at the best sites; "
+         "no site-specific data used)", "power", "", low=24.0, high=120.0)
+R.define("pv_areal_density", "ρ_A,PV", 2.5, "kg/m^2", "ESTIMATE", "L007 (rigid space panel incl. substrate and hinge, "
+         "LITERATURE-RECALL 2-3.5)", "power", "", low=2.0, high=3.5)
+R.define("ka_self_w", "P_self,KA", 5.0, "W", "ESTIMATE", "A: MPPT/controller standby + battery heater average", "power",
+         "", low=3.0, high=10.0)
+
+KA_OPTIONS = {"KA-A 0.75 m² / 2 kWh": (0.75, 2.0), "KA-B 1.0 m² / 3 kWh": (1.0, 3.0),
+              "KA-C 1.5 m² / 4 kWh": (1.5, 4.0), "KA-D 1.5 m² / 6 kWh": (1.5, 6.0)}
+KA_SELECTED = "KA-C 1.5 m² / 4 kWh"   # DESIGN DECISION (TS-07b, CDR-20)
+
+
+def keepalive_module_sizing(face_m2: float, usable_kwh: float, n_mc: int = 20000, seed: int = 31) -> dict:
+    """MOD-KA keep-alive module: mass, sustained output and probability of sustaining a parked asset (CDR-20).
+
+    PV: two back-to-back vertical panels of ``face_m2`` each (one face lit at a time, as on TSR-1, geometric factor
+    2/π). Battery: ISPSIS 120 V string sized like the TSR-1 pack (usable EOL energy). Sustain criterion per sample:
+    sunlit-average output ≥ asset survival power AND battery bridging + asset thermal inertia ≥ longest dark period.
+    """
+    import tsr1.budgets.scenarios  # noqa: F401  (registers PV and keep-alive parameters)
+    from tsr1.power.electrical import converter_mass, size_battery
+    bat = size_battery(usable_kwh)
+    p_sun = (R.v("solar_cell_eff") * SOLAR_CONST * face_m2 * R.v("solar_geom_factor") * R.v("solar_eol_factor")
+             * R.v("conv_eff"))
+    m_pv = 2 * face_m2 * R.v("pv_areal_density")
+    m_elec = converter_mass(p_sun + R.v("p_keepalive_w")) + 1.0          # MPPT + 120 V output stage + controller
+    m_conn = 1.5                                                          # ISPSIS connector + 10 m cable (ESTIMATE)
+    m_struct = 0.15 * (bat.mass + m_pv + m_elec + m_conn) + 1.0        # frame, hinge, feet, MLI (ESTIMATE)
+    cbe = bat.mass + m_pv + m_elec + m_conn + m_struct
+    mass = cbe * 1.20                                                     # MGA, new design (AIAA S-120A class)
+    rng = np.random.default_rng(seed)
+    lo, hi = R.rng("asset_survival_w")
+    p_asset = np.exp(rng.uniform(math.log(lo), math.log(hi), n_mc))
+    f_ill = rng.uniform(*R.rng("site_illum_frac"), n_mc)
+    t_dark = rng.uniform(*R.rng("dark_period_h"), n_mc)
+    t_surv = rng.uniform(*R.rng("t_survive_h"), n_mc)
+    p_avg = p_sun * f_ill - R.v("ka_self_w")
+
+    def sustained(scale):
+        pa = p_asset * scale
+        return (p_avg >= pa) & (usable_kwh * 1000 / (pa + R.v("ka_self_w")) + t_surv >= t_dark)
+
+    ok = sustained(1.0)
+    p_nom = p_sun * R.v("site_illum_frac") - R.v("ka_self_w")
+    return dict(face_m2=face_m2, usable_kwh=usable_kwh, battery_kg=bat.mass, pv_kg=m_pv, electronics_kg=m_elec,
+                structure_kg=m_struct, mass_cbe_kg=cbe, mass_kg=mass, p_sunlit_w=p_sun, p_sustained_nominal_w=p_nom,
+                bridge_nominal_h=usable_kwh * 1000 / (R.v("asset_survival_w") + R.v("ka_self_w")),
+                p_sustain=float(ok.mean()),
+                p_sustain_low=float(sustained(1.5).mean()),      # asset survival powers 50 % higher than assumed
+                p_sustain_high=float(sustained(1 / 1.5).mean()),  # ... one third lower
+                p_sustain_power_only=float((p_avg >= p_asset).mean()))
+
+
+def keepalive_module_trade() -> dict:
+    rows = [dict(option=k, **keepalive_module_sizing(*v)) for k, v in KA_OPTIONS.items()]
+    sel = next(r for r in rows if r["option"] == KA_SELECTED)
+    return dict(options=rows, selected=KA_SELECTED, selected_row=sel)
+
+
+def ka_mass() -> float:
+    return keepalive_module_sizing(*KA_OPTIONS[KA_SELECTED])["mass_kg"]
+
+
 # ============================================================================== TS-07 service modules
 SERVICE_MODULES = [
     # name, mass kg, function, per-sortie carry probability (fraction of sorties needing it)
-    ("MOD-KA keep-alive power module (2 kWh, 0.75 m² vertical PV, ISPSIS port)", 23.0,
+    ("MOD-KA keep-alive power module (KA-C: 4 kWh, 2 × 1.5 m² back-to-back vertical PV, ISPSIS port)", None,
      "left connected to a disabled asset until spare/crew arrives", 0.25),
     ("MOD-ORU generic ORU cradle (passive standard interface)", 4.0, "carry ORUs/spares", 0.6),
     ("MOD-REC recovery kit (anchors, slings, shackles)", 9.0, "immobilised-vehicle recovery", 0.15),
@@ -80,15 +150,24 @@ SERVICE_MODULES = [
 ]
 
 
+def service_modules() -> list[tuple]:
+    import tsr1.reliability.value_model  # noqa: F401  (registers t_survive_h used by the MOD-KA sizing)
+    m_ka = ka_mass()
+    return [(m[0], m_ka if m[1] is None else m[1], m[2], m[3]) for m in SERVICE_MODULES]
+
+
 def service_module_trade(n_slots: int = 6) -> dict:
     spine_overhead = 8.0 + 1.1 * n_slots
-    lib = [m for m in SERVICE_MODULES if "not baselined" not in m[2]]
-    integrated_always = sum(m[1] for m in lib if m[1] and m[3] > 0) + 23.0   # second KA module always aboard
+    mods = service_modules()
+    lib = [m for m in mods if "not baselined" not in m[2]]
+    # integrated alternative: every module with non-zero carry fraction permanently aboard, MOD-KA counted once
+    # (an integrated vehicle cannot leave a module behind, so it carries one keep-alive unit as a fixed function)
+    integrated_always = sum(m[1] for m in lib if m[1] and m[3] > 0)
     modular_mean_sortie = sum(m[1] * m[3] for m in lib) + spine_overhead
     return dict(spine_overhead_kg=spine_overhead, integrated_carried_kg=integrated_always,
                 modular_mean_carried_kg=modular_mean_sortie,
                 mass_saving_per_sortie_kg=integrated_always - modular_mean_sortie,
-                modules=[dict(name=m[0], mass_kg=m[1], function=m[2], carry_fraction=m[3]) for m in SERVICE_MODULES])
+                modules=[dict(name=m[0], mass_kg=m[1], function=m[2], carry_fraction=m[3]) for m in mods])
 
 
 # ============================================================================== TS-08 communications

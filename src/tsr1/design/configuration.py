@@ -24,6 +24,7 @@ from tsr1.power.electrical import converter_mass, size_battery, size_cable
 from tsr1.recovery.towing import size_winch
 from tsr1.structures.chassis import size_chassis
 from tsr1.thermal.lumped import actuator_heater_power, cold_leak, radiator_area
+from tsr1.design.layout import crane_base, deck_layout
 
 SUB = "configuration"
 
@@ -51,6 +52,9 @@ R.define("web_L", "L_WEB", 1.0, "m", "DESIGN", "TS thermal (packaging of ~120 L 
          "warm electronics box length")
 R.define("web_W", "W_WEB", 0.8, "m", "DESIGN", "TS thermal", "thermal", "warm electronics box width")
 R.define("web_H", "H_WEB", 0.35, "m", "DESIGN", "TS thermal", "thermal", "warm electronics box height")
+R.define("web_x", "x_WEB", -0.5, "m", "DESIGN", "CDR-21: WEB centred under the radiator (short heat-pipe run) and "
+         "rearward to balance axle loads after the front strip took the crane, mast and arm bases", "structure",
+         "longitudinal position of the warm electronics box centre (chassis frame)")
 R.define("q_web_hot", "Q_hot", 380.0, "W", "DESIGN", "budgets.closure (max WEB dissipation over modes, verified)",
          "thermal", "hot-case WEB dissipation used to size the radiator")
 R.define("lander_accommodation_frac", "f_acc", 0.05, "-", "ESTIMATE",
@@ -221,6 +225,12 @@ def build(opts: Options, iterate: int = 25) -> Config:
     comps: list[Component] = []
     derived: dict = {}
     zc = opts.ground_clearance + 0.225                 # chassis box centroid height (H = 0.45 m)
+    deck_top = opts.ground_clearance + 0.45
+    deck_w = min(opts.track - 0.5, 1.5)
+    lay = deck_layout(opts.wheelbase, deck_w, radiator_area(R.v("q_web_hot"))[0], opts.dex_links[0])   # CDR-21
+    derived["layout"] = lay
+    derived["deck_top"] = deck_top
+    derived["crane_base"] = crane_base(lay)
     for _ in range(iterate):
         comps = []
         veh = Vehicle(m_guess, wheel, axle_x, x_cg=0.0, h_cg=0.85, track=opts.track)
@@ -306,21 +316,25 @@ def build(opts: Options, iterate: int = 25) -> Config:
         derived["chassis"] = ch
         A(Component("secondary_structure", "structure", "structure", 0.25 * ch.mass, (0, 0, zc + 0.2),
                     "ESTIMATE: brackets, mounts, mast base, deck rails = 25 % of primary (L007)", "Al 6061/7075", 7))
-        A(Component("sensor_mast", "structure", "structure", 6.0, (opts.wheelbase / 2 - 0.2, 0.5, 1.6),
+        A(Component("sensor_mast", "structure", "structure", 6.0, (*lay["sensor_mast_base"].centre, 1.6),
                     "ESTIMATE: 1.2 m CFRP mast with deploy hinge", "CFRP tube, Ti hinge", 6))
 
         # ---------------- manipulation
         dex = size_arm(ArmSpec("dexterous", opts.dex_links, opts.dex_payload, 0.003, 7, 3, 6.0, 3.0,
                                math.radians(5), link_material=opts.dex_link_material))
         derived["dex"] = dex
-        x_arm = opts.wheelbase / 2 - 0.15
-        manip_items = [("dexterous_arm", dex.mass, (x_arm - 0.5, -0.45, 1.05), dex)]
+        x_arm, y_arm = lay["dex_arm_R_base"].centre[0], -lay["dex_arm_R_base"].centre[1]
+        z_arm = deck_top + 0.5 * opts.dex_links[0]          # upright (candle) stow, CDR-21
+        derived["arm_base"] = (x_arm, y_arm)
+        manip_items = [("dexterous_arm", dex.mass, (x_arm, -y_arm, z_arm), dex)]
         crane = heavy = None
         if opts.manip == "dual_dex+crane":
-            manip_items.append(("dexterous_arm_2", dex.mass, (x_arm - 0.5, 0.45, 1.05), dex))
+            manip_items.append(("dexterous_arm_2", dex.mass, (x_arm, y_arm, z_arm), dex))
         if opts.manip in ("dex+crane", "dual_dex+crane"):
             crane = size_crane(CraneSpec(boom_length=opts.crane_boom, payload=opts.heavy_payload))
-            manip_items.append(("crane_boom", crane.mass, (0.3, 0.0, 1.05), crane))
+            xb = derived["crane_base"][0]
+            # half the mass in turntable/A-frame/hoist at the base, half in the boom stowed rearward over the spine
+            manip_items.append(("crane_boom", crane.mass, (xb - opts.crane_boom / 4, 0.0, deck_top + 0.38), crane))
         if opts.manip in ("heavy+dex",):
             heavy = size_arm(ArmSpec("heavy", opts.heavy_links, opts.heavy_payload, 0.010, 6, 3, 10.0, 0.0,
                                      math.radians(2)))
@@ -328,7 +342,7 @@ def build(opts: Options, iterate: int = 25) -> Config:
         if opts.manip == "dual_identical":
             dex2 = size_arm(ArmSpec("dexterous2", opts.dex_links, opts.dex_payload, 0.003, 7, 3, 6.0, 3.0,
                                     math.radians(5)))
-            manip_items.append(("dexterous_arm_2", dex2.mass, (x_arm - 0.5, 0.45, 1.05), dex2))
+            manip_items.append(("dexterous_arm_2", dex2.mass, (x_arm, y_arm, z_arm), dex2))
         if opts.manip == "general":
             gen = size_arm(ArmSpec("general", opts.heavy_links, opts.heavy_payload, 0.003, 7, 3, 10.0, 3.0,
                                    math.radians(3)))
@@ -347,7 +361,7 @@ def build(opts: Options, iterate: int = 25) -> Config:
                         power={"M5_manipulation": (pw or 10.0) * 0.6 + 15.0,
                                "M6_heavy_manip": (pw or 10.0) + 20.0, "M4_inspection": 8.0},
                         peak=(pw or 10.0) * 2.5 + 30))
-        A(Component("ft_sensor_and_tool_changer", "manipulation", "mechanism", 0.0, (x_arm, -0.45, 1.05),
+        A(Component("ft_sensor_and_tool_changer", "manipulation", "mechanism", 0.0, (x_arm, -y_arm, deck_top + 0.15),
                     "included in dexterous arm end-effector mass (6 kg)", "Ti-6Al-4V", 6))
 
         # ---------------- tools (directive §13)
@@ -367,19 +381,19 @@ def build(opts: Options, iterate: int = 25) -> Config:
             ("tool_rack_holsters", 6.0, "Al 7075, Ti latches", 6, 5),
         ]
         for nm, m, mat, trl, pk in tools:
-            A(Component(nm, "tools", "tool", m, (-0.2, -0.6, 1.15), "ESTIMATE per tool spec sheet", mat, trl,
+            A(Component(nm, "tools", "tool", m, (opts.wheelbase / 2 + 0.05, 0.0, zc), "ESTIMATE per tool spec sheet; holstered on chassis front face (CDR-21)", mat, trl,
                         power={"M5_manipulation": pk * 0.3}, peak=pk))
 
         # ---------------- service spine
         if opts.spine == "modular":
             spine_m = 8.0 + 1.1 * opts.spine_slots
-            A(Component("service_spine", "service_spine", "structure", spine_m, (-0.2, 0, 1.0),
+            A(Component("service_spine", "service_spine", "structure", spine_m, (lay["service_spine"].centre[0], 0, deck_top + 0.05),
                         "ESTIMATE: Al 7075 rail + slots × (1.1 kg latch+connector)", "Al 7075, Ti latches", 5,
                         power={"M1_dormant": 1.0, "M5_manipulation": 5.0}, peak=30))
         else:
-            A(Component("integrated_mounts", "service_spine", "structure", 5.0, (-0.2, 0, 1.0),
+            A(Component("integrated_mounts", "service_spine", "structure", 5.0, (lay["service_spine"].centre[0], 0, deck_top + 0.05),
                         "ESTIMATE: fixed brackets", "Al 7075", 7))
-        derived["spine_payload_pos"] = (-0.2, 0.0, 1.25)
+        derived["spine_payload_pos"] = (lay["service_spine"].centre[0], 0.0, deck_top + 0.225)
 
         # ---------------- recovery & stabilisation
         if opts.recovery:
@@ -406,21 +420,22 @@ def build(opts: Options, iterate: int = 25) -> Config:
         # ---------------- power
         bat = size_battery(opts.battery_usable_eol_kwh)
         derived["battery"] = bat
-        A(Component("battery_pack", "power", "battery", bat.mass, (0.0, 0.0, opts.ground_clearance + 0.12),
+        wx = R.v("web_x")
+        A(Component("battery_pack", "power", "battery", bat.mass, (wx, 0.0, opts.ground_clearance + 0.12),
                     f"CALCULATED power.electrical.size_battery ({bat.nameplate_kwh:.1f} kWh nameplate, "
                     f"{bat.n_series}s{bat.n_parallel}p)", "Li-ion 18650 PPR pack (Al interstitials, mica)", 6,
                     power={m: 0.0 for m in MODES}))
         p_bus = 4000.0
-        A(Component("pcdu_bus_regulator", "power", "electronics", converter_mass(p_bus) + 3.0, (0.3, 0.3, zc),
+        A(Component("pcdu_bus_regulator", "power", "electronics", converter_mass(p_bus) + 3.0, (wx + 0.3, 0.25, zc),
                     "CALCULATED: 4 kW bidirectional buck-boost /300 W/kg + 3 kg distribution/SSPCs",
                     "Al housing, SiC FETs", 5, power={m: 6.0 for m in MODES}, peak=0))
         A(Component("power_transfer_module", "power", "electronics", converter_mass(opts.ptm_kw * 1000) + 2.0,
-                    (0.6, 0.45, zc), "CALCULATED: isolated bidirectional DC-DC /300 W/kg + diagnostics",
+                    (wx + 0.4, -0.25, zc), "CALCULATED: isolated bidirectional DC-DC /300 W/kg + diagnostics",
                     "Al housing, SiC, planar transformer", 4,
                     power={"M8_emergency_power": opts.ptm_kw * 1000 * 0.0, "M9_charging": 0.0}, peak=0))
         cab = size_cable(opts.ptm_kw * 1000, opts.tether_m)
         derived["tether"] = cab
-        A(Component("power_tether_and_reel", "power", "mechanism", cab.mass + 4.0, (0.8, 0.55, 0.85),
+        A(Component("power_tether_and_reel", "power", "mechanism", cab.mass + 4.0, (1.0, 0.45, zc),
                     f"CALCULATED: {cab.area_mm2:.1f} mm² Cu ×2 × {opts.tether_m:.0f} m, 3 % drop + 4 kg reel",
                     "Cu/PTFE/aramid jacket; Al reel", 5, power={"M8_emergency_power": 3.0}, peak=40))
         A(Component("dust_tolerant_connector_head", "power", "mechanism", 2.5, (x_arm, -0.45, 1.05),
@@ -429,7 +444,7 @@ def build(opts: Options, iterate: int = 25) -> Config:
             A(Component("solar_arrays_vertical", "power", "solar", opts.solar_area * 2.8,
                         (-0.3, 0.0, 1.35), "ESTIMATE: 2.8 kg/m² incl. CFRP panel, hinge (L007)",
                         "IMM/triple-junction GaAs on CFRP", 7))
-            A(Component("solar_array_regulator", "power", "electronics", 1.5, (0.3, -0.3, zc),
+            A(Component("solar_array_regulator", "power", "electronics", 1.5, (wx + 0.3, -0.3, zc),
                         "ESTIMATE: MPPT 600 W", "Al", 6, power={"M9_charging": 2.0}))
 
         # ---------------- avionics
@@ -447,7 +462,7 @@ def build(opts: Options, iterate: int = 25) -> Config:
             ("mass_memory_and_timing", 1.3, 7, {m: 5.0 for m in MODES if m != "M10_survival"}, 8),
         ]
         for nm, m, trl, pw, pk in av:
-            A(Component(nm, "avionics", "electronics", m, (0.35, -0.2, zc), "ESTIMATE per avionics spec", "Al chassis",
+            A(Component(nm, "avionics", "electronics", m, (wx + 0.35, -0.2, zc), "ESTIMATE per avionics spec", "Al chassis",
                         trl, power=pw, peak=pk))
         # ---------------- sensors
         sens = [
@@ -461,7 +476,7 @@ def build(opts: Options, iterate: int = 25) -> Config:
             ("macro_inspection_camera", 0.4, (x_arm, -0.45, 1.05), 6, dict(M4_inspection=3, M5_manipulation=3), 5),
             ("imu_ln200s", 0.75, (0, 0, zc), 9, dict(M3_driving=12, M4_inspection=12, M5_manipulation=12, M6_heavy_manip=12, M7_recovery_winch=12, M11_safe=12), 16),
             ("sun_sensor_star_tracker", 0.5, (x_arm, 0.5, 2.2), 8, dict(M3_driving=2, M11_safe=2), 3),
-            ("electrical_diagnostic_unit", 1.5, (0.6, 0.45, zc), 5, dict(M5_manipulation=5, M8_emergency_power=5), 10),
+            ("electrical_diagnostic_unit", 1.5, (wx + 0.4, 0.25, zc), 5, dict(M5_manipulation=5, M8_emergency_power=5), 10),
             ("contact_vibration_sensors", 0.2, (x_arm, -0.45, 1.05), 6, dict(M4_inspection=1, M5_manipulation=1), 2),
         ]
         for nm, m, pos, trl, pw, pk in sens:
@@ -490,12 +505,12 @@ def build(opts: Options, iterate: int = 25) -> Config:
                         and c.category == "mechanism")
         act_heat = 0.0 if opts.cold_tolerant_actuators else actuator_heater_power(n_act_ext)
         derived.update(web_leak_cold=leak, actuator_heaters=act_heat, n_external_actuators=n_act_ext)
-        A(Component("mli_blankets", "thermal", "thermal", a_mli * 0.8, (0, 0, zc), "CALCULATED: area × 0.8 kg/m²",
+        A(Component("mli_blankets", "thermal", "thermal", a_mli * 0.8, (R.v("web_x"), 0, zc), "CALCULATED: area × 0.8 kg/m²",
                     "Kapton/Mylar/Dacron netting, Beta-cloth outer", 8))
-        A(Component("radiator_panel_eds", "thermal", "thermal", a_rad * 6.0, (0, 0, zc + 0.25),
+        A(Component("radiator_panel_eds", "thermal", "thermal", a_rad * 6.0, (lay["radiator"].centre[0], 0, deck_top + 0.01),
                     f"CALCULATED: {a_rad:.2f} m² × 6 kg/m² (Al panel, heat pipes, OSR, EDS film)",
                     "Al 6063 heat-pipe panel, OSR/AgFEP, ITO EDS film", 5))
-        A(Component("loop_heat_pipe_switch", "thermal", "thermal", 3.5, (0, 0, zc), "ESTIMATE: LHP with thermal switch",
+        A(Component("loop_heat_pipe_switch", "thermal", "thermal", 3.5, (R.v("web_x"), 0, zc + 0.15), "ESTIMATE: LHP with thermal switch",
                     "SS/Al, ammonia", 6))
         web_names = ("pcdu_bus_regulator", "power_transfer_module", "autonomy_computer_hpsc", "safety_rt_computer_A",
                      "safety_rt_computer_B", "motor_control_units", "mass_memory_and_timing", "imu_ln200s",

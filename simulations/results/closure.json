@@ -114,7 +114,7 @@
  {
   "check": "MOB-1 ground pressure \u2264 7 kPa",
   "claimed": 6.64,
-  "computed": 6.706410166808035,
+  "computed": 6.799066576918169,
   "limit": 7.0,
   "passed": true,
   "note": ""
@@ -130,7 +130,7 @@
  {
   "check": "MOB-3 drive actuator rating \u2265 wheel torque at claimed slope",
   "claimed": 209.63614952361954,
-  "computed": 102.10558584896155,
+  "computed": 99.92340783189925,
   "limit": 209.63614952361954,
   "passed": true,
   "note": ""
@@ -138,7 +138,7 @@
  {
   "check": "REC-A claimed scenario feasible with FoS (margin)",
   "claimed": true,
-  "computed": 8.811883542476897,
+  "computed": 8.812692930724817,
   "limit": 1.0,
   "passed": true,
   "note": ""
@@ -170,7 +170,7 @@
  {
   "check": "REC-D claimed scenario feasible with FoS (margin)",
   "claimed": true,
-  "computed": 1.5513810327293795,
+  "computed": 1.5515235300252055,
   "limit": 1.0,
   "passed": true,
   "note": ""
@@ -210,7 +210,7 @@
  {
   "check": "STAB C2 crane side lift 150 kg @ 2.56 m, level",
   "claimed": 1.5,
-  "computed": 4.981672645620386,
+  "computed": 4.930740453148056,
   "limit": 1.5,
   "passed": true,
   "note": ""
@@ -218,7 +218,7 @@
  {
   "check": "STAB C2 crane side lift 150 kg @ 2.56 m, 10\u00b0 lateral, load downhi",
   "claimed": 1.5,
-  "computed": 3.9778288498094123,
+  "computed": 3.9447845572314284,
   "limit": 1.5,
   "passed": true,
   "note": ""
@@ -226,7 +226,7 @@
  {
   "check": "STAB C3 crane front lift 150 kg",
   "claimed": 1.5,
-  "computed": 6.4556083824856945,
+  "computed": 4.064651465864802,
   "limit": 1.5,
   "passed": true,
   "note": ""
@@ -234,7 +234,7 @@
  {
   "check": "STAB C4 dexterous arm extended (front-right) with rated payload",
   "claimed": 1.5,
-  "computed": 104.93558886655144,
+  "computed": 63.10499698008587,
   "limit": 1.5,
   "passed": true,
   "note": ""
@@ -242,7 +242,7 @@
  {
   "check": "STAB C5 both extended same side (worst)",
   "claimed": 1.5,
-  "computed": 4.697007396328747,
+  "computed": 4.6199039007672855,
   "limit": 1.5,
   "passed": true,
   "note": ""
@@ -280,18 +280,34 @@
   "note": ""
  },
  {
-  "check": "GEOM-4 stowed height (mast folded) \u2264 envelope",
-  "claimed": 1.2,
-  "computed": 1.2,
+  "check": "GEOM-4 stowed height (arms in upright stow) \u2264 envelope",
+  "claimed": 1.75,
+  "computed": 1.75,
   "limit": 2.0,
   "passed": true,
   "note": ""
  },
  {
-  "check": "GEOM-5 deck area \u2265 allocations (radiator, spine, crane, arms, mast, tool rack)",
-  "claimed": 3.9000000000000004,
-  "computed": 3.6429435507420513,
+  "check": "GEOM-5 deck items inside the deck and non-overlapping (radiator, spine, crane, mast, arm bases)",
+  "claimed": true,
+  "computed": 3.2579435507420516,
   "limit": 3.9000000000000004,
+  "passed": true,
+  "note": "overlaps=[]; outside=[]; free 0.64 m\u00b2"
+ },
+ {
+  "check": "GEOM-7 max steady WEB dissipation \u2264 radiator capacity with stowed-boom shading",
+  "claimed": true,
+  "computed": 319.9200000000002,
+  "limit": 367.3333333333333,
+  "passed": true,
+  "note": "boom covers 3.3 % of radiator plan area (conservative: full radiative blockage)"
+ },
+ {
+  "check": "GEOM-8 crane reach covers all spine slots",
+  "claimed": true,
+  "computed": 1.4203470830054286,
+  "limit": 2.560500157831741,
   "passed": true,
   "note": ""
  },

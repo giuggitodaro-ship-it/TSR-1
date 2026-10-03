@@ -18,3 +18,4 @@
 | OQ-12 | Seed document NTRS 20260001878 and full texts of S002 and the LTV SRD were not accessible | evidence completeness | re-run literature review with network access |
 | OQ-13 | Policy for TSR-1 command authority over third-party assets (cyber-security, liability) | operations | governance |
 | OQ-14 | Benefit of patrol inspections (early fault detection) not modelled | possible additional value | extend value model |
+| OQ-15 | Survival power and dark-period exposure of the assets TSR-1 would park on keep-alive modules | MOD-KA sizing and value (CDR-20, A-33..A-35) | asset design data; site illumination time series |

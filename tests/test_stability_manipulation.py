@@ -63,3 +63,16 @@ def test_crane_lighter_than_equivalent_heavy_arm():
     arm = size_arm(ArmSpec("heavy", (1.1, 1.0, 0.2), 150.0, 0.01, 6, 3, 10.0))
     assert crane.mass < 0.5 * arm.mass
     assert crane.t_luff > 0 and crane.boom_comp > 0
+
+
+def test_deck_layout_fits_and_does_not_overlap():
+    from tsr1.design.layout import boom_radiator_shading, check_layout, deck_layout, stowed_height
+    lay = deck_layout(2.6, 1.5, 1.64)
+    chk = check_layout(lay, 2.6, 1.5)
+    assert chk["ok"] and not chk["overlaps"] and not chk["outside"]
+    assert lay["radiator"].area == pytest.approx(1.64, rel=1e-6)
+    assert lay["service_spine"].area == pytest.approx(0.9 * 1.35)
+    assert 0.0 < boom_radiator_shading(lay, 2.6, 0.05) < 0.05
+    assert stowed_height(0.9, lay) <= 2.0
+    # an oversized radiator must be detected as an overlap with the spine
+    assert not check_layout(deck_layout(2.6, 1.5, 2.6), 2.6, 1.5)["ok"]

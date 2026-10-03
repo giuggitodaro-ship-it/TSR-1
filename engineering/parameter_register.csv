@@ -85,13 +85,14 @@ lrv_mass_loaded,m_LRV,680,kg,"[600, 700]",ASSUMPTION,"S027,A (210 kg + 2 suited 
 lrv_model_wheel_energy,"e_LRV,model",51.6161,Wh/km,,CALCULATED,"mobility.vehicle.lrv_calibration: Wong-Reece, nominal soil, level","mobility.vehicle.lrv_calibration: Wong-Reece, nominal soil, level",mobility,,2026-10-03
 obstacle_ratio_rb,h_obs/D,0.75,-,"[0.5, 1]",ESTIMATE,"L011 (rocker-bogie climbs obstacles of order one wheel diameter; 0.75 adopted for heavy, slow, quasi-static lunar operation)",step obstacle height / wheel diameter,mobility,,2026-10-03
 slip_design_limit,i_max,0.4,-,"[0.2, 0.6]",DESIGN,TS-01,maximum sustained slip used for slope capability claims,mobility,,2026-10-03
-slope_max_conservative,"θ_max,cons",15.6116,deg,,CALCULATED,mobility.vehicle.max_slope (conservative soil),mobility.vehicle.max_slope (conservative soil),mobility,,2026-10-03
-slope_max_nominal,"θ_max,nom",20.683,deg,,CALCULATED,"mobility.vehicle.max_slope (nominal soil, i<=0.4)","mobility.vehicle.max_slope (nominal soil, i<=0.4)",mobility,,2026-10-03
+slope_max_conservative,"θ_max,cons",15.6209,deg,,CALCULATED,mobility.vehicle.max_slope (conservative soil),mobility.vehicle.max_slope (conservative soil),mobility,,2026-10-03
+slope_max_nominal,"θ_max,nom",20.6883,deg,,CALCULATED,"mobility.vehicle.max_slope (nominal soil, i<=0.4)","mobility.vehicle.max_slope (nominal soil, i<=0.4)",mobility,,2026-10-03
 v_drive_max,v_max,1,m/s,,DESIGN,TS-01,maximum speed on benign terrain,mobility,,2026-10-03
 v_drive_nom,v_nom,0.5,m/s,"[0.3, 1]",DESIGN,TS-01/autonomy: hazard detection 10 cm @ 15 m (S064),nominal autonomous driving speed,mobility,,2026-10-03
 wheel_rim_t,t_rim,0.0012,m,"[0.0008, 0.002]",ESTIMATE,A: Ti-6Al-4V rim skin with internal stiffeners,wheel rim skin thickness,mobility,,2026-10-03
 wr_c1,c_1,0.43,-,"[0.35, 0.5]",SOURCE,L003,Wong-Reece max-stress angle coefficient (theta_m=(c1+c2 i) theta1),mobility,,2026-10-03
 wr_c2,c_2,0.32,-,"[0.15, 0.4]",SOURCE,L003,Wong-Reece coefficient,mobility,,2026-10-03
+asset_survival_w,"P_surv,a",100,W,"[40, 250]",ASSUMPTION,A-33 (no survival-power data retrieved for candidate assets; small rover / infrastructure-box class),"survival (heater + minimal avionics) power of a parked client asset, log-uniform",power,,2026-10-03
 batt_dod,DoD,0.8,-,"[0.7, 0.9]",ASSUMPTION,A-16,"usable depth of discharge, nominal",power,,2026-10-03
 batt_eol_fade,f_fade,0.2,-,"[0.1, 0.3]",ASSUMPTION,A-16,capacity loss at end of 10-yr life (~3000 moderate-DoD cycles + calendar),power,,2026-10-03
 batt_spec_energy,e_bat,160,Wh/kg,"[130, 200]",ASSUMPTION,A-15 (S070: 150-170 Wh/kg PPR today),pack-level specific energy incl. PPR features,power,,2026-10-03
@@ -105,11 +106,15 @@ conv_spec_power,p_conv,300,W/kg,"[150, 500]",ESTIMATE,"L007 (space power-conditi
 cu_alpha,α_Cu,0.00393,1/K,,SOURCE,L023 (LITERATURE-RECALL),temperature coefficient,power,,2026-10-03
 cu_density,"ρ_m,Cu",8960,kg/m^3,,SOURCE,L023,copper density,power,,2026-10-03
 cu_resistivity,ρ_Cu,1.72e-08,ohm m,,SOURCE,"L023 (CRC handbook, 20 C, LITERATURE-RECALL)",copper resistivity at 20 C,power,,2026-10-03
+dark_period_h,t_dark,72,h,"[24, 120]",ASSUMPTION,A-35 (S030: longest darkness 3-5 days at the best sites; no site-specific data used),,power,,2026-10-03
+ka_self_w,"P_self,KA",5,W,"[3, 10]",ESTIMATE,A: MPPT/controller standby + battery heater average,,power,,2026-10-03
 mmrtg_mass,m_MMRTG,45,kg,,SOURCE,"L028 (NASA MMRTG fact sheet, LITERATURE-RECALL)",MMRTG mass,power,,2026-10-03
 mmrtg_power,P_MMRTG,110,W,,SOURCE,"L028 (BOL electrical, LITERATURE-RECALL)",MMRTG BOL electrical output,power,,2026-10-03
 pcdu_rating_w,P_PCDU,4000,W,,DESIGN,TS-06,bus regulator continuous rating,power,,2026-10-03
 ptm_rating_w,P_PTM,3000,W,,DESIGN,TS-06 / power.budget (emergency + charging),power-transfer module continuous rating,power,,2026-10-03
+pv_areal_density,"ρ_A,PV",2.5,kg/m^2,"[2, 3.5]",ESTIMATE,"L007 (rigid space panel incl. substrate and hinge, LITERATURE-RECALL 2-3.5)",,power,,2026-10-03
 rfc_spec_energy,e_RFC,350,Wh/kg,"[200, 600]",ESTIMATE,"L007 (regenerative fuel cell system incl. tanks, long-duration storage; LITERATURE-RECALL)",,power,,2026-10-03
+site_illum_frac,"f_ill,site",0.75,-,"[0.5, 0.92]",ASSUMPTION,A-34 (upper bound S030 best ridge 0.92 at 2 m; lower bound for infrastructure off the ridges),time-averaged illumination at a parked asset,power,,2026-10-03
 helix_Kt,K_t,33,1/m,"[20, 50]",SOURCE,"L026 (Hoyt & Clemence 1989, LITERATURE-RECALL)",capacity-to-installation-torque factor,recovery,,2026-10-03
 helix_Nq,N_q*,20,-,"[10, 40]",ESTIMATE,"L025 (breakout factor for phi 45-54 deg, H/D 4-5)",plate-anchor breakout factor,recovery,,2026-10-03
 p_brake_release,p_br,0.7,-,"[0.4, 0.9]",ASSUMPTION,A: probability TSR-1 can release a disabled vehicle's fail-safe brakes (emergency power to brake solenoids or manual release on L1+ assets),,recovery,,2026-10-03
@@ -122,6 +127,9 @@ crew_mission_days,t_crew,30,d,,ASSUMPTION,A-07,surface stay per mission,reliabil
 crew_missions_per_yr,n_crew,1,1/yr,"[0, 2]",ASSUMPTION,A-07,surface crew missions per year,reliability,,2026-10-03
 dust_loss,d_dust,0.3,-,"[0.1, 0.5]",ASSUMPTION,A-09; S062 (sub-monolayer degrades surfaces),performance loss of dust-degraded asset,reliability,,2026-10-03
 frac_unpowered,f_unp,0.5,-,"[0.3, 0.7]",ASSUMPTION,A-14,fraction of electrical/comm faults that remove keep-alive power,reliability,,2026-10-03
+ka_hold_yr,T_hold,1.1,yr,"[1, 2]",ESTIMATE,"calibrated by simulations/capacity_study.py (CDR-19; 1.0-1.2 yr unsaturated, up to 2 yr when saturated)",mean keep-alive module deployment time,reliability,,2026-10-03
+ka_park_frac,f_park,0.14,-,"[0.13, 0.15]",ESTIMATE,calibrated by simulations/capacity_study.py (CDR-19),fraction of fault events that leave a stabilised but unrepaired asset needing a keep-alive module,reliability,,2026-10-03
+ka_sustain_p,p_KA,0.76495,-,"[0.5592, 0.89285]",CALCULATED,trades.other_trades.keepalive_module_sizing(KA-C 1.5 m² / 4 kWh); range = asset survival power x1.5 / x0.67 (CDR-20),trades.other_trades.keepalive_module_sizing(KA-C 1.5 m² / 4 kWh); range = asset survival power x1.5 / x0.67 (CDR-20),reliability,probability a MOD-KA module can sustain a parked asset (power and dark-period bridging),2026-10-03
 lambda_autonomy_computer,λ_autonomy_computer,0.05,1/yr,"[0.02, 0.15]",ESTIMATE,A: calendar failure rate incl. dust/thermal cycling; no lunar data (literature gap L-3),1 unit(s),reliability,,2026-10-03
 lambda_battery_module,λ_battery_module,0.01,1/yr,"[0.003, 0.03]",ESTIMATE,A: calendar failure rate incl. dust/thermal cycling; no lunar data (literature gap L-3),4 unit(s),reliability,,2026-10-03
 lambda_camera,λ_camera,0.02,1/yr,"[0.007, 0.06]",ESTIMATE,A: calendar failure rate incl. dust/thermal cycling; no lunar data (literature gap L-3),10 unit(s),reliability,,2026-10-03
@@ -144,7 +152,7 @@ t_survive_h,"t_surv,a",50,h,"[24, 120]",ASSUMPTION,A-14 (S035 VIPER ~50 h),time 
 tsr_mtbf_yr,MTBF_T,3.84615,yr,"[1.28205, 10.2041]",CALCULATED,reliability.tsr_reliability.critical_fault_rate (single-string servicing-critical ORUs),TSR-1 mean time between faults that remove a servicing function,reliability,,2026-10-03
 tsr_repair_days,"t_rep,T",30,d,"[7, 120]",ASSUMPTION,A: ORU swap by crew/peer with on-base spares,mean TSR-1 outage per fault,reliability,,2026-10-03
 tsr_speed_eff,v_eff,1.26,km/h,"[0.7, 2.5]",CALCULATED,0.5 m/s nominal × 0.7 driving duty (autonomy stops),effective TSR traverse speed incl. perception/planning stops,reliability,,2026-10-03
-value_dA_mean,ΔA,0.0767913,-,,CALCULATED,reliability.value_model.monte_carlo (N=30),reliability.value_model.monte_carlo (N=30),reliability,,2026-10-03
+value_dA_mean,ΔA,0.0777169,-,,CALCULATED,reliability.value_model.monte_carlo (N=30),reliability.value_model.monte_carlo (N=30),reliability,,2026-10-03
 anchor_strap_angle_deg,ε_strap,35,deg,,DESIGN,TS-05,front hold-down strap angle below horizontal (toward anchors),stability,,2026-10-03
 fairlead_height,h_fl,0.25,m,,DESIGN,TS-05 (pitch stability under line pull),winch fairlead height above ground,stability,,2026-10-03
 tip_factor_req,TF_req,1.5,-,,DESIGN,TS-04 (static tipping safety factor),minimum restoring/overturning moment ratio for planned operations,stability,,2026-10-03
@@ -161,6 +169,7 @@ stowed_env_H,H_env,2,m,,ASSUMPTION,A-32,allowable stowed height,structure,,2026-
 stowed_env_L,L_env,4,m,,ASSUMPTION,A-32 (Mk1/Argonaut-class deck; no lander data),allowable stowed length,structure,,2026-10-03
 stowed_env_W,W_env,2.6,m,,ASSUMPTION,A-32,allowable stowed width,structure,,2026-10-03
 t_face_min,"t_f,min",0.0005,m,,ASSUMPTION,A: handling/MMOD/insert pull-out minimum per face,minimum face-sheet thickness (each face),structure,,2026-10-03
+web_x,x_WEB,-0.5,m,,DESIGN,"CDR-21: WEB centred under the radiator (short heat-pipe run) and rearward to balance axle loads after the front strip took the crane, mast and arm bases",longitudinal position of the warm electronics box centre (chassis frame),structure,,2026-10-03
 T_rad_max,"T_rad,max",293,K,,DESIGN,TS thermal: battery <= 30 C charging with 10 K gradient,maximum radiator operating temperature in hot case,thermal,,2026-10-03
 T_web_survival,T_surv,263,K,,DESIGN,S071 (battery discharge >= -20 C) + 10 K margin,minimum WEB/battery temperature held in survival,thermal,,2026-10-03
 cp_al,"c_p,Al",900,J/(kg K),,SOURCE,L005,specific heat aluminium,thermal,,2026-10-03

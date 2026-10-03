@@ -30,7 +30,7 @@ RADIATION CONSIDERATIONS: none (metallic)
 DUST CONSIDERATIONS:  no enclosed volume; grousers shed regolith; fender + skirt limit ejecta
 
 EXPECTED LIFE:        10 yr / ≥ 1500 km traverse (no flight data at this distance)
-REDUNDANCY:           6 wheels; mobility with 4/6 driven (13.6°)
+REDUNDANCY:           6 wheels; mobility with 5/6 driven (17.4°) or 4/6 driven (13.4°)
 FAILURE MODES:        rim crack (fatigue), grouser wear, spoke buckling on rock impact
 MAINTENANCE METHOD:   wheel+drive ORU at hub flange (II-04); body lowering unloads wheel
 
@@ -130,7 +130,7 @@ FUNCTION:             Equalise wheel loads on rough terrain; lower chassis onto 
 SELECTED TECHNOLOGY:  Passive 6-wheel rocker-bogie (differential bar), two lead-screw actuators at rocker pivots lowering the body 0.35 m, differential brake
 SELECTED MATERIAL(S): Al 7075-T7351 links, Ti-6Al-4V pivots, BMG lead-screw nuts
 
-WHY THIS TECHNOLOGY:  TS-01: same slope capability as active designs (traction-limited, 19.8°) at 80–100 kg less mass; lowering enables wheel-drive ORU swap and lower CoM
+WHY THIS TECHNOLOGY:  TS-01: slope capability within 0.9° of active designs (traction-limited, 19.8°) at 101–116 kg less delivered mass; lowering enables wheel-drive ORU swap and lower CoM
 WHY THIS MATERIAL:    stiff, light, machinable Al links; Ti pivots for bearing CTE compatibility
 
 ALTERNATIVES CONSIDERED: passive rocker-bogie; fully active 6-leg; 4-wheel active

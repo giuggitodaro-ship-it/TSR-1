@@ -30,25 +30,25 @@ fender_5,dust,structure,1,1.38,0.2,1.656,-1.3,1.0,0.98,CFRP + PTFE-coated fabric
 fender_6,dust,structure,1,1.38,0.2,1.656,-1.3,-1.0,0.98,CFRP + PTFE-coated fabric,7,ESTIMATE: CFRP fender + flexible skirt (Apollo fender lesson S022)
 chassis_torque_box,structure,structure,1,72.965,0.2,87.558,0,0,0.675,Al 7075-T7351 faces / Al 5056 honeycomb; Ti-6Al-4V hard points,7,"CALCULATED structures.chassis (t_face=1.00 mm, f1=41 Hz)"
 secondary_structure,structure,structure,1,18.241,0.2,21.89,0,0,0.875,Al 6061/7075,7,"ESTIMATE: brackets, mounts, mast base, deck rails = 25 % of primary (L007)"
-sensor_mast,structure,structure,1,6.0,0.2,7.2,1.1,0.5,1.6,"CFRP tube, Ti hinge",6,ESTIMATE: 1.2 m CFRP mast with deploy hinge
-dexterous_arm,manipulation,mechanism,1,26.973,0.25,33.716,0.65,-0.45,1.05,"CFRP links, Ti-6Al-4V joints, strain-wave gears, BMG/MoS2",5,"CALCULATED manipulation.arm/crane sizing (torque density, CFRP tubes, MF)"
-dexterous_arm_2,manipulation,mechanism,1,26.973,0.25,33.716,0.65,0.45,1.05,"CFRP links, Ti-6Al-4V joints, strain-wave gears, BMG/MoS2",5,"CALCULATED manipulation.arm/crane sizing (torque density, CFRP tubes, MF)"
-crane_boom,manipulation,mechanism,1,19.903,0.25,24.879,0.3,0.0,1.05,"CFRP links, Ti-6Al-4V joints, strain-wave gears, BMG/MoS2",4,"CALCULATED manipulation.arm/crane sizing (torque density, CFRP tubes, MF)"
-ft_sensor_and_tool_changer,manipulation,mechanism,1,0.0,0.25,0.0,1.15,-0.45,1.05,Ti-6Al-4V,6,included in dexterous arm end-effector mass (6 kg)
-tool_parallel_gripper,tools,tool,1,2.0,0.25,2.5,-0.2,-0.6,1.15,"Ti/PEEK fingers, Vespel pads",6,ESTIMATE per tool spec sheet
-tool_socket_driver,tools,tool,1,2.5,0.25,3.125,-0.2,-0.6,1.15,"Ti body, tool-steel socket set",6,ESTIMATE per tool spec sheet
-tool_electrical_probe,tools,tool,1,1.5,0.25,1.875,-0.2,-0.6,1.15,"PEEK/Ti, Au-plated probes",5,ESTIMATE per tool spec sheet
-tool_connector_mate,tools,tool,1,2.0,0.25,2.5,-0.2,-0.6,1.15,Ti/PEEK,5,ESTIMATE per tool spec sheet
-tool_dust_brush,tools,tool,1,1.5,0.25,1.875,-0.2,-0.6,1.15,"Ti frame, PTFE-coated aramid bristles",5,ESTIMATE per tool spec sheet
-tool_eds_wand,tools,tool,1,2.5,0.25,3.125,-0.2,-0.6,1.15,"CFRP frame, ITO/PI electrode film, HV supply",4,ESTIMATE per tool spec sheet
-tool_anchor_driver,tools,tool,1,4.0,0.25,5.0,-0.2,-0.6,1.15,"Ti body, steel bit",4,ESTIMATE per tool spec sheet
-tool_oru_adapter_otcm,tools,tool,1,3.0,0.25,3.75,-0.2,-0.6,1.15,Ti-6Al-4V,5,ESTIMATE per tool spec sheet
-tool_oru_adapter_androgynous,tools,tool,1,2.5,0.25,3.125,-0.2,-0.6,1.15,Ti-6Al-4V/Al 7075,5,ESTIMATE per tool spec sheet
-tool_lifting_fixture_slings,tools,tool,1,2.0,0.25,2.5,-0.2,-0.6,1.15,"Vectran slings, Ti hooks",6,ESTIMATE per tool spec sheet
-tool_recovery_shackle_hitch,tools,tool,1,2.0,0.25,2.5,-0.2,-0.6,1.15,Ti-6Al-4V,6,ESTIMATE per tool spec sheet
-tool_regolith_scoop,tools,tool,1,2.0,0.25,2.5,-0.2,-0.6,1.15,"Ti-6Al-4V blade, PTFE-coated",6,ESTIMATE per tool spec sheet
-tool_rack_holsters,tools,tool,1,6.0,0.25,7.5,-0.2,-0.6,1.15,"Al 7075, Ti latches",6,ESTIMATE per tool spec sheet
-service_spine,service_spine,structure,1,14.6,0.2,17.52,-0.2,0,1.0,"Al 7075, Ti latches",5,ESTIMATE: Al 7075 rail + slots × (1.1 kg latch+connector)
+sensor_mast,structure,structure,1,6.0,0.2,7.2,0.855,0.32,1.6,"CFRP tube, Ti hinge",6,ESTIMATE: 1.2 m CFRP mast with deploy hinge
+dexterous_arm,manipulation,mechanism,1,26.973,0.25,33.716,1.15,-0.6,1.275,"CFRP links, Ti-6Al-4V joints, strain-wave gears, BMG/MoS2",5,"CALCULATED manipulation.arm/crane sizing (torque density, CFRP tubes, MF)"
+dexterous_arm_2,manipulation,mechanism,1,26.973,0.25,33.716,1.15,0.6,1.275,"CFRP links, Ti-6Al-4V joints, strain-wave gears, BMG/MoS2",5,"CALCULATED manipulation.arm/crane sizing (torque density, CFRP tubes, MF)"
+crane_boom,manipulation,mechanism,1,19.903,0.25,24.879,0.425,0.0,1.28,"CFRP links, Ti-6Al-4V joints, strain-wave gears, BMG/MoS2",4,"CALCULATED manipulation.arm/crane sizing (torque density, CFRP tubes, MF)"
+ft_sensor_and_tool_changer,manipulation,mechanism,1,0.0,0.25,0.0,1.15,-0.6,1.05,Ti-6Al-4V,6,included in dexterous arm end-effector mass (6 kg)
+tool_parallel_gripper,tools,tool,1,2.0,0.25,2.5,1.35,0.0,0.675,"Ti/PEEK fingers, Vespel pads",6,ESTIMATE per tool spec sheet; holstered on chassis front face (CDR-21)
+tool_socket_driver,tools,tool,1,2.5,0.25,3.125,1.35,0.0,0.675,"Ti body, tool-steel socket set",6,ESTIMATE per tool spec sheet; holstered on chassis front face (CDR-21)
+tool_electrical_probe,tools,tool,1,1.5,0.25,1.875,1.35,0.0,0.675,"PEEK/Ti, Au-plated probes",5,ESTIMATE per tool spec sheet; holstered on chassis front face (CDR-21)
+tool_connector_mate,tools,tool,1,2.0,0.25,2.5,1.35,0.0,0.675,Ti/PEEK,5,ESTIMATE per tool spec sheet; holstered on chassis front face (CDR-21)
+tool_dust_brush,tools,tool,1,1.5,0.25,1.875,1.35,0.0,0.675,"Ti frame, PTFE-coated aramid bristles",5,ESTIMATE per tool spec sheet; holstered on chassis front face (CDR-21)
+tool_eds_wand,tools,tool,1,2.5,0.25,3.125,1.35,0.0,0.675,"CFRP frame, ITO/PI electrode film, HV supply",4,ESTIMATE per tool spec sheet; holstered on chassis front face (CDR-21)
+tool_anchor_driver,tools,tool,1,4.0,0.25,5.0,1.35,0.0,0.675,"Ti body, steel bit",4,ESTIMATE per tool spec sheet; holstered on chassis front face (CDR-21)
+tool_oru_adapter_otcm,tools,tool,1,3.0,0.25,3.75,1.35,0.0,0.675,Ti-6Al-4V,5,ESTIMATE per tool spec sheet; holstered on chassis front face (CDR-21)
+tool_oru_adapter_androgynous,tools,tool,1,2.5,0.25,3.125,1.35,0.0,0.675,Ti-6Al-4V/Al 7075,5,ESTIMATE per tool spec sheet; holstered on chassis front face (CDR-21)
+tool_lifting_fixture_slings,tools,tool,1,2.0,0.25,2.5,1.35,0.0,0.675,"Vectran slings, Ti hooks",6,ESTIMATE per tool spec sheet; holstered on chassis front face (CDR-21)
+tool_recovery_shackle_hitch,tools,tool,1,2.0,0.25,2.5,1.35,0.0,0.675,Ti-6Al-4V,6,ESTIMATE per tool spec sheet; holstered on chassis front face (CDR-21)
+tool_regolith_scoop,tools,tool,1,2.0,0.25,2.5,1.35,0.0,0.675,"Ti-6Al-4V blade, PTFE-coated",6,ESTIMATE per tool spec sheet; holstered on chassis front face (CDR-21)
+tool_rack_holsters,tools,tool,1,6.0,0.25,7.5,1.35,0.0,0.675,"Al 7075, Ti latches",6,ESTIMATE per tool spec sheet; holstered on chassis front face (CDR-21)
+service_spine,service_spine,structure,1,14.6,0.2,17.52,0.275,0,0.95,"Al 7075, Ti latches",5,ESTIMATE: Al 7075 rail + slots × (1.1 kg latch+connector)
 recovery_winch,recovery,mechanism,1,24.2,0.25,30.25,-1.35,0,0.6,"Ti drum, steel gear, BMG level-wind",5,CALCULATED recovery.towing.size_winch
 recovery_line,recovery,line,1,1.5,0.2,1.8,-1.35,0,0.6,Vectran with PTFE/aramid jacket,6,"CALCULATED: Vectran braid, FoS 5"
 spade_1,recovery,mechanism,1,8.784,0.25,10.98,-1.45,0.5,0.5,Ti-6Al-4V,4,CALCULATED: Ti plate 0.6×0.3×6 mm + deploy actuator/hinge 4 kg (ESTIMATE)
@@ -56,18 +56,18 @@ spade_2,recovery,mechanism,1,8.784,0.25,10.98,-1.45,-0.5,0.5,Ti-6Al-4V,4,CALCULA
 helical_anchor_1,recovery,mechanism,1,2.0,0.25,2.5,-0.6,0.65,0.9,Ti-6Al-4V,4,ESTIMATE: Ti shaft 0.7 m Ø25 mm + Ø150 mm helix
 helical_anchor_2,recovery,mechanism,1,2.0,0.25,2.5,-0.6,0.65,0.9,Ti-6Al-4V,4,ESTIMATE: Ti shaft 0.7 m Ø25 mm + Ø150 mm helix
 tow_hardpoints_front_rear,recovery,structure,1,3.0,0.2,3.6,0,0,0.6,Ti-6Al-4V,7,"ESTIMATE: Ti-6Al-4V lugs, pins"
-battery_pack,power,battery,1,147.735,0.1,162.508,0.0,0.0,0.57,"Li-ion 18650 PPR pack (Al interstitials, mica)",6,"CALCULATED power.electrical.size_battery (23.6 kWh nameplate, 28s67p)"
-pcdu_bus_regulator,power,electronics,1,16.333,0.25,20.417,0.3,0.3,0.675,"Al housing, SiC FETs",5,CALCULATED: 4 kW bidirectional buck-boost /300 W/kg + 3 kg distribution/SSPCs
-power_transfer_module,power,electronics,1,12.0,0.25,15.0,0.6,0.45,0.675,"Al housing, SiC, planar transformer",4,CALCULATED: isolated bidirectional DC-DC /300 W/kg + diagnostics
-power_tether_and_reel,power,mechanism,1,8.954,0.25,11.192,0.8,0.55,0.85,Cu/PTFE/aramid jacket; Al reel,5,"CALCULATED: 6.9 mm² Cu ×2 × 25 m, 3 % drop + 4 kg reel"
+battery_pack,power,battery,1,147.735,0.1,162.508,-0.5,0.0,0.57,"Li-ion 18650 PPR pack (Al interstitials, mica)",6,"CALCULATED power.electrical.size_battery (23.6 kWh nameplate, 28s67p)"
+pcdu_bus_regulator,power,electronics,1,16.333,0.25,20.417,-0.2,0.25,0.675,"Al housing, SiC FETs",5,CALCULATED: 4 kW bidirectional buck-boost /300 W/kg + 3 kg distribution/SSPCs
+power_transfer_module,power,electronics,1,12.0,0.25,15.0,-0.1,-0.25,0.675,"Al housing, SiC, planar transformer",4,CALCULATED: isolated bidirectional DC-DC /300 W/kg + diagnostics
+power_tether_and_reel,power,mechanism,1,8.954,0.25,11.192,1.0,0.45,0.675,Cu/PTFE/aramid jacket; Al reel,5,"CALCULATED: 6.9 mm² Cu ×2 × 25 m, 3 % drop + 4 kg reel"
 dust_tolerant_connector_head,power,mechanism,1,2.5,0.25,3.125,1.15,-0.45,1.05,"Ti shell, Au contacts, PEEK",4,ESTIMATE: S042 DTC class with clamshell cover
 solar_arrays_vertical,power,solar,1,4.2,0.2,5.04,-0.3,0.0,1.35,IMM/triple-junction GaAs on CFRP,7,"ESTIMATE: 2.8 kg/m² incl. CFRP panel, hinge (L007)"
-solar_array_regulator,power,electronics,1,1.5,0.25,1.875,0.3,-0.3,0.675,Al,6,ESTIMATE: MPPT 600 W
-autonomy_computer_hpsc,avionics,electronics,1,6.0,0.25,7.5,0.35,-0.2,0.675,Al chassis,6,ESTIMATE per avionics spec
-safety_rt_computer_A,avionics,electronics,1,3.0,0.25,3.75,0.35,-0.2,0.675,Al chassis,7,ESTIMATE per avionics spec
-safety_rt_computer_B,avionics,electronics,1,3.0,0.25,3.75,0.35,-0.2,0.675,Al chassis,7,ESTIMATE per avionics spec
-motor_control_units,avionics,electronics,1,11.2,0.25,14.0,0.35,-0.2,0.675,Al chassis,5,ESTIMATE per avionics spec
-mass_memory_and_timing,avionics,electronics,1,1.3,0.25,1.625,0.35,-0.2,0.675,Al chassis,7,ESTIMATE per avionics spec
+solar_array_regulator,power,electronics,1,1.5,0.25,1.875,-0.2,-0.3,0.675,Al,6,ESTIMATE: MPPT 600 W
+autonomy_computer_hpsc,avionics,electronics,1,6.0,0.25,7.5,-0.15,-0.2,0.675,Al chassis,6,ESTIMATE per avionics spec
+safety_rt_computer_A,avionics,electronics,1,3.0,0.25,3.75,-0.15,-0.2,0.675,Al chassis,7,ESTIMATE per avionics spec
+safety_rt_computer_B,avionics,electronics,1,3.0,0.25,3.75,-0.15,-0.2,0.675,Al chassis,7,ESTIMATE per avionics spec
+motor_control_units,avionics,electronics,1,11.2,0.25,14.0,-0.15,-0.2,0.675,Al chassis,5,ESTIMATE per avionics spec
+mass_memory_and_timing,avionics,electronics,1,1.3,0.25,1.625,-0.15,-0.2,0.675,Al chassis,7,ESTIMATE per avionics spec
 navcam_stereo_pair,sensors,electronics,1,0.8,0.25,1.0,1.1,0.5,2.15,,6,ESTIMATE per sensor spec (S064/S065 analogues)
 mast_pan_tilt,sensors,electronics,1,5.0,0.25,6.25,1.1,0.5,2.0,,6,ESTIMATE per sensor spec (S064/S065 analogues)
 led_illuminators,sensors,electronics,1,1.0,0.25,1.25,1.1,0.5,2.1,,7,ESTIMATE per sensor spec (S064/S065 analogues)
@@ -78,15 +78,15 @@ thermal_ir_imager,sensors,electronics,1,0.6,0.25,0.75,1.1,0.5,2.15,,6,ESTIMATE p
 macro_inspection_camera,sensors,electronics,1,0.4,0.25,0.5,1.15,-0.45,1.05,,6,ESTIMATE per sensor spec (S064/S065 analogues)
 imu_ln200s,sensors,electronics,1,0.75,0.25,0.938,0,0,0.675,,9,ESTIMATE per sensor spec (S064/S065 analogues)
 sun_sensor_star_tracker,sensors,electronics,1,0.5,0.25,0.625,1.15,0.5,2.2,,8,ESTIMATE per sensor spec (S064/S065 analogues)
-electrical_diagnostic_unit,sensors,electronics,1,1.5,0.25,1.875,0.6,0.45,0.675,,5,ESTIMATE per sensor spec (S064/S065 analogues)
+electrical_diagnostic_unit,sensors,electronics,1,1.5,0.25,1.875,-0.1,0.25,0.675,,5,ESTIMATE per sensor spec (S064/S065 analogues)
 contact_vibration_sensors,sensors,electronics,1,0.2,0.25,0.25,1.15,-0.45,1.05,,6,ESTIMATE per sensor spec (S064/S065 analogues)
 surface_network_radio,communications,electronics,1,1.5,0.25,1.875,1.1,0.5,1.9,,6,ESTIMATE per comms spec
 lunanet_relay_transceiver,communications,electronics,1,2.5,0.25,3.125,1.1,0.5,1.9,,6,ESTIMATE per comms spec
 relay_antenna_gimballed,communications,electronics,1,2.2,0.25,2.75,1.1,0.5,1.9,,6,ESTIMATE per comms spec
 mesh_uhf_radio,communications,electronics,1,0.5,0.25,0.625,1.1,0.5,1.9,,7,ESTIMATE per comms spec
-mli_blankets,thermal,thermal,1,2.288,0.25,2.86,0,0,0.675,"Kapton/Mylar/Dacron netting, Beta-cloth outer",8,CALCULATED: area × 0.8 kg/m²
-radiator_panel_eds,thermal,thermal,1,9.858,0.25,12.322,0,0,0.925,"Al 6063 heat-pipe panel, OSR/AgFEP, ITO EDS film",5,"CALCULATED: 1.64 m² × 6 kg/m² (Al panel, heat pipes, OSR, EDS film)"
-loop_heat_pipe_switch,thermal,thermal,1,3.5,0.25,4.375,0,0,0.675,"SS/Al, ammonia",6,ESTIMATE: LHP with thermal switch
+mli_blankets,thermal,thermal,1,2.288,0.25,2.86,-0.5,0,0.675,"Kapton/Mylar/Dacron netting, Beta-cloth outer",8,CALCULATED: area × 0.8 kg/m²
+radiator_panel_eds,thermal,thermal,1,9.858,0.25,12.322,-0.752,0,0.91,"Al 6063 heat-pipe panel, OSR/AgFEP, ITO EDS film",5,"CALCULATED: 1.64 m² × 6 kg/m² (Al panel, heat pipes, OSR, EDS film)"
+loop_heat_pipe_switch,thermal,thermal,1,3.5,0.25,4.375,-0.5,0,0.825,"SS/Al, ammonia",6,ESTIMATE: LHP with thermal switch
 heaters_thermostats,thermal,thermal,1,5.0,0.25,6.25,0,0,0.675,Kapton/Inconel,8,"ESTIMATE: Kapton heaters, PRTs, thermostats"
 optics_eds_and_covers,dust,electronics,1,1.2,0.25,1.5,1.15,0.5,2.1,"ITO/PI, Ti covers",5,ESTIMATE: EDS films on camera/LiDAR windows + HV supply + covers
 joint_boots_seals,dust,mechanism,1,4.5,0.25,5.625,0,0,0.9,"PTFE-coated fabric, Ti",5,ESTIMATE: 0.15 kg per external actuator (labyrinth + PTFE/Ti bellows)

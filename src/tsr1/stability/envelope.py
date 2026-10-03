@@ -68,7 +68,7 @@ def _vehicle_loads(cfg, th_x=0.0, th_y=0.0, overrides=None, exclude=(), extra=()
 
 
 def crane_tip(cfg, azimuth_deg: float, reach: float | None = None):
-    base = np.array([0.3, 0.0, 1.05])
+    base = np.array(cfg.derived["crane_base"])           # design.layout (CDR-21)
     reach = cfg.derived["crane"].max_reach if reach is None else reach
     a = math.radians(azimuth_deg)
     tip = base + np.array([reach * math.cos(a), reach * math.sin(a), 0.4])
@@ -112,17 +112,17 @@ def case_results(cfg) -> list[CaseResult]:
         run(f"C3 crane front lift {P:.0f} kg", _vehicle_loads(cfg, overrides={"crane_boom": tuple(mid)}, extra=extra))
     # C4: dexterous arm extended forward-side with rated payload + crane extended side (both)
     dex = cfg.derived["dex"]
-    xa = cfg.opts.wheelbase / 2 - 0.15
-    arm_tip = (xa + dex.reach * 0.7, -0.45 - dex.reach * 0.7, 0.8)
+    xa, ya = cfg.derived["arm_base"]
+    arm_tip = (xa + dex.reach * 0.7, -ya - dex.reach * 0.7, 0.8)
     extra = [weight(cfg.opts.dex_payload, arm_tip, label="dex_payload")]
     run("C4 dexterous arm extended (front-right) with rated payload",
-        _vehicle_loads(cfg, overrides={"dexterous_arm": ((xa + arm_tip[0]) / 2, (-0.45 + arm_tip[1]) / 2, 0.95)},
+        _vehicle_loads(cfg, overrides={"dexterous_arm": ((xa + arm_tip[0]) / 2, (-ya + arm_tip[1]) / 2, 0.95)},
                        extra=extra))
     if crane is not None:
         base, tip, mid = crane_tip(cfg, -90.0)
         extra2 = extra + [weight(cfg.opts.heavy_payload + 2.0, (tip[0], tip[1], 0.3), label="crane_payload")]
         run("C5 both extended same side (worst)", _vehicle_loads(
-            cfg, overrides={"dexterous_arm": ((xa + arm_tip[0]) / 2, (-0.45 + arm_tip[1]) / 2, 0.95),
+            cfg, overrides={"dexterous_arm": ((xa + arm_tip[0]) / 2, (-ya + arm_tip[1]) / 2, 0.95),
                             "crane_boom": tuple(mid)}, extra=extra2))
     # C6: towing on 10° slope (drawbar force at rear hitch, height 0.3 m)
     W = cfg.operational_mass * G_MOON

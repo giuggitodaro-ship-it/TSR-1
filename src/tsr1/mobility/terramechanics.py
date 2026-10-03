@@ -74,7 +74,7 @@ class WheelState:
 def _integrals(wheel: Wheel, soil: Soil, theta1: float, slip: float, theta2: float = 0.0):
     r, b, rs = wheel.radius, wheel.width, wheel.r_shear
     keq = (soil.kc / b + soil.kphi) * soil.k_factor
-    thm = (C1 + C2 * slip) * theta1
+    thm = (R.v("wr_c1") + R.v("wr_c2") * slip) * theta1      # read at call time so sensitivity overrides apply
     th = np.linspace(theta2, theta1, _NPTS)
     # equivalent angle mapping for rear region
     front = th >= thm

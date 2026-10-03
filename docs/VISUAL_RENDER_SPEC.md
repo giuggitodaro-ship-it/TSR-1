@@ -33,17 +33,22 @@ origin on the ground under the vehicle centre.
   edge.
 
 ## 4. Deck equipment (top view, front at top)
-| Item | Position (x, y) | Appearance |
+
+Positions are rectangle bounds on the 2.60 × 1.50 m deck (x forward, y left), taken from `src/tsr1/design/layout.py`
+(the same geometry used by the mass model and the closure checks; plan view in figure fig03).
+
+| Item | Position (x range, y range) | Appearance |
 |---|---|---|
-| Sensor mast | (+1.10, +0.50) | single black CFRP tube Ø 60 mm, 1.2 m tall above deck; head with two stereo cameras (dark lenses, 0.25 m baseline), small thermal-IR camera, two **blue-white** LED headlamps, small gimballed flat relay antenna |
-| Dexterous arm R | base (+1.15, −0.45) | white/grey 7-joint arm, titanium link tubes Ø 60–100 mm, joint housings with black bellows boots; upper arm 0.75, forearm 0.70, wrist 0.15; end effector with tool-changer disc and small macro camera |
-| Dexterous arm L | base (+1.15, +0.45) | identical mirror of arm R |
-| Crane boom | turntable (+0.30, 0) | slender black CFRP tube Ø 50 mm, **2.60** long; short A-frame (0.9 high) behind the turntable; thin luff cable from boom tip to A-frame top; hoist line with small hook block. Stowed: boom lies forward along the deck centre-line |
-| Service spine | x −1.0 to +0.6, y ±0.25 | low aluminium rail with **six** box-shaped module slots (≈ 0.45 × 0.45 m footprint); typical load: two ORU cradles, one gold-MLI "keep-alive" module with a small vertical solar panel, one recovery-kit box, empty slots |
-| Tool rack | (−0.40, −0.60) | open rack with holstered tools (gripper, socket driver, brush, scoop, probe) |
-| Radiator | rear deck x −1.30 to −0.30 | flat, mirror-like (optical solar reflector tiles) panel ≈ 1.0 × 1.6, facing straight up, with a faint transparent electrode film sheen |
-| Solar panels | both sides, vertical | **two vertical** dark-blue solar panels 1.5 × 0.5 mounted on the body sides above the rocker pivots, facing ±y |
-| Power tether reel | (+0.80, +0.55) | drum Ø 0.35 with orange-jacketed cable; connector head stowed on arm L wrist when in use |
+| Radiator | x −1.30 to −0.21, y −0.75 to +0.75 (full width, rear) | flat, mirror-like optical-solar-reflector tiles facing straight up, faint transparent electrode-film sheen; nothing mounted above it except the stowed crane boom tip |
+| Service spine | x −0.18 to +0.73, y −0.68 to +0.68 | low aluminium frame with **six** latch slots in a **2 × 3 grid** (0.45 × 0.45 m each); typical load: two ORU cradles, one gold-MLI keep-alive module occupying two slots (0.9 × 0.45 × 0.45 m box, panels folded flat on top), one recovery-kit box, one empty slot |
+| Crane turntable | x +0.85 to +1.30, y −0.20 to +0.20 (front centre) | short A-frame (0.9 high) on a slewing ring; slender black CFRP boom Ø 50 mm, **2.60** long; stowed lying **rearward** along the centre line over the spine (tip just past the rear edge of the radiator); thin luff cable to the A-frame top; hoist line with small hook block |
+| Sensor mast | base x +0.76 to +0.96, y +0.22 to +0.42 | single black CFRP tube Ø 60 mm, 1.2 m tall above deck; head with two stereo cameras (dark lenses, 0.25 m baseline), small thermal-IR camera, two **blue-white** LED headlamps, small gimballed flat relay antenna |
+| Dexterous arm R | base x +1.00 to +1.30, y −0.75 to −0.45 (front-right corner) | white/grey 7-joint arm, titanium link tubes Ø 60–100 mm, joint housings with black bellows boots; upper arm 0.75, forearm 0.70, wrist 0.15; end effector with tool-changer disc and small macro camera. **Stowed upright** ("candle" stow): upper arm vertical, forearm folded down beside it, top ≈ 0.85 above deck |
+| Dexterous arm L | base x +1.00 to +1.30, y +0.45 to +0.75 (front-left corner) | identical mirror of arm R |
+| (internal) Warm electronics box | inside the chassis, x −1.00 to 0.00 (under the radiator) | not visible; do not render hatches for it |
+| Tool rack | chassis **front face**, y −0.55 to +0.55, between the front wheels | open holster panel with tools (gripper, socket driver, brush, scoop, probe, adapters) facing forward |
+| Solar panels | both body sides, vertical | **two vertical** dark-blue solar panels 1.5 × 0.5 mounted on the body sides above the rocker pivots, facing ±y |
+| Power tether | reel inside the chassis front; exit guide on the front face at y +0.55 | orange-jacketed cable; connector head stowed on arm L wrist when in use |
 
 ## 5. Rear equipment
 - **Winch** below the rear deck, fairlead at **0.25** above ground on the centre-line (low!), light-grey jacketed line.
@@ -53,17 +58,20 @@ origin on the ground under the vehicle centre.
 - Two helical anchors (titanium rods with a single helix plate Ø 0.15) clipped to the right body side.
 
 ## 6. Configurations to render
-1. **Traverse**: body raised (clearance 0.45), arms folded on deck, crane stowed, mast up, LEDs on, slow motion
+1. **Traverse**: body raised (clearance 0.45), arms in upright stow at the front corners, crane boom stowed rearward, mast up, LEDs on, slow motion
    (0.5 m/s): faint wheel tracks only, **no billowing dust clouds** (in vacuum, ejecta follow ballistic arcs and fall
    immediately; fenders capture most).
 2. **Servicing a communication tower**: body lowered, both arms extended toward an equipment box at 1–2.5 m height,
    power tether connected to the tower's port, crane holding a 15–20 kg grey module.
 3. **Emergency power to a disabled small rover**: orange tether running 10–20 m to the rover; keep-alive module left
-   beside the rover.
+   beside the rover — a gold-MLI box 0.9 × 0.45 × 0.45 m on four short feet with a vertical mast carrying two
+   back-to-back dark-blue solar panels (≈ 1.2 m wide × 1.25 m tall each, top edge ≈ 1.6 m above ground) and a short
+   cable to the rover's power port.
 4. **Anchored winch recovery on a 10–15° slope**: TSR-1 upslope and lowered, rear spades in the ground, two anchors
    installed in front of it with short straps to the front lugs, taut line running downslope to a 450 kg rover whose
    wheels are partly sunk.
-5. **Stowed on a lander deck**: mast folded, arms and boom folded flat; total height 1.2.
+5. **Stowed on a lander deck**: mast folded rearward, arms in upright stow at the front corners (highest point ≈ 1.75 above
+   ground), boom stowed rearward over the spine; launch locks visible at the arm elbows and boom tip.
 
 ## 7. Environment and lighting (lunar south pole)
 - Sun **within 0–2° of the horizon** (never overhead); extremely long, razor-sharp shadows; high contrast; shadowed

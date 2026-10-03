@@ -153,14 +153,28 @@ def check_all(cfg, drm_results: list, recovery_rows: list, stability_cases: list
     add("GEOM-1 WEB volume ≥ packaged equipment volume", v_web, v_web_req, v_web, v_web_req <= v_web)
     L = cfg.opts.wheelbase + 2 * cfg.opts.wheel_r + 0.1
     W = cfg.opts.track + cfg.opts.wheel_b
-    H = cfg.opts.ground_clearance + 0.45 + 0.30
+    from tsr1.design.layout import boom_radiator_shading, check_layout, stowed_height
+    lay = cfg.derived["layout"]
+    H = stowed_height(cfg.derived["deck_top"], lay)            # arms in upright stow set the height (CDR-21)
     add("GEOM-2 stowed length ≤ envelope", L, L, R.v("stowed_env_L"), L <= R.v("stowed_env_L"))
     add("GEOM-3 stowed width ≤ envelope", W, W, R.v("stowed_env_W"), W <= R.v("stowed_env_W"))
-    add("GEOM-4 stowed height (mast folded) ≤ envelope", H, H, R.v("stowed_env_H"), H <= R.v("stowed_env_H"))
-    deck = cfg.opts.wheelbase * min(cfg.opts.track - 0.5, 1.5)
-    use_area = cfg.derived["a_rad"] + 0.9 + 0.3 + 2 * 0.15 + 0.1 + 0.4   # radiator, spine, crane, arms, mast, tools
-    add("GEOM-5 deck area ≥ allocations (radiator, spine, crane, arms, mast, tool rack)", deck, use_area, deck,
-        use_area <= deck)
+    add("GEOM-4 stowed height (arms in upright stow) ≤ envelope", H, H, R.v("stowed_env_H"), H <= R.v("stowed_env_H"))
+    deck_w = min(cfg.opts.track - 0.5, 1.5)
+    chk = check_layout(lay, cfg.opts.wheelbase, deck_w)
+    add("GEOM-5 deck items inside the deck and non-overlapping (radiator, spine, crane, mast, arm bases)",
+        True, chk["used_area"], chk["deck_area"], chk["ok"],
+        note=f"overlaps={chk['overlaps']}; outside={chk['outside']}; free {chk['free_area']:.2f} m²")
+    shade = boom_radiator_shading(lay, cfg.opts.crane_boom, 0.05)
+    add("GEOM-7 max steady WEB dissipation ≤ radiator capacity with stowed-boom shading", True,
+        qmax, R.v("q_web_hot") * (1 - shade), R.v("q_web_hot") * (1 - shade) >= qmax,
+        note=f"boom covers {100 * shade:.1f} % of radiator plan area (conservative: full radiative blockage)")
+    # crane reaches every deck slot (module handling) — farthest spine corner and rear deck corners
+    from tsr1.design.layout import reach_to_point
+    cb = cfg.derived["crane_base"]
+    far = max(reach_to_point(cb, x, y) for x in (lay["service_spine"].x0, lay["service_spine"].x1)
+              for y in (lay["service_spine"].y0, lay["service_spine"].y1))
+    add("GEOM-8 crane reach covers all spine slots", True, far, cfg.derived["crane"].max_reach,
+        far <= cfg.derived["crane"].max_reach)
     wheel_gap = cfg.opts.wheelbase / 2 - 2 * cfg.opts.wheel_r
     add("GEOM-6 adjacent wheel clearance ≥ 0.15 m", 0.15, wheel_gap, 0.15, wheel_gap >= 0.15)
     # ---------------- mission

@@ -52,7 +52,7 @@ FUNCTION:             Lift/place ORUs and modules ≤ 150 kg, support damaged eq
 SELECTED TECHNOLOGY:  2.6 m CFRP boom + A-frame, luff and hoist winches, 360° slew turntable; cooperative placement with dex arm
 SELECTED MATERIAL(S): CFRP tubes, Ti end fittings, Vectran lines
 
-WHY THIS TECHNOLOGY:  TS-03/M-4: ~20 kg vs 133 kg for an equivalent heavy serial arm (LSMS principle S015)
+WHY THIS TECHNOLOGY:  TS-03/M-4: 20 kg CBE vs ≈ 133 kg for an equivalent heavy serial arm (LSMS principle S015)
 WHY THIS MATERIAL:    buckling-driven member → specific stiffness; low CTE
 
 ALTERNATIVES CONSIDERED: heavy 6-DOF arm; no heavy lift

@@ -7,7 +7,7 @@ Verification: A = analysis, T = test, I = inspection, D = demonstration. `[TBD:k
 ## Availability
 
 ### MR-01
-- **Statement:** TSR-1 shall increase the time-averaged availability of serviceable surface assets in its service area relative to an otherwise identical base without TSR-1, by at least 2.2 percentage points for the reference base of 30 assets.
+- **Statement:** TSR-1 shall increase the time-averaged availability of serviceable surface assets in its service area relative to an otherwise identical base without TSR-1, by at least 1.8 percentage points for the reference base of 30 assets.
 - **Rationale:** Primary research question; infrastructure availability is the stated purpose (S051 objective).
 - **Source:** DIRECTIVE §4; S051; DESIGN-DERIVED(reliability.value_model)
 - **Verification:** A

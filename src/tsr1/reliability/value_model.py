@@ -46,6 +46,13 @@ R.define("frac_unpowered", "f_unp", 0.5, "-", "ASSUMPTION", "A-14", SUB,
          "fraction of electrical/comm faults that remove keep-alive power", low=0.3, high=0.7)
 R.define("dust_loss", "d_dust", 0.3, "-", "ASSUMPTION", "A-09; S062 (sub-monolayer degrades surfaces)", SUB,
          "performance loss of dust-degraded asset", low=0.1, high=0.5)
+from tsr1.trades.other_trades import KA_OPTIONS, KA_SELECTED, keepalive_module_sizing  # noqa: E402
+
+_KA = keepalive_module_sizing(*KA_OPTIONS[KA_SELECTED])
+R.calc("ka_sustain_p", "p_KA", _KA["p_sustain"], "-",
+       f"trades.other_trades.keepalive_module_sizing({KA_SELECTED}); range = asset survival power x1.5 / x0.67 (CDR-20)",
+       SUB, low=_KA["p_sustain_low"], high=_KA["p_sustain_high"],
+       note="probability a MOD-KA module can sustain a parked asset (power and dark-period bridging)")
 R.define("crew_missions_per_yr", "n_crew", 1.0, "1/yr", "ASSUMPTION", "A-07", SUB, "surface crew missions per year",
          low=0.0, high=2.0)
 R.define("crew_mission_days", "t_crew", 30.0, "d", "ASSUMPTION", "A-07", SUB, "surface stay per mission")
@@ -95,6 +102,7 @@ class Scenario:
     crew_recovery_p: float = 0.3
     immob_abandon_days: float = 30.0
     keepalive_modules: int = 0           # deployable keep-alive power modules (service-spine module, TS-07)
+    ka_sustain_p: float = field(default_factory=lambda: R.v("ka_sustain_p"))
     host_busy_frac: float = 0.0          # CDR-01: probability the (shared) host vehicle is busy when a task arrives
     host_delay_h: float = 0.0            # mean extra delay before a busy host can start the task     # immobilised asset declared lost if not recovered (A-14 analogue)
 
@@ -126,6 +134,12 @@ class Metrics:
     tsr_utilisation: float
     tasks_tsr: int
     tasks_tsr_success: int
+    faults: int = 0              # fault events (all types) during the run
+    lost_catastrophic: int = 0   # losses from non-serviceable faults (scale with operating exposure)
+    ka_demand: int = 0           # events where a stabilised asset needed a keep-alive module to wait for a spare
+    ka_denied: int = 0           # ... and none was free (asset lost unless crew present)
+    ka_used: int = 0             # keep-alive deployments that sustained the asset
+    ka_hours: float = 0.0        # module-hours deployed (for the inventory rule, Little's law)
 
 
 def make_assets(sc: Scenario, rng: np.random.Generator) -> list[Asset]:
@@ -183,6 +197,8 @@ def simulate(sc: Scenario, assets: list[Asset], with_tsr: bool, rng: np.random.G
         push(a.ttf[0], "fail", a.idx)
         a.k = 0
     lost = 0
+    lost_cat = 0
+    n_faults = 0
     earth_mass = 0.0
     eva_h = 0.0
     responses = []
@@ -194,6 +210,9 @@ def simulate(sc: Scenario, assets: list[Asset], with_tsr: bool, rng: np.random.G
     tasks_ok = 0
     ka_free = sc.keepalive_modules if with_tsr else 0
     ka_used = 0
+    ka_demand = 0
+    ka_denied = 0
+    ka_hours = 0.0
     backlog: list[int] = []      # assets awaiting crew
     crew_used: dict = {}         # crew-hours used per window
     queue: list = []             # TSR priority queue (prio, t_fault, idx)
@@ -207,12 +226,17 @@ def simulate(sc: Scenario, assets: list[Asset], with_tsr: bool, rng: np.random.G
     for (w0, w1) in crew_windows:
         push(w0, "crew_start", (w0, w1))
 
-    def resolve_repair(i, t, success):
-        nonlocal ka_free
-        a = amap[i]
-        info = fault_info.pop(i, None)
+    def release_ka(info, t):
+        nonlocal ka_free, ka_hours
         if info is not None and info.get("keepalive"):
             ka_free += 1
+            ka_hours += min(t, T) - info["ka_t"]
+            info["keepalive"] = False
+
+    def resolve_repair(i, t, success):
+        a = amap[i]
+        info = fault_info.pop(i, None)
+        release_ka(info, t)
         if success:
             set_state(i, t, "up", 1.0)
             a.k += 1
@@ -221,10 +245,8 @@ def simulate(sc: Scenario, assets: list[Asset], with_tsr: bool, rng: np.random.G
         return info
 
     def lose(i, t):
-        nonlocal lost, earth_mass, ka_free
-        info = fault_info.get(i)
-        if info is not None and info.get("keepalive"):
-            ka_free += 1
+        nonlocal lost, earth_mass
+        release_ka(fault_info.get(i), t)
         if state[i] == "lost":
             return
         set_state(i, t, "lost", 0.0)
@@ -296,7 +318,9 @@ def simulate(sc: Scenario, assets: list[Asset], with_tsr: bool, rng: np.random.G
                 continue
             ft = a.ftypes[a.k]
             unp = a.unpowered[a.k] and ft in ("electrical", "comm")
+            n_faults += 1
             if ft == "catastrophic":
+                lost_cat += 1
                 lose(i, t)
                 continue
             set_state(i, t, "degraded" if ft == "dust" else "down", 1 - sc.dust_loss if ft == "dust" else 0.0)
@@ -340,19 +364,30 @@ def simulate(sc: Scenario, assets: list[Asset], with_tsr: bool, rng: np.random.G
                 else:
                     info = fault_info[i]
                     info["crew_needed"] = True        # TSR attempt failed -> eligible for crew
+                    crew_now = any(w0 <= t <= w1 for (w0, w1) in crew_windows)
                     if info["type"] == "immobilization":
-                        lose(i, t)
+                        # failed TSR recovery: crew may still try within the abandonment time (same rule as baseline)
+                        if crew_now:
+                            push(t + 2.0, "crew_task", i)
                     elif info.get("unpowered") and info.get("stabilised"):
-                        # TSR restored power but repair failed: asset dies when TSR leaves unless crew present
-                        # or a keep-alive module is left connected (then it waits for a spare / crew)
-                        crew_now = any(w0 <= t <= w1 for (w0, w1) in crew_windows)
-                        if ka_free > 0:
+                        # TSR restored power but repair failed: asset dies when TSR leaves unless a keep-alive module
+                        # is left connected (then it waits for a spare / crew) or crew repair it within t_survive
+                        ka_demand += 1
+                        if ka_free <= 0:
+                            ka_denied += 1
+                        if ka_free > 0 and rng.random() < sc.ka_sustain_p:
                             ka_free -= 1
                             ka_used += 1
                             info["keepalive"] = True
+                            info["ka_t"] = t
                             info["unpowered"] = False
                             push(t + sc.spare_lead_yr * YEAR_H, "spare_arrival", i)
-                        elif not crew_now:
+                        elif crew_now:
+                            info["stabilised"] = False
+                            info["t"] = t
+                            push(t + sc.t_survive_h, "thermal_check", (i, t))
+                            push(t + 2.0, "crew_task", i)
+                        else:
                             lose(i, t)
                     elif info["type"] in ("electrical", "comm") and not info.get("unpowered"):
                         # no spare or failed: wait for Earth spare, then one more TSR attempt
@@ -426,11 +461,13 @@ def simulate(sc: Scenario, assets: list[Asset], with_tsr: bool, rng: np.random.G
                 push(t + a.ttf[a.k], "fail", i)
     for i in state:
         set_state(i, T, state[i], perf[i])
+    for info in fault_info.values():
+        release_ka(info, T)
     avail = sum(up_int.values()) / (len(assets) * T)
     down = len(assets) * T - sum(up_int.values())
     util = tsr_busy_total / (T * n_units) if with_tsr else 0.0
     return Metrics(avail, down, lost, eva_h, earth_mass, float(np.mean(responses)) if responses else float("nan"),
-                   util, tasks_tsr, tasks_ok)
+                   util, tasks_tsr, tasks_ok, n_faults, lost_cat, ka_demand, ka_denied, ka_used, ka_hours)
 
 
 def run_pair(sc: Scenario, seed: int) -> tuple[Metrics, Metrics]:
@@ -460,7 +497,45 @@ def sample_scenario(base: Scenario, rng: np.random.Generator) -> Scenario:
                    crew_maint_hours=float(rng.uniform(*R.rng("crew_maint_hours"))),
                    tsr_speed_kmh=float(rng.uniform(*R.rng("tsr_speed_eff"))),
                    tsr_mtbf_yr=float(rng.uniform(*R.rng("tsr_mtbf_yr"))),
-                   tsr_repair_days=float(rng.uniform(*R.rng("tsr_repair_days"))))
+                   tsr_repair_days=float(rng.uniform(*R.rng("tsr_repair_days"))),
+                   ka_sustain_p=float(rng.uniform(*R.rng("ka_sustain_p"))))
+
+
+def keepalive_inventory(fault_rate_per_yr: float, park_fraction: float, hold_yr: float, p_sustain: float = 1.0,
+                        quantile: float = 0.95) -> int:
+    """Keep-alive module inventory rule (DESIGN DECISION, CDR-19).
+
+    Stabilised-but-unrepaired assets "park" on a keep-alive module until a spare is fitted (robotically after the
+    Earth spare arrives, or by crew for L0/L1 assets). By Little's law the mean number of modules in use is
+    L = lambda_dep * T_hold with lambda_dep = park_fraction * p_sustain * fault rate (deployments) and T_hold the
+    mean deployment time; the inventory is the Poisson ``quantile`` of L.
+    """
+    lam = max(0.0, park_fraction * p_sustain * fault_rate_per_yr * hold_yr)
+    k, p, cdf = 0, math.exp(-lam), math.exp(-lam)
+    while cdf < quantile:
+        k += 1
+        p *= lam / k
+        cdf += p
+    return k
+
+
+R.define("ka_park_frac", "f_park", 0.14, "-", "ESTIMATE", "calibrated by simulations/capacity_study.py (CDR-19)", SUB,
+         "fraction of fault events that leave a stabilised but unrepaired asset needing a keep-alive module",
+         low=0.13, high=0.15)
+R.define("ka_hold_yr", "T_hold", 1.1, "yr", "ESTIMATE", "calibrated by simulations/capacity_study.py (CDR-19; 1.0-1.2 yr "
+         "unsaturated, up to 2 yr when saturated)", SUB, "mean keep-alive module deployment time", low=1.0, high=2.0)
+
+
+def expected_fault_rate(n_assets: int) -> float:
+    """Expected fault rate [1/yr] of a base over the log-uniform MTBF prior: N * E[1/MTBF]."""
+    lo, hi = R.rng("asset_mtbf_yr")
+    return n_assets * (1.0 / lo - 1.0 / hi) / math.log(hi / lo)
+
+
+def keepalive_inventory_for_base(n_assets: int, quantile: float = 0.95) -> int:
+    """MOD-KA inventory for a base of ``n_assets`` by the CDR-19 rule (at least one module)."""
+    return max(1, keepalive_inventory(expected_fault_rate(n_assets), R.v("ka_park_frac"), R.v("ka_hold_yr"),
+                                      R.v("ka_sustain_p"), quantile))
 
 
 def monte_carlo(base: Scenario, n: int = 200, seed: int = 2026, sample: bool = True) -> dict:
@@ -473,6 +548,11 @@ def monte_carlo(base: Scenario, n: int = 200, seed: int = 2026, sample: bool = T
                          speed=sc.tsr_speed_kmh, tsr_mtbf=sc.tsr_mtbf_yr, frac_unp=sc.frac_unpowered,
                          A0=m0.availability, A1=m1.availability, dA=m1.availability - m0.availability,
                          lost0=m0.lost, lost1=m1.lost, eva0=m0.eva_crew_h, eva1=m1.eva_crew_h,
+                         faults0=m0.faults, faults1=m1.faults, ka_demand=m1.ka_demand, ka_denied=m1.ka_denied,
+                         ka_used=m1.ka_used, ka_hours=m1.ka_hours,
+                         asset_yr0=m0.availability * sc.n_assets * sc.years,
+                         asset_yr1=m1.availability * sc.n_assets * sc.years,
+                         plost0=m0.lost - m0.lost_catastrophic, plost1=m1.lost - m1.lost_catastrophic,
                          mass0=m0.earth_mass_kg, mass1=m1.earth_mass_kg, resp=m1.mean_response_h,
                          util=m1.tsr_utilisation, tasks=m1.tasks_tsr, ok=m1.tasks_tsr_success))
     return {k: np.array([r[k] for r in rows]) for k in rows[0]}

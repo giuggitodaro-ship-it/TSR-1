@@ -13,7 +13,7 @@ FUNCTION:             Energy storage for sorties, emergency power and survival
 SELECTED TECHNOLOGY:  Li-ion 18650 PPR pack, 4 modules, 28s strings (≈101 V nominal), BMS with module isolation
 SELECTED MATERIAL(S): NCA/NMC cells, Al 6061 interstitial heat sinks, mica sleeves
 
-WHY THIS TECHNOLOGY:  TS-06: DRM-2 at 10 km + 50 h reserve needs 13.8 kWh usable EOL
+WHY THIS TECHNOLOGY:  TS-06: DRM-2 at 10 km (10.0 kWh) + 50 h reserve (4.1 kWh) needs 14.1 kWh usable EOL (CDR-06)
 WHY THIS MATERIAL:    passive propagation resistance (S070)
 
 ALTERNATIVES CONSIDERED: RFC; RPS (MMRTG); larger PV
@@ -130,7 +130,7 @@ FUNCTION:             Contingency charging and indefinite survival in sunlight
 SELECTED TECHNOLOGY:  two fixed vertical side panels 0.75 m² each, triple-junction cells; MPPT 600 W
 SELECTED MATERIAL(S): IMM/TJ GaAs on CFRP
 
-WHY THIS TECHNOLOGY:  sun ≤ 1.54° elevation at the pole → vertical panels; ≈166 W average > 76 W survival (ENERGY-3)
+WHY THIS TECHNOLOGY:  sun ≤ 1.54° elevation at the pole → vertical panels; ≈ 166 W average > 82 W survival (ENERGY-3)
 WHY THIS MATERIAL:    heritage cells
 
 ALTERNATIVES CONSIDERED: no PV; deployable tracking mast (MOD-SOL)

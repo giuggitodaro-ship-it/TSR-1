@@ -39,13 +39,13 @@ Maturity classes (directive §30): **H** existing/high heritage · **A** existin
 | 25 | Winch + 0.25 m fairlead + load limiting | 5 | A | terrestrial recovery winches | vacuum/dust drum and line abrasion life |
 | 26 | Regolith spades and helical anchors | 3 | **G** | terrestrial anchors (L026), legged-rover anchors (S045) | capacity tests in lunar simulant at 1-g and reduced-g; installation in dense regolith with clasts |
 | 27 | Modular service spine (HOTDOCK-class) | 5 | A | HOTDOCK ground demos (S048) | dust-tolerant latch qualification |
-| 28 | Keep-alive module (MOD-KA) | 5 | I | integration of existing parts | integrated test |
+| 28 | Keep-alive module (MOD-KA, KA-C: 4 kWh, 2 × 1.5 m² PV, ≈ 73 kg) | 5 | I | integration of existing parts; survival-power fit to real assets unverified (CDR-20) | integrated test with representative asset loads |
 | 29 | Asset-side robotic servicing standards (L2/L3) | n/a | **G** (programmatic) | IERIIS (S013), NASA/SP-20260001900 (S002) | adoption by asset owners — **dominant value driver** |
 
 ## Critical path
 
-1. **Asset standardisation (row 29)** — the value model shows ΔA ≈ 2 pp for a legacy (L0-heavy) base versus
-   ≈ 14 pp for a standardised base (paper §21). No hardware maturation compensates for non-serviceable assets.
+1. **Asset standardisation (row 29)** — the value model shows ΔA ≈ 3 pp for a legacy (L0-heavy) base versus
+   ≈ 13 pp for a standardised base (paper §21). No hardware maturation compensates for non-serviceable assets.
 2. **Supervised servicing autonomy V&V (row 24)** — determines achievable effective speed and task success.
 3. **Ground-reaction anchors (row 26)** — TRL 3; recovery claims for slopes depend on it.
 4. **Long-life dust/cold mechanisms (rows 5, 6)** — 10-year life of ≈ 30 external actuators.

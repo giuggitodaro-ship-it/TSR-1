@@ -36,7 +36,7 @@
  },
  "value_model": {
   "ref_assets": 30,
-  "keepalive_modules": 2,
+  "keepalive_modules": "rule",
   "asset_sweep": [
    3,
    5,
@@ -47,7 +47,8 @@
    45,
    60
   ],
-  "tsr_spares_kg_per_yr": 15.0
+  "tsr_spares_kg_per_yr": 15.0,
+  "keepalive_note": "MOD-KA inventory from value_model.keepalive_inventory_for_base (CDR-19 rule; 4 at the 30-asset reference base); at most 2 carried at once (spine 150 kg)"
  },
  "seeds": {
   "value": 2026,
@@ -60,7 +61,8 @@
   "recovery_cases": 400,
   "tsr_rel_runs": 2000,
   "servicing_samples": 4000,
-  "mass_mc": 120
+  "mass_mc": 120,
+  "capacity_runs": 60
  },
  "quick": {
   "value_runs": 30,
@@ -68,7 +70,8 @@
   "recovery_cases": 60,
   "tsr_rel_runs": 200,
   "servicing_samples": 400,
-  "mass_mc": 8
+  "mass_mc": 8,
+  "capacity_runs": 8
  },
  "cdr": {
   "skill_factors": [

@@ -13,13 +13,13 @@ FUNCTION:             Carry, power and exchange ORUs, spares and service modules
 SELECTED TECHNOLOGY:  Rail with 6 androgynous latch slots (HOTDOCK-class), 120 VDC/1 kW and Ethernet per slot
 SELECTED MATERIAL(S): Al 7075 rail, Ti latches
 
-WHY THIS TECHNOLOGY:  TS-07: −40 kg average carried mass per sortie vs integrated; deployable modules (MOD-KA) inherently modular; portability to other hosts (CDR-01)
+WHY THIS TECHNOLOGY:  TS-07: −55 kg average carried mass per sortie vs integrated; deployable modules (MOD-KA) inherently modular; portability to other hosts (CDR-01)
 WHY THIS MATERIAL:    light rail; Ti latches for wear
 
 ALTERNATIVES CONSIDERED: integrated fixed mounts
 WHY REJECTED:         carries all kits always; no reuse on other vehicles
 
-DIMENSIONS:           1.6 × 0.5 m footprint; module ≤ 0.6 × 0.45 × 0.45 m, ≤ 40 kg; total ≤ 150 kg
+DIMENSIONS:           2 × 3 grid of 0.45 m slots, 0.90 × 1.35 m on the mid-deck (design.layout, CDR-21); ≤ 40 kg and ≤ 0.45 × 0.45 × 0.6 m (high) per occupied slot (double-slot modules such as MOD-KA ≤ 80 kg over two adjacent latches); total ≤ 150 kg
 MASS:                 CBE 14.6 kg; predicted 17.5 kg incl. MGA (1 configuration item(s); engineering/mass_budget.csv)
 OPERATING POWER:      dormant 1 W, manipulation 5 W
 PEAK POWER:           30 W (sum of item peaks)
@@ -41,4 +41,49 @@ SOURCE DATA:          see research/source_register.csv (IDs cited above)
 CALCULATED VALUES:    ESTIMATE: Al 7075 rail + slots × (1.1 kg latch+connector)
 ASSUMPTIONS:          —
 UNCERTAINTIES:        —
+```
+
+### MOD-KA keep-alive power module (base inventory ×4)
+```
+COMPONENT:            MOD-KA keep-alive power module (KA-C 1.5 m² / 4 kWh)
+SUBSYSTEM:            service_spine (deployable module; base inventory, not in the TSR-1 mass budget)
+FUNCTION:             Left connected to a disabled asset whose repair failed, supplying survival power until a spare is
+                      fitted (robotically after the Earth spare arrives, or by crew for L0/L1 assets)
+
+SELECTED TECHNOLOGY:  Li-ion PPR battery 4 kWh usable at EOL (28s strings, 120 V ISPSIS output), two
+                      back-to-back fold-out vertical PV panels 1.5 m² each, MPPT + isolated output stage,
+                      ISPSIS-compatible connector on 10 m cable, double-slot spine latch, crane lift point, fiducials
+SELECTED MATERIAL(S): Al 7075 frame, CFRP panel substrates, MLI on battery enclosure, Ti latch/hinge fittings
+
+WHY THIS TECHNOLOGY:  TS-07b: highest net Earth-mass benefit per handled module; KA-D (+50 % battery) gains less than the
+                      Monte Carlo scatter at +27 kg per module and only one fits the spine
+WHY THIS MATERIAL:    same family as TSR-1 structure and arrays (shared qualification)
+
+ALTERNATIVES CONSIDERED: KA-A 0.75 m²/2 kWh, KA-B 1.0 m²/3 kWh, KA-D 1.5 m²/6 kWh; TSR-1 staying at the asset
+WHY REJECTED:         KA-A/KA-B sustain too few assets (P = 0.40/0.57); staying ties up the only servicing vehicle
+
+DIMENSIONS:           stowed 0.9 × 0.45 × 0.45 m (two slots); deployed panel height ≈ 1.6 m
+MASS:                 CBE 60.5 kg; predicted 72.6 kg incl. 20 % MGA (battery 39.7 kg, PV 7.5 kg)
+OPERATING POWER:      output to asset = asset survival power (A-33, 40–250 W); self-consumption 5 W
+PEAK POWER:           315 W PV output with the lit face normal to the Sun
+
+PERFORMANCE:          sustained 231 W at a 0.75-illuminated site; 38 h darkness bridging at
+                      100 W; P(sustains a sampled asset) = 0.76 (asset power ×1.5: 0.56; ×0.67: 0.89)
+OPERATING TEMPERATURE: battery 0–40 °C (self-heated under MLI); panels −180/+120 °C
+MECHANICAL LOADS:     launch 6 g on locks; crane lift 1.5 × weight
+RADIATION CONSIDERATIONS: rad-tolerant MPPT/BMS electronics (TID ≥ 20 krad)
+DUST CONSIDERATIONS:  vertical panels (low deposition); connector with self-closing cover; brushed at each TSR-1 visit
+
+EXPECTED LIFE:        10 yr; ≥ 20 deployments
+REDUNDANCY:           inventory of 4 (rule value_model.keepalive_inventory, CDR-19)
+FAILURE MODES:        battery cell string failure (graceful), panel hinge jam, connector contamination
+MAINTENANCE METHOD:   recovered by TSR-1 when the asset is repaired; battery/electronics swappable at the base depot
+
+TRL:                  5 (space Li-ion, PV and MPPT TRL 9; robot-deployed lunar surface power module not flown)
+HERITAGE:             small-lander power systems; ISPSIS interface concept (S011)
+
+SOURCE DATA:          S011, S030, A-15, A-16
+CALCULATED VALUES:    trades.other_trades.keepalive_module_sizing; value_model.json keepalive_trade
+ASSUMPTIONS:          A-33 asset survival power, A-34 site illumination, A-35 dark period, pv_areal_density (ESTIMATE)
+UNCERTAINTIES:        asset survival power (no data), dark-period statistics at actual asset sites
 ```

@@ -13,7 +13,7 @@ FUNCTION:             Pull immobilised vehicles/elements while TSR-1 is anchored
 SELECTED TECHNOLOGY:  4 kN electric winch, drum Ø0.12 m, level-wind, load cell, auto tension limiting; 50 m Vectran line; low fairlead (0.25 m)
 SELECTED MATERIAL(S): Ti drum, steel gear, Vectran with aramid/PTFE jacket
 
-WHY THIS TECHNOLOGY:  TS-05: anchored winching raises recoverable fraction from 0.23 (direct tow) to 0.91
+WHY THIS TECHNOLOGY:  TS-05: anchored winching raises recoverable fraction from 0.27 (direct tow) to 0.92
 WHY THIS MATERIAL:    line mass 0.03 kg/m vs 0.15 kg/m steel rope; low creep
 
 ALTERNATIVES CONSIDERED: direct towing only; steel rope
@@ -52,7 +52,7 @@ FUNCTION:             Resist line pull and overturning moment during winching
 SELECTED TECHNOLOGY:  2 rear spades 0.6 × 0.3 m (pressed by body lowering, self-embedding under pull); 2 Ø0.15 m helical anchors at 0.6 m depth installed by dex arm; front hold-down straps
 SELECTED MATERIAL(S): Ti-6Al-4V with TiN edges
 
-WHY THIS TECHNOLOGY:  M-5: 4 kN pull is 2.3× TSR lunar weight; spades+anchors give ≈5.9 kN restraint and tipping factor ≥ 1.5
+WHY THIS TECHNOLOGY:  M-5: 4 kN pull is 2.0× TSR lunar weight (2024 N); spades+anchors give the restraint and tipping factor ≥ 1.5 (stability case C7a/b)
 WHY THIS MATERIAL:    strength/mass, non-magnetic
 
 ALTERNATIVES CONSIDERED: outriggers; braked wheels only; 4 anchors

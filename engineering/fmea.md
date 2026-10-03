@@ -16,13 +16,13 @@ work-around · **4** negligible. **R** suffix = redundancy or work-around exists
 
 | ID | Item | Failure mode | Cause | Local effect | System effect | Detection | Sev | Lik. | Mitigation / design provision | Degraded mode |
 |---|---|---|---|---|---|---|---|---|---|---|
-| F-01 | Wheel drive actuator (×6) | seizure / motor open | dust ingress past seals, lubricant starvation in cold, winding open | wheel cannot be driven; brake may lock | mobility reduced | current/encoder mismatch, slip estimate | 2R | B (λ 0.03/yr → 26 %/10 yr per unit) | labyrinth + PTFE bellows, BMG/MoS2 dry lubrication, warm start; clutch/free-wheel release of failed brake; ORU-replaceable at wheel hub | 5 of 6 driven: 17.6° slope; 4 of 6: 13.6° (mobility.json) |
+| F-01 | Wheel drive actuator (×6) | seizure / motor open | dust ingress past seals, lubricant starvation in cold, winding open | wheel cannot be driven; brake may lock | mobility reduced | current/encoder mismatch, slip estimate | 2R | B (λ 0.03/yr → 26 %/10 yr per unit) | labyrinth + PTFE bellows, BMG/MoS2 dry lubrication, warm start; clutch/free-wheel release of failed brake; ORU-replaceable at wheel hub | 5 of 6 driven: 17.4° slope; 4 of 6: 13.4° (mobility.json) |
 | F-02 | Steering actuator (×6) | stuck at angle | as F-01 | wheel scrubs | turning degraded | steer encoder | 3R | C | spring-centring to 0° on power loss; remaining 5 steer; skid-steer fallback | crab/skid steering |
 | F-03 | Rocker / bogie pivot | bearing seizure | dust, cold welding | loss of articulation | rough-terrain performance degraded | joint angle telemetry | 3 | D | sealed hybrid bearings, dry film | operate on ≤ 10° smooth terrain |
 | F-04 | Body-lowering actuator (×2) | stuck | as F-01 | cannot lower/raise | loss of skid stabilisation; wheel-drive ORU swap harder | encoder | 3 | D | mechanical stop in raised position (fail-to-drive-height) | spades/anchors still available |
 | F-05 | Dexterous arm (×2) | joint failure (any of 7) | gear wear, encoder, brake fault | arm loses a DOF or locks | bimanual tasks lost; single-arm servicing continues | joint telemetry, F/T anomaly | 2R | A (λ 0.08/yr → 55 %/10 yr per arm) | two identical arms (TS-03); joint ORU / arm-level ORU at base interface; second arm can assist replacement | single-arm + crane + fixtures (coverage 0.94, TS-03) |
 | F-06 | Crane (hoist/luff/slew) | winch or slew drive failure; line damage | dust in sheaves, line abrasion | heavy lift unavailable | ORU > 20 kg handling lost | tension/encoder | 2 | C | line inspection by cameras; spare line on spine; brake fail-safe holds load | dex arm ≤ 20 kg ORUs only |
-| F-07 | Winch | drum/brake/level-wind failure | dust, overload | recovery by winch lost | recovery limited to direct tow (p_env 0.23) | load cell, encoder | 2 | C | load limiting at 4 kN; spool guard; ORU-replaceable | direct towing on flat |
+| F-07 | Winch | drum/brake/level-wind failure | dust, overload | recovery by winch lost | recovery limited to direct tow (p_env 0.27) | load cell, encoder | 2 | C | load limiting at 4 kN; spool guard; ORU-replaceable | direct towing on flat |
 | F-08 | Recovery line | abrasion/cut, snap-back | rock edge, overload | line parts | target not recovered; snap-back hazard | tension drop | 2 | C | FoS 5; jacket; tension ramp; keep-out zone in safety layer | spare line (MOD-REC) |
 | F-09 | Spade deploy actuator (×2) | stuck deployed/stowed | dust | restraint reduced | lower winch limit (2.6 → ~1.9 kN) | position switch | 3R | D | manual stow via arm; mechanical release pin | anchors only |
 | F-10 | Helical anchor | pull-out / refusal on rock | weak soil, clast | restraint lost/not installed | winching aborted at hold point | tension vs displacement, driver torque | 3 | C (case-dependent) | proof-load before use (hold point); relocate; 4 anchors in MOD-REC | reduced envelope (weak soil p_env 0.83) |
@@ -72,11 +72,11 @@ safety lanes failed) OR TE-1. Single-arm loss is a degraded state, not TE-2.
 
 | Mode | Trigger | Capability retained | Operational rule |
 |---|---|---|---|
-| DM-1 five-wheel drive | one drive failed | 17.6° slopes, full servicing | avoid > 15° routes, schedule ORU swap |
-| DM-2 four-wheel drive | two drives failed | 13.6° slopes | routes ≤ 10°, peer recovery on standby |
+| DM-1 five-wheel drive | one drive failed | 17.4° slopes, full servicing | avoid > 15° routes, schedule ORU swap |
+| DM-2 four-wheel drive | two drives failed | 13.4° slopes | routes ≤ 10°, peer recovery on standby |
 | DM-3 single arm | one dex arm failed | ~94 % weighted task coverage with crane + fixtures | no bimanual tasks without fixture |
 | DM-4 no crane | crane failed | ORUs ≤ 20 kg | heavy ORUs deferred |
-| DM-5 no winch | winch failed | direct towing only | recovery only on flat, p_env ≈ 0.23 |
+| DM-5 no winch | winch failed | direct towing only | recovery only on flat, p_env ≈ 0.27 |
 | DM-6 no PTM | PTM failed | PV charging only (~166 W) | no emergency power; dispatch MOD-KA by peer |
 | DM-7 minimal autonomy | HPSC failed | safety-lane navigation, pre-verified skills | slower, more approvals |
 | DM-8 comm-degraded | 2 of 3 links lost | autonomy to next hold point; DTN | defer irreversible steps |

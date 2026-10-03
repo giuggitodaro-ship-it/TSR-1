@@ -8,7 +8,7 @@ Complete technical specification of the frozen configuration. System-level value
 
 | Req | Statement | Verification | Status |
 |---|---|---|---|
-| MR-01 | TSR-1 shall increase the time-averaged availability of serviceable surface assets in its service area relative to an otherwise identical base without TSR-1, by at least 2.2 percentage points for the reference base of 30 assets. | A | DERIVED/CLOSED |
+| MR-01 | TSR-1 shall increase the time-averaged availability of serviceable surface assets in its service area relative to an otherwise identical base without TSR-1, by at least 1.8 percentage points for the reference base of 30 assets. | A | DERIVED/CLOSED |
 | MR-02 | TSR-1 shall perform all nominal inspection, servicing, emergency-power and recovery functions without crew EVA support. | D | DERIVED/CLOSED |
 | MR-03 | TSR-1 shall inspect assets of classes AC-1 to AC-9 at compatibility levels L0–L3 using visible, thermal-infrared and 3-D imaging, and report anomalies with location and severity. | D | DERIVED/CLOSED |
 | MR-04 | TSR-1 shall remove and replace robot-compatible ORUs of mass up to 150 kg on L2 and L3 assets. | T | DERIVED/CLOSED |
@@ -179,29 +179,31 @@ Complete technical specification of the frozen configuration. System-level value
 | THERMAL-1a max steady WEB dissipation (M9_charging) ≤ radiator design load | 319.920 | 380.000 | PASS |
 | THERMAL-1b 3 kW delivery transient (3.3 h, energy-limited): WEB ΔT ≤ 15 K | 0.000 | 15.000 | PASS |
 | THERMAL-2 survival heater + electronics ≤ survival-mode power used for energy closure | 81.833 | 81.833 | PASS |
-| MOB-1 ground pressure ≤ 7 kPa | 6.706 | 7.000 | PASS |
+| MOB-1 ground pressure ≤ 7 kPa | 6.799 | 7.000 | PASS |
 | MOB-2 traction supports claimed 20° climb at ≤ 40 % slip | True | — | PASS |
-| MOB-3 drive actuator rating ≥ wheel torque at claimed slope | 102.106 | 209.636 | PASS |
-| REC-A claimed scenario feasible with FoS (margin) | 8.812 | 1.000 | PASS |
+| MOB-3 drive actuator rating ≥ wheel torque at claimed slope | 99.923 | 209.636 | PASS |
+| REC-A claimed scenario feasible with FoS (margin) | 8.813 | 1.000 | PASS |
 | REC-B claimed scenario feasible with FoS (margin) | 10.782 | 1.000 | PASS |
 | REC-B2 claimed scenario feasible with FoS (margin) | 5.122 | 1.000 | PASS |
 | REC-C-dig claimed scenario feasible with FoS (margin) | 4.577 | 1.000 | PASS |
-| REC-D claimed scenario feasible with FoS (margin) | 1.551 | 1.000 | PASS |
+| REC-D claimed scenario feasible with FoS (margin) | 1.552 | 1.000 | PASS |
 | REC-D2 claimed scenario feasible with FoS (margin) | 4.081 | 1.000 | PASS |
 | REC-D3 claimed scenario feasible with FoS (margin) | 3.325 | 1.000 | PASS |
 | REC-W winch rating ≥ max claimed line tension | 1,186.687 | 4,000.000 | PASS |
 | MAN-1 dexterous shoulder rating ≥ payload moment × MF | 150.336 | 196.500 | PASS |
-| STAB C2 crane side lift 150 kg @ 2.56 m, level | 4.982 | 1.500 | PASS |
-| STAB C2 crane side lift 150 kg @ 2.56 m, 10° lateral, load downhi | 3.978 | 1.500 | PASS |
-| STAB C3 crane front lift 150 kg | 6.456 | 1.500 | PASS |
-| STAB C4 dexterous arm extended (front-right) with rated payload | 104.936 | 1.500 | PASS |
-| STAB C5 both extended same side (worst) | 4.697 | 1.500 | PASS |
+| STAB C2 crane side lift 150 kg @ 2.56 m, level | 4.931 | 1.500 | PASS |
+| STAB C2 crane side lift 150 kg @ 2.56 m, 10° lateral, load downhi | 3.945 | 1.500 | PASS |
+| STAB C3 crane front lift 150 kg | 4.065 | 1.500 | PASS |
+| STAB C4 dexterous arm extended (front-right) with rated payload | 63.105 | 1.500 | PASS |
+| STAB C5 both extended same side (worst) | 4.620 | 1.500 | PASS |
 | STAB C7b winch 4.0 kN + spades + 2 front hold-down anchors (80 %  | inf | 1.500 | PASS |
 | GEOM-1 WEB volume ≥ packaged equipment volume | 0.161 | 0.280 | PASS |
 | GEOM-2 stowed length ≤ envelope | 3.600 | 4.000 | PASS |
 | GEOM-3 stowed width ≤ envelope | 2.400 | 2.600 | PASS |
-| GEOM-4 stowed height (mast folded) ≤ envelope | 1.200 | 2.000 | PASS |
-| GEOM-5 deck area ≥ allocations (radiator, spine, crane, arms, mast, tool rack) | 3.643 | 3.900 | PASS |
+| GEOM-4 stowed height (arms in upright stow) ≤ envelope | 1.750 | 2.000 | PASS |
+| GEOM-5 deck items inside the deck and non-overlapping (radiator, spine, crane, mast, arm bases) | 3.258 | 3.900 | PASS |
+| GEOM-7 max steady WEB dissipation ≤ radiator capacity with stowed-boom shading | 319.920 | 367.333 | PASS |
+| GEOM-8 crane reach covers all spine slots | 1.420 | 2.561 | PASS |
 | GEOM-6 adjacent wheel clearance ≥ 0.15 m | 0.400 | 0.150 | PASS |
 | MISSION DRM-1 duration ≤ 30 h (fits one comm/approval shift cycle + margin) | 20.373 | 30.000 | PASS |
 | MISSION DRM-2 duration ≤ 30 h (fits one comm/approval shift cycle + margin) | 22.873 | 30.000 | PASS |

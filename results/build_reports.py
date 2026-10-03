@@ -58,6 +58,7 @@ def load():
              en=J("energy_power_thermal.json"), val=J("value_model.json"), rel=J("tsr_reliability.json"),
              sens=J("sensitivity.json"), cdr=J("cdr_analyses.json"), clo=J("closure.json"), dv=J("design_values.json"),
              tr=J("trades.json"), srv=J("servicing_success.json"))
+    D["cap"] = J("capacity_study.json")
     pre = RES / "pre_cdr"
     if pre.exists():
         D["pre"] = dict(clo=J("closure.json", pre), dv=J("design_values.json", pre), base=J("baseline_summary.json", pre),
@@ -78,6 +79,7 @@ def design_freeze(D) -> str:
     bat = b["battery"]
     L = o["wheelbase"] + 2 * o["wheel_r"] + 0.1
     W = o["track"] + o["wheel_b"]
+    geom4 = next(c for c in D["clo"] if c["check"].startswith("GEOM-4"))
     d = Doc()
     d.h("TODARO CORP. TSR-1 — DESIGN FREEZE V1", 1)
     d.p(DISCL)
@@ -107,7 +109,9 @@ def design_freeze(D) -> str:
         ["Deck height / mast height", f"{o['ground_clearance'] + 0.45:.2f} m / 2.20 m", "chassis 0.45 m on 0.45 m clearance"],
         ["Ground clearance", f"{o['ground_clearance']:.2f} m (0.10 m lowered)", "TS-01"],
         ["Wheelbase / track", f"{o['wheelbase']:.2f} m / {o['track']:.2f} m", "TS-01/02 packaging, GEOM-6"],
-        ["Stowed envelope (mast folded)", f"{L:.2f} × {W:.2f} × 1.20 m", "closure GEOM-2..4 vs A-32 envelope 4.0 × 2.6 × 2.0 m"],
+        ["Stowed envelope (mast folded, arms in upright stow)", f"{L:.2f} × {W:.2f} × {geom4['computed']:.2f} m", "closure GEOM-2..4 vs A-32 envelope 4.0 × 2.6 × 2.0 m"],
+        ["Deck layout", "rear: zenith radiator, full width; middle: service spine 2 × 3 slots; front: crane turntable, mast, arm bases; "
+         "tools on the chassis front face", "design.layout; closure GEOM-5/7/8; fig03 (CDR-21)"],
         ["Centre of mass (stowed, loaded)", f"x {com[0]:+.2f} m, y {com[1]:+.2f} m, z {com[2]:.2f} m", "Config.com()"],
         ["Static tip-over angles", f"{st['static_tip_angles_deg'][0]:.0f}° longitudinal / {st['static_tip_angles_deg'][1]:.0f}° lateral",
          "stability.envelope.static_tip_angles"],
@@ -158,8 +162,11 @@ def design_freeze(D) -> str:
     ])
     d.h("§6 Service spine, tools and interfaces")
     d.rows(["Item", "Value", "Derivation"], [
-        ["Service spine", f"{o['spine_slots']} androgynous slots, ≤ 40 kg/module, ≤ {o['spine_payload']:.0f} kg total, 120 VDC ≤ 1 kW + Ethernet per slot", "TS-07; interfaces II-01"],
-        ["Service modules", "MOD-KA keep-alive (×2 in base inventory, 23 kg), MOD-ORU cradles, MOD-REC recovery kit, MOD-RPT repeater; MOD-SOL optional; no fluid module", "TS-07"],
+        ["Service spine", f"{o['spine_slots']} androgynous slots in a 2 × 3 grid of 0.45 m (0.90 × 1.35 m on the mid-deck), ≤ 40 kg per occupied slot (double-slot modules ≤ 80 kg), ≤ {o['spine_payload']:.0f} kg total, 120 VDC ≤ 1 kW + Ethernet per slot", "TS-07; interfaces II-01; design.layout"],
+        ["Service modules", f"MOD-KA keep-alive ({val['keepalive_trade']['selected']}, {val['keepalive_module_kg']:.0f} kg, double slot; ×{val['base_scenario']['keepalive_modules']} in base inventory, ≤ 2 carried), "
+         "MOD-ORU cradles, MOD-REC recovery kit, MOD-RPT repeater; MOD-SOL optional; no fluid module", "TS-07, TS-07b, CDR-19/20"],
+        ["Keep-alive inventory rule", "n_KA = Poisson 95th percentile of f_park · p_KA · F · T_hold (fault rate F; f_park ≈ 0.14; T_hold ≈ 1–2 yr)",
+         "value_model.keepalive_inventory; capacity_study.json"],
         ["Tools (12)", "gripper, socket driver (≤ 50 N·m), electrical probe, connector tool, dust brush, EDS wand, anchor driver, OTCM adapter, androgynous adapter, slings, shackle/hitch, regolith scoop", "engineering/subsystem_specs/tools.md"],
         ["Interfaces", "ISPSIS 120 VDC power port; ISO 9409-1/IERIIS tool interface + adapters; LunaNet/DTN data", "engineering/interfaces.md"],
     ])
@@ -243,14 +250,19 @@ def design_freeze(D) -> str:
     vb = val["base"]
     d.rows(["Metric", "Without TSR-1 (mean)", "With TSR-1 (mean)", "Difference P10 / P50 / P90"], [
         ["Infrastructure availability", f"{vb['A0']['mean']:.3f}", f"{vb['A1']['mean']:.3f}", f"{100*vb['dA']['p10']:.1f} / {100*vb['dA']['p50']:.1f} / {100*vb['dA']['p90']:.1f} pp"],
-        ["Assets lost", f"{vb['lost0']['mean']:.1f}", f"{vb['lost1']['mean']:.1f}", "—"],
+        ["Preventable asset losses (excl. non-serviceable faults)", f"{vb['plost0']['mean']:.1f}", f"{vb['plost1']['mean']:.1f}", "—"],
+        ["Assets lost, all causes", f"{vb['lost0']['mean']:.1f}", f"{vb['lost1']['mean']:.1f}", "—"],
+        ["Fault events (grow with uptime)", f"{vb['faults0']['mean']:.0f}", f"{vb['faults1']['mean']:.0f}", "—"],
         ["Earth-supplied mass [t]", f"{vb['mass0']['mean']/1000:.1f}", f"{vb['mass1']['mean']/1000:.1f}", "—"],
+        ["Earth mass per available asset-year [kg]", f"{val['kg_per_asset_yr0']['mean']:.0f}", f"{val['kg_per_asset_yr1']['mean']:.0f}", "—"],
         ["Crew EVA [crew-h]", f"{vb['eva0']['mean']:.0f}", f"{vb['eva1']['mean']:.0f}", "—"],
         ["Mean response time [h]", "—", f"{vb['resp']['mean']:.1f}", "—"],
         ["TSR-1 utilisation", "—", f"{100*vb['util']['mean']:.1f} %", "—"],
     ])
-    d.p(f"Logistics break-even (Earth mass avoided = TSR-1 life-cycle mass {val['tsr_lifecycle_mass_kg']/1000:.2f} t): "
-        f"≈ {f(val['break_even_assets'],0)} serviceable assets.")
+    d.p(f"Logistics break-even (Earth mass avoided = TSR-1 life-cycle mass {val['tsr_lifecycle_mass_kg']/1000:.2f} t incl. "
+        f"{val['base_scenario']['keepalive_modules']} MOD-KA): ≈ {f(val['break_even_assets'],0)} serviceable assets. Losses from non-serviceable faults "
+        "are not preventable and grow with operating exposure (a kept-alive asset can fail again), so preventable losses and mass per "
+        "available asset-year are the fair comparison (CDR-19).")
     if "pre" in D:
         d.h("§18 Changes from the pre-CDR configuration")
         pb = D["pre"]["base"]
@@ -258,6 +270,11 @@ def design_freeze(D) -> str:
             ["Battery usable EOL", f"{pb['battery']['usable_eol_kwh']:.0f} kWh", f"{bat['usable_eol_kwh']:.0f} kWh", "CDR-06: ENERGY-1 failed after survival-heater correction"],
             ["Delivered mass", f"{pb['delivered']:.0f} kg", f"{b['delivered']:.0f} kg", "battery change"],
             ["Slope requirement", "nominal soil only", f"{dv['slope_climb_deg']}° nominal / {dv['slope_climb_cons_deg']}° conservative", "CDR-15"],
+            ["MOD-KA keep-alive module", "2 kWh, 0.75 m² PV, 23 kg (placeholder)", f"{val['keepalive_trade']['selected']}, {val['keepalive_module_kg']:.0f} kg, double slot",
+             "CDR-20: placeholder physically inconsistent; sustains only ≈ 40 % of assets"],
+            ["MOD-KA inventory", "2", f"{val['base_scenario']['keepalive_modules']} (scaling rule)", "CDR-19: capacity study"],
+            ["Value-model loss accounting", "failed TSR-1 attempt = immediate loss", "crew may still attempt within survival/abandonment time",
+             "CDR-19 (consistency with the no-TSR baseline)"],
         ])
     return d.text()
 
@@ -273,6 +290,17 @@ def cdr(D) -> str:
     lm = {x["level_mix"]: x for x in val["level_mix"]}
     sr = cd["speed_radius"]
     pre = D.get("pre")
+    cap1 = {(c["n_assets"], c["mtbf_yr"]): c for c in D["cap"] if c["n_tsr"] == 1 and c["keepalive_modules"] == 4}
+    cap2 = {(c["n_assets"], c["mtbf_yr"]): c for c in D["cap"] if c["n_tsr"] == 2 and c["keepalive_modules"] == 4}
+    capk = {(c["n_assets"], c["mtbf_yr"], c["keepalive_modules"]): c for c in D["cap"] if c["n_tsr"] == 1}
+    ka_opts = {o["option"]: o for o in val["keepalive_trade"]["options"]}
+    geom4 = next(c for c in D["clo"] if c["check"].startswith("GEOM-4"))
+    geom5 = next(c for c in D["clo"] if c["check"].startswith("GEOM-5"))
+    geom7 = next(c for c in D["clo"] if c["check"].startswith("GEOM-7"))
+    geom8 = next(c for c in D["clo"] if c["check"].startswith("GEOM-8"))
+    mob1 = next(c for c in D["clo"] if c["check"].startswith("MOB-1"))
+    geom7_note = geom7["note"].replace("boom covers ", "").split(" (")[0]
+    tf_c3 = next(c["tip_factor"] for c in D["stab"]["cases"] if c["case"].startswith("C3"))
     d = Doc()
     d.h("TSR-1 CRITICAL DESIGN REVIEW (adversarial)", 1)
     d.p(DISCL)
@@ -320,8 +348,8 @@ def cdr(D) -> str:
          "**Valid — design change.** Battery raised to 15 kWh usable EOL (+≈10 kg). Operational rule: service radius is set by "
          "demonstrated effective speed (table); PV adds ≈ 1.9 kWh per DRM in sunlit routes (not credited)."],
         ["CDR-07", "The service spine adds unnecessary mass.",
-         "Spine overhead 14.6 kg vs ≈ 40 kg mean carried-kit saving per sortie (TS-07); MOD-KA keep-alive modules are only possible "
-         "with a deployable-module interface and reduce asset losses (TS-07 table).",
+         f"Spine overhead {D['tr']['service_modules']['spine_overhead_kg']:.1f} kg vs ≈ {D['tr']['service_modules']['mass_saving_per_sortie_kg']:.0f} kg mean carried-kit saving per sortie (TS-07); "
+         "MOD-KA keep-alive modules are only possible with a deployable-module interface and reduce preventable losses (TS-07 tables).",
          "**Invalid — no change.**"],
         ["CDR-08", "Future assets will not be standardised enough.",
          f"ΔA: legacy base {100*lm['legacy (L0-heavy)']['dA_mean']:.1f} pp, mixed {100*lm['mixed (baseline)']['dA_mean']:.1f} pp, "
@@ -367,11 +395,45 @@ def cdr(D) -> str:
         ["CDR-17", "Value is an artefact of the assumed fault rate.",
          f"MTBF is the strongest correlate of ΔA (r ≈ {val['sensitivity_corr']['mtbf->dA']:.2f}); at small bases the case fails: 3 assets → net "
          f"mass benefit {sw[3]['net_mass_benefit']/1000:.2f} t; 5 assets → {sw[5]['net_mass_benefit']/1000:.2f} t; break-even ≈ {f(val['break_even_assets'],0)} assets.",
-         "**Valid — scope statement.** TSR-1 is *not* justified for an outpost of a few assets; it becomes rational at roughly ten or more "
+         f"**Valid — scope statement.** TSR-1 is *not* justified for an outpost of a few assets; it becomes rational above ≈ {f(val['break_even_assets'], 0)} "
          "serviceable assets, and only if their fault rate is not negligible."],
-        ["CDR-18", "A second TSR would be needed for redundancy.",
-         f"Two units at 60 assets halve response time but save no additional assets in the model (utilisation per unit {100*val['two_tsr_60_assets']['util']:.1f} %).",
-         "**Accepted.** One unit; peer servicing (MR-13) is the only argument for a second unit."],
+        ["CDR-18", "A second TSR would be needed for redundancy or capacity.",
+         f"Capacity study (4 MOD-KA): a second unit cuts mean response from {cap1[(60, 1.5)]['response_h']:.1f} h to {cap2[(60, 1.5)]['response_h']:.1f} h at 40 faults/yr but preventable "
+         f"losses change only {cap1[(60, 1.5)]['plost1']:.1f} → {cap2[(60, 1.5)]['plost1']:.1f}; utilisation per unit {100*val['two_tsr_60_assets']['util']:.1f} % at 60 assets (Monte Carlo).",
+         "**Accepted.** One unit; response time is far inside the asset survival time, so capacity is set by keep-alive inventory "
+         "(CDR-19). Peer servicing (MR-13) is the only argument for a second unit."],
+        ["CDR-19", "At large bases the value collapses: the model shows *more* assets lost and *more* Earth mass with TSR-1 at 60 assets "
+                   "with MTBF 1–1.5 yr.",
+         f"Instrumented capacity study: with TSR-1 the base stays up longer, so fault events rise ({cap1[(60, 1.0)]['faults0']:.0f} → {cap1[(60, 1.0)]['faults1']:.0f} at 60 faults/yr) "
+         f"and non-serviceable losses rise with them; **preventable** losses always fall ({cap1[(60, 1.0)]['plost0']:.1f} → {capk[(60, 1.0, 2)]['plost1']:.1f} with 2 modules, "
+         f"{capk[(60, 1.0, 8)]['plost1']:.1f} with 8) and Earth mass per available asset-year falls ({cap1[(60, 1.0)]['kg_per_asset_yr0']:.0f} → {capk[(60, 1.0, 8)]['kg_per_asset_yr1']:.0f} kg). "
+         f"Genuine saturation is in keep-alive modules: with 2 modules {capk[(60, 1.0, 2)]['ka_denied']:.0f} requests in 10 yr found none free. A pre-CDR modelling "
+         "inconsistency was also found: a failed TSR-1 recovery was an immediate loss, whereas the baseline let crew try.",
+         "**Partially valid — design change + model correction.** Metrics changed to preventable losses and mass per available asset-year "
+         "(total losses still reported). Keep-alive inventory now follows a Little's-law rule (n_KA = Poisson q95 of f_park·p_KA·F·T_hold); "
+         f"{val['base_scenario']['keepalive_modules']} modules at the 30-asset reference base. Failed-attempt handling made consistent with the baseline."],
+        ["CDR-20", "The keep-alive module cannot do what is claimed: a 23 kg box cannot keep an asset alive for months.",
+         f"TS-07b sizing with the TSR-1 battery rules: 2 kWh usable needs ≈ {ka_opts['KA-A 0.75 m² / 2 kWh']['battery_kg']:.0f} kg of cells; KA-A totals "
+         f"{ka_opts['KA-A 0.75 m² / 2 kWh']['mass_kg']:.0f} kg and sustains a sampled asset with P = {ka_opts['KA-A 0.75 m² / 2 kWh']['p_sustain']:.2f} "
+         f"(asset survival power 40–250 W, site illumination 0.5–0.92, dark periods 24–120 h). Selected {val['keepalive_trade']['selected']}: "
+         f"{val['keepalive_module_kg']:.0f} kg, P = {val['keepalive_trade']['selected_row']['p_sustain']:.2f} "
+         f"({val['keepalive_trade']['selected_row']['p_sustain_low']:.2f}–{val['keepalive_trade']['selected_row']['p_sustain_high']:.2f}).",
+         "**Valid — design change.** MOD-KA resized (KA-C), made a double-slot module (spine rule ≤ 40 kg per slot), its success "
+         "probability entered into the value model, and its mass charged to the TSR-1 life-cycle mass. Asset survival power "
+         "(A-33) is now an open question (OQ-15)."],
+        ["CDR-21", "The equipment does not physically fit on the deck.",
+         "Pre-CDR, six 0.45 m spine slots were specified in a 1.6 × 0.5 m footprint (needs ≥ 2.7 m in one row), and in plan the "
+         "spine overlapped the zenith radiator; closure GEOM-5 compared areas only. A single layout definition "
+         f"(`design.layout`) now places the radiator ({b['a_rad']:.2f} m², full width) at the rear, the spine as a 2 × 3 grid "
+         "(0.90 × 1.35 m) mid-deck, and crane turntable, mast and arm bases in the front strip; tools move to the chassis front face. "
+         f"Deck items {geom5['computed']:.2f} of {geom5['limit']:.2f} m², no overlaps; the stowed boom shades "
+         f"{geom7_note}; crane reach covers every slot ({geom8['computed']:.2f} m ≤ {geom8['limit']:.2f} m); arms stow upright, "
+         f"raising the stowed height to {geom4['computed']:.2f} m (≤ 2.0 m envelope). Front crane lift tipping factor "
+         f"{tf_c3:.1f} (≥ 1.5). Moving crane, arms and tools forward first shifted the centre of mass 0.13 m forward and the "
+         "heaviest-axle ground pressure to 7.37 kPa — closure MOB-1 **failed**; the WEB was then moved 0.5 m rearward under the "
+         f"radiator (shorter heat-pipe run), giving CoM x = {b['com_stowed'][0]:+.2f} m and {mob1['computed']:.2f} kPa.",
+         "**Valid — design change.** Layout frozen; WEB at x = −0.5 m; GEOM-5 now checks containment and non-overlap, GEOM-7 "
+         "radiator shading and GEOM-8 crane coverage; component positions in the mass model come from the same layout."],
     ]
     d.rows(["ID", "Objection", "Evidence", "Assessment and disposition"], rows)
     d.h("Failed or rejected ideas (kept on record)")
@@ -384,13 +446,17 @@ def cdr(D) -> str:
               "Fluid-servicing module (TS-07): no identified client asset.",
               "Radioisotope power for the baseline (TS-06): availability/approval; retained only for a PSR-specialist variant.",
               "Earth joystick teleoperation as primary control (TS-09): latency + 51 % DTE availability.",
-              "Second TSR-1 for capacity (CDR-18): no value at modelled fault rates."]:
+              "Second TSR-1 for capacity (CDR-18): halves response time but saves almost no additional assets.",
+              "23 kg / 2 kWh keep-alive module (CDR-20): battery alone ≈ 20 kg; sustains only ≈ 40 % of plausible assets.",
+              "Counting all asset losses as the value metric (CDR-19): penalises TSR-1 for keeping assets operating.",
+              "Six-slot spine in a 1.6 × 0.5 m strip over the radiator (CDR-21): did not fit; replaced by a 2 × 3 grid mid-deck."]:
         d.p("- " + t)
     d.h("Review outcome")
     d.p("The review did not invalidate the engineering feasibility of a service-and-recovery capability, but it did invalidate "
         "two original Todaro hypotheses (heavy service arm; towing as the primary recovery method) and substantially weakened the case "
         "for a *dedicated* vehicle relative to a host-mounted kit (CDR-01). Design changes: battery 15 kWh (CDR-06); conservative slope "
-        "requirement (CDR-15); service-radius rule tied to speed (CDR-13); kit variant (CDR-01). Open items are listed in "
+        "requirement (CDR-15); service-radius rule tied to speed (CDR-13); kit variant (CDR-01); keep-alive module resized and its "
+        "inventory scaled with fault load (CDR-19/20); deck layout made physically consistent (CDR-21). Open items are listed in "
         "`results/open_questions.md`.")
     return d.text()
 
@@ -402,6 +468,7 @@ def verdict(D) -> str:
     lm = {x["level_mix"]: x for x in val["level_mix"]}
     hk = cd["host_cases"]
     kit = cd["service_kit"]
+    c40 = {c["keepalive_modules"]: c for c in D["cap"] if c["n_tsr"] == 1 and c["n_assets"] == 60 and c["mtbf_yr"] == 1.5}
     n_fail = sum(1 for c in D["clo"] if not c["passed"])
     d = Doc()
     d.h("TSR-1 FEASIBILITY VERDICT", 1)
@@ -417,11 +484,13 @@ def verdict(D) -> str:
         "claims rest on TRL 3–4 elements with no lunar test data.")
     d.p("**Why not 'partially feasible':** the full functional scope survives in mass and power; what failed were specific means "
         "(heavy arm → crane; towing → anchored winch), not functions.")
-    d.p("**Why not 'not currently justified':** at ≳ 10 serviceable assets the model shows a positive logistics balance and an "
-        f"availability gain whose P10 is positive from about 20 assets (ΔA P10 {100*sw[20]['dA_p10']:.1f} pp at 20, {100*sw[30]['dA_p10']:.1f} pp at 30).")
+    p10_pos = next((n for n in sorted(sw) if all(sw[m]['dA_p10'] > 0 for m in sorted(sw) if m >= n)), None)
+    d.p(f"**Why not 'not currently justified':** above ≈ {f(val['break_even_assets'], 0)} serviceable assets the model shows a positive logistics "
+        f"balance, and the P10 of the availability gain is positive from {p10_pos} assets (ΔA P10 {100*sw[p10_pos]['dA_p10']:.1f} pp at {p10_pos}, "
+        f"{100*sw[30]['dA_p10']:.1f} pp at 30).")
     d.h("Conditions under which TSR-1 is justified")
     d.rows(["Condition", "Evidence", "If not met"], [
-        ["Base has ≳ 10 serviceable assets (break-even ≈ " + f(val["break_even_assets"], 0) + ")",
+        ["Base has more than ≈ " + f(val["break_even_assets"], 0) + " serviceable assets (logistics break-even)",
          f"net Earth-mass benefit {sw[3]['net_mass_benefit']/1000:.2f} t (3 assets), {sw[10]['net_mass_benefit']/1000:.2f} t (10), {sw[30]['net_mass_benefit']/1000:.2f} t (30)",
          "**not justified**: a 3-asset outpost should rely on crew + Earth spares"],
         ["Most assets are L2/L3 robot-serviceable", f"ΔA {100*lm['legacy (L0-heavy)']['dA_mean']:.1f} pp (legacy) vs {100*lm['standardised (L2/L3)']['dA_mean']:.1f} pp (standardised)",
@@ -431,17 +500,22 @@ def verdict(D) -> str:
         ["Anchors validated (TG-03)", f"p_env {rec['p_env']['R4 winch + 2 spades + 2 helical anchors']['mid']:.2f} with anchors vs {rec['p_env']['R1 winch + braked wheels']['mid']:.2f} braked wheels only",
          "slope recovery largely lost"],
         ["A dedicated carrier only if no host can respond within asset survival time", f"kit ≈ {kit['kit_allocation_kg']:.0f} kg vs dedicated {kit['dedicated_delivered_kg']:.0f} kg; "
-         f"assets lost {hk[0]['lost1_mean']:.1f} (dedicated) vs {hk[2]['lost1_mean']:.1f} (shared host busy 60 %)",
+         f"preventable losses {hk[0]['plost1_mean']:.1f} (dedicated) vs {hk[2]['plost1_mean']:.1f} (shared host busy 60 %)",
          "choose the kit variant on a utility-rover host"],
+        ["Keep-alive inventory scaled with fault load (CDR-19)", f"60 assets, MTBF 1.5 yr: preventable losses {c40[2]['plost1']:.1f} / {c40[4]['plost1']:.1f} / {c40[8]['plost1']:.1f} "
+         f"with 2 / 4 / 8 modules (without TSR-1 {c40[2]['plost0']:.1f})", "one TSR-1 saturates on keep-alive capacity, not on driving or servicing time"],
+        ["Parked assets' survival power within MOD-KA output (CDR-20)", f"P(sustain) {val['keepalive_trade']['selected_row']['p_sustain']:.2f} "
+         f"({val['keepalive_trade']['selected_row']['p_sustain_low']:.2f} if assets need 50 % more power)", "losses rise toward the no-module case; larger MOD-KA or MOD-SOL needed"],
     ])
     d.h("Answer to the research question")
     vb = val["base"]
     d.p(f"For a 30-asset south-polar base over 10 years, one TSR-1 raises mean infrastructure availability from {vb['A0']['mean']:.2f} to "
-        f"{vb['A1']['mean']:.2f} (ΔA P10/P50/P90 = {100*vb['dA']['p10']:.1f}/{100*vb['dA']['p50']:.1f}/{100*vb['dA']['p90']:.1f} pp), reduces assets lost from "
-        f"{vb['lost0']['mean']:.0f} to {vb['lost1']['mean']:.0f} and Earth-supplied replacement mass from {vb['mass0']['mean']/1000:.1f} t to {vb['mass1']['mean']/1000:.1f} t. "
+        f"{vb['A1']['mean']:.2f} (ΔA P10/P50/P90 = {100*vb['dA']['p10']:.1f}/{100*vb['dA']['p50']:.1f}/{100*vb['dA']['p90']:.1f} pp), reduces preventable asset losses from "
+        f"{vb['plost0']['mean']:.1f} to {vb['plost1']['mean']:.1f} (all causes {vb['lost0']['mean']:.0f} → {vb['lost1']['mean']:.0f}) and Earth-supplied replacement mass from "
+        f"{vb['mass0']['mean']/1000:.1f} t to {vb['mass1']['mean']/1000:.1f} t ({val['kg_per_asset_yr0']['mean']:.0f} → {val['kg_per_asset_yr1']['mean']:.0f} kg per available asset-year). "
         f"**Crew EVA is reduced only modestly** ({vb['eva0']['mean']:.0f} → {vb['eva1']['mean']:.0f} crew-h): TSR-1 saves assets that then still need crew for "
         "repairs it cannot perform on non-standard interfaces. The answer is therefore **yes, materially, for asset availability, asset "
-        "loss and logistics mass, at bases of roughly ten or more serviceable assets — and only weakly for EVA reduction**, with the value "
+        f"loss and logistics mass, at bases of more than ≈ {f(val['break_even_assets'], 0)} serviceable assets — and only weakly for EVA reduction**, with the value "
         "dominated by emergency power/keep-alive and by asset interface standardisation rather than by manipulation sophistication.")
     return d.text()
 
@@ -464,11 +538,12 @@ def exec_summary(D) -> str:
     d.p(f"**Performance.** {m['slopes_deg']['nominal']:.0f}° slopes (nominal soil; {m['slopes_deg']['conservative']:.0f}° conservative), 10 km service radius, "
         f"{en['survival_full_battery_h']:.0f} h darkness survival (indefinite in sunlight), recovery of {rec['p_env']['R4 winch + 2 spades + 2 helical anchors']['mid']*100:.0f} % "
         "of sampled immobilisation cases, ORU swaps up to 150 kg.")
-    d.p(f"**Value.** At 30 assets over 10 years: availability {vb['A0']['mean']:.2f} → {vb['A1']['mean']:.2f}, assets lost {vb['lost0']['mean']:.0f} → {vb['lost1']['mean']:.0f}, "
+    d.p(f"**Value.** At 30 assets over 10 years: availability {vb['A0']['mean']:.2f} → {vb['A1']['mean']:.2f}, preventable asset losses {vb['plost0']['mean']:.1f} → {vb['plost1']['mean']:.1f}, "
         f"Earth replacement mass {vb['mass0']['mean']/1000:.1f} → {vb['mass1']['mean']/1000:.1f} t; logistics break-even at ≈ {f(val['break_even_assets'],0)} assets. "
-        "EVA savings are modest. Value depends overwhelmingly on assets having standard robotic interfaces.")
+        "EVA savings are modest. Value depends overwhelmingly on assets having standard robotic interfaces; at large or failure-prone "
+        "bases the limiting resource is the inventory of deployable keep-alive modules, not the rover.")
     d.p("**Verdict.** Feasible with identified technology development (anchors, cold/dust-tolerant actuators, servicing autonomy, "
-        "dust-tolerant power connectors), and justified only for bases of roughly ten or more serviceable, standardised assets. The "
+        f"dust-tolerant power connectors), and justified only for bases of more than ≈ {f(val['break_even_assets'], 0)} serviceable, standardised assets. The "
         "review found a dedicated vehicle would be idle > 95 % of the time; the recommended path is a host-agnostic service-and-recovery "
         "kit, with the dedicated TSR-1 carrier used where no utility-rover host can respond in time.")
     return d.text()
@@ -518,6 +593,7 @@ def open_questions(D) -> str:
         ("OQ-12", "Seed document NTRS 20260001878 and full texts of S002 and the LTV SRD were not accessible", "evidence completeness", "re-run literature review with network access"),
         ("OQ-13", "Policy for TSR-1 command authority over third-party assets (cyber-security, liability)", "operations", "governance"),
         ("OQ-14", "Benefit of patrol inspections (early fault detection) not modelled", "possible additional value", "extend value model"),
+        ("OQ-15", "Survival power and dark-period exposure of the assets TSR-1 would park on keep-alive modules", "MOD-KA sizing and value (CDR-20, A-33..A-35)", "asset design data; site illumination time series"),
     ]
     d.rows(["ID", "Question", "Affects", "Resolution path"], items)
     return d.text()

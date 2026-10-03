@@ -29,13 +29,22 @@ The study's models drove the architecture in a specific order:
 ```
                      ┌──────────── sensor mast (NavCam stereo, thermal IR, LEDs, relay antenna) ───────────┐
    front ▲           │                                                                                      │
-         │   dex arm L ◄─┐   tool rack   ┌─ crane boom (2.6 m, 150 kg, 360° slew) ─┐   radiator (zenith, EDS) │
-         │   dex arm R ◄─┤   service spine (6 slots, 150 kg)   PV panels (vertical, both sides)            │
+         │   dex arms L/R (front corners) · crane turntable (front centre, 2.6 m boom, 150 kg, 360° slew)        │
+         │   service spine 2 × 3 slots (mid-deck, 150 kg) · radiator (rear, zenith, EDS) · PV (vertical, sides) │
+         │   tool rack on chassis front face                                                                     │
          │               └──────────── chassis torque box (Al honeycomb) = deck + WEB ──────────────────────┘
          │                    WEB: battery · PCDU (120 VDC) · PTM (3 kW isolated) · HPSC + 2× safety RT · radios
          │   6 × Ø0.9 m Ti wheels on rocker-bogie (body lowering 0.45 → 0.10 m, differential lock)
    rear  ▼   winch (4 kN, fairlead 0.25 m) · 2 rear spades · 2 helical anchors (+2 in MOD-REC) · LiDAR rear
 ```
+
+**Deck layout (CDR-21, `src/tsr1/design/layout.py`, figure fig03).** Rear: zenith radiator over the full 1.5 m width
+(≈ 1.1 m long). Middle: service spine as a 2 × 3 grid of 0.45 m slots (0.90 × 1.35 m). Front strip: crane turntable on
+the centre line, sensor mast, and the two dexterous-arm bases at the corners. Tools hang in holsters on the chassis
+front face, inside both arms' workspace; the tether reel sits inside the chassis behind the front face. The arms stow
+upright at the front corners and the crane boom stows rearward over the spine, so nothing but the boom tip lies above
+the radiator. The same layout sets component positions in the mass/CoM model and the crane base in the stability
+model, and is checked for containment and non-overlap by closure GEOM-5.
 
 ## 3. Functional architecture
 
