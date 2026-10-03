@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+.venv/
+# Large raw Monte Carlo sample dumps are regenerated from configs; summaries are committed.
+simulations/results/raw/
