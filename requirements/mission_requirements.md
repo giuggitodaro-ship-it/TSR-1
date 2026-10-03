@@ -7,11 +7,11 @@ Verification: A = analysis, T = test, I = inspection, D = demonstration. `[TBD:k
 ## Availability
 
 ### MR-01
-- **Statement:** TSR-1 shall increase the time-averaged availability of serviceable surface assets in its service area relative to an otherwise identical base without TSR-1, by at least [TBD:mr01_avail_gain_pp] percentage points for the reference base of [TBD:ref_assets] assets.
+- **Statement:** TSR-1 shall increase the time-averaged availability of serviceable surface assets in its service area relative to an otherwise identical base without TSR-1, by at least 2.2 percentage points for the reference base of 30 assets.
 - **Rationale:** Primary research question; infrastructure availability is the stated purpose (S051 objective).
 - **Source:** DIRECTIVE §4; S051; DESIGN-DERIVED(reliability.value_model)
 - **Verification:** A
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ## Crew
 
@@ -34,38 +34,38 @@ Verification: A = analysis, T = test, I = inspection, D = demonstration. `[TBD:k
 ## Servicing
 
 ### MR-04
-- **Statement:** TSR-1 shall remove and replace robot-compatible ORUs of mass up to [TBD:oru_max_kg] kg on L2 and L3 assets.
+- **Statement:** TSR-1 shall remove and replace robot-compatible ORUs of mass up to 150 kg on L2 and L3 assets.
 - **Rationale:** ORU-level repair is the established supportability strategy (S049); mass from manipulator and stability analysis.
 - **Source:** S049; ASSUMPTION A-13; DESIGN-DERIVED(manipulation.arm, stability)
 - **Verification:** T
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ## Emergency power
 
 ### MR-05
-- **Statement:** TSR-1 shall deliver temporary electrical power to a disabled asset through an ISPSIS 120 VDC compatible interface at up to [TBD:p_emer_cont_kw] kW continuous for at least [TBD:t_emer_keepalive_h] h at keep-alive load ([TBD:p_keepalive_w] W).
+- **Statement:** TSR-1 shall deliver temporary electrical power to a disabled asset through an ISPSIS 120 VDC compatible interface at up to 3 kW continuous for at least 10 h at keep-alive load (300 W).
 - **Rationale:** Prevents thermal death of unpowered assets (A-14) and enables diagnosis; 120 VDC is the international interoperability standard (S011, S012).
 - **Source:** S011; S012; ASSUMPTION A-14; DESIGN-DERIVED(power.budget)
 - **Verification:** T
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ## Recovery
 
 ### MR-06
-- **Statement:** TSR-1 shall recover or reposition immobilized vehicles within the envelope: [TBD:rec_envelope_text].
+- **Statement:** TSR-1 shall recover or reposition immobilized vehicles within the envelope: free-rolling vehicles up to 4.8 t and brake-locked vehicles up to 2.3 t on slopes ≤ 15° (anchored winch, FoS 1.5); 450 kg-class rovers with wheels embedded ≤ 0.15 m after ramp excavation; direct towing of free-rolling vehicles ≤ 1.5 t on level ground; P(sampled immobilisation case recoverable) = 0.92.
 - **Rationale:** Immobilization is a demonstrated rover loss mode (S046); envelope from recovery model.
 - **Source:** S046; DESIGN-DERIVED(recovery.towing)
 - **Verification:** A,T
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ## Dust
 
 ### MR-07
-- **Statement:** TSR-1 shall remove regolith dust from asset solar-array, radiator and optical surfaces such that the residual area coverage is ≤ [TBD:dust_residual_pct] %.
+- **Statement:** TSR-1 shall remove regolith dust from asset solar-array, radiator and optical surfaces such that the residual area coverage is ≤ 5 %.
 - **Rationale:** Sub-monolayer dust degrades thermal surfaces (S062); Apollo dust effects (S022).
 - **Source:** S022; S062; DESIGN-DERIVED(dust trade)
 - **Verification:** T
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ## Autonomy
 
@@ -88,11 +88,11 @@ Verification: A = analysis, T = test, I = inspection, D = demonstration. `[TBD:k
 ## Environment
 
 ### MR-10
-- **Statement:** TSR-1 shall operate in the south-polar environment (sunlit ridges, shadowed terrain) including PSR excursions of up to [TBD:psr_excursion_h] h, and shall survive [TBD:survival_h] h without external power or sunlight.
+- **Statement:** TSR-1 shall operate in the south-polar environment (sunlit ridges, shadowed terrain) including PSR excursions of up to 8 h, and shall survive 120 h without external power or sunlight.
 - **Rationale:** Longest darkness at best sites 3–5 days (S030); PSR < 40 K (S032); lunar-night survival is the #1 NASA shortfall (S010).
 - **Source:** S010; S030; S032; DESIGN-DERIVED(thermal, power)
 - **Verification:** A,T
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ## Delivery
 
@@ -133,8 +133,8 @@ Verification: A = analysis, T = test, I = inspection, D = demonstration. `[TBD:k
 ## Service area
 
 ### MR-15
-- **Statement:** TSR-1 shall serve assets within a service radius of [TBD:service_radius_km] km of its home charging node and reach any such asset within [TBD:response_time_h] h of task approval.
+- **Statement:** TSR-1 shall serve assets within a service radius of 10 km of its home charging node and reach any such asset within 10 h of task approval.
 - **Rationale:** Comm-tower cell ≈ 10 km (S054); response time from availability model.
 - **Source:** S054; ASSUMPTION A-20; DESIGN-DERIVED(reliability.value_model, mobility)
 - **Verification:** A,D
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED

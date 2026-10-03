@@ -17,6 +17,12 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from tsr1.common.params import REGISTRY as R
+
+R.define("robot_step_factor", "k_skill", 1.0, "-", "ASSUMPTION",
+         "A-31 / CDR-09: multiplier on every robotic step probability (pessimism case 0.9)", "reliability",
+         "robot dexterity/maturity factor", low=0.9, high=1.0)
+
 LEVELS = ("L0", "L1", "L2", "L3")
 
 # step -> level -> (low, high) success probability (ENGINEERING ASSUMPTION A-31)
@@ -58,9 +64,10 @@ ATTEMPTS = {"oru_replace": 2, "dust_clean": 2, "emergency_power": 2, "recovery_r
 def step_p(step: str, level: str, actor: str = "robot", rng: np.random.Generator | None = None) -> float:
     table = ROBOT_STEPS if actor == "robot" else CREW_STEPS
     lo, hi = table[step][level]
+    k = R.v("robot_step_factor") if actor == "robot" else 1.0
     if rng is None:
-        return 0.5 * (lo + hi)
-    return float(rng.uniform(lo, hi))
+        return k * 0.5 * (lo + hi)
+    return k * float(rng.uniform(lo, hi))
 
 
 def task_success(task: str, level: str, actor: str = "robot", rng: np.random.Generator | None = None,

@@ -1,0 +1,52 @@
+# TSR-1 CRITICAL DESIGN REVIEW (adversarial)
+
+> TSR-1 is an independent conceptual engineering study by Todaro Corp. References to NASA, ESA and other organizations are used solely as technical and architectural context.
+
+The project team switched role to a hostile independent design-review board whose objective was to invalidate TSR-1. Each objection is answered with model evidence; dispositions are **design change**, **requirement change**, **accepted risk** or **open**. Failed ideas are recorded, not hidden. Evidence files: `simulations/results/`.
+
+| ID | Objection | Evidence | Assessment and disposition |
+|---|---|---|---|
+| CDR-01 | Is a dedicated servicing rover necessary? NASA's Lunar Utility Rover already includes maintain/repair/service (S005); TSR-1 would be idle most of the time. | Utilisation of one TSR-1 is only 1.5 % at 30 assets (2.9 % at 60). The service-and-recovery functions packaged as a kit weigh ≈ 352 kg (allocation) vs 1207 kg for the dedicated rover. Value with a shared host: ΔA 7.7 pp dedicated vs 7.5 pp (host busy 30 %, 24 h) vs 6.3 pp (busy 60 %, 72 h); assets lost 20.7 / 21.4 / 24.1. | **Valid — design change (architecture variant).** The objection is substantially correct for a utilisation basis. TSR-1 is re-baselined as a host-agnostic *service & recovery kit* (arms, crane, tools, spine, PTM, recovery hardware) with the dedicated carrier as one implementation, justified only where no host can reach unpowered assets within their survival time (the dedicated carrier's advantage is response, not capacity). Recommendation: offer the kit to utility-rover hosts first. |
+| CDR-02 | The dual-arm idea is unjustified. | The *asymmetric heavy + dexterous* pair costs +113 kg for +6 % task coverage (TS-03) — rejected. Two identical dexterous arms cost +27 kg over one arm and remove the arm single-point failure (λ 0.08/yr → 55 % chance of an arm failure in 10 yr). | **Partially valid — design change already made (TS-03).** Heavy arm replaced by a ~20 kg crane boom. Second dexterous arm retained; A4 (one arm + crane) is the recorded −27 kg descope. |
+| CDR-03 | The rover is too massive for its job. | Delivered 1207 kg (P90 1374 kg; P(≤ 1.5 t) 0.99) consumes most of an Argonaut-class lander. Mass drivers: actuator torque density, system margin, battery (tornado). | **Partially valid — accepted with descope list.** Descopes: CFRP chassis (−15 kg), one arm (−27 kg), passive rocker-bogie (−29 kg), 7.5 km service radius battery (−15 kg). Kit variant (CDR-01) is the main mass answer. |
+| CDR-04 | Towing is unrealistic in lunar regolith. | Confirmed for slopes: direct tow capacity 215 N at 15° (nominal soil), 22 N conservative; recovery fraction by direct towing only 0.27. | **Valid — design change already made (TS-05).** Terrestrial-style towing is limited to level ground; slope recovery uses anchored winching (p_env 0.92). |
+| CDR-05 | Anchors are not practical. | Spade insertion force ≈ 1.4 kN each vs vehicle weight ≈ 2.0 kN (one at a time); deeper spades (0.4 m) need ≈ 15 kN — infeasible. Helical anchor capacity ≈ 924 N (ESTIMATE N_q 10–40). With half-strength soil p_env falls to 0.84; with spades only 0.84. | **Partially valid — accepted risk, TRL 3 (TG-03).** Spade depth frozen at 0.3 m; proof-load hold point before every winch pull; 2 spare anchors in MOD-REC. Recovery claims flagged as contingent on Stage-1 anchor tests. |
+| CDR-06 | Battery endurance is inadequate. | Pre-CDR: after correcting the survival heater, DRM-2 at 10 km + 50 h reserve required 14.11 kWh vs 14 kWh available — closure ENERGY-1 **failed**. Frozen: 15 kWh usable EOL; DRM-2 10.05 kWh + reserve 4.09 kWh. Service radius vs effective speed: 0.7 km/h → 6.2 km, 1.0 km/h → 9.0 km, 1.26 km/h → 11.2 km, 1.8 km/h → 16.0 km, 2.5 km/h → 22.5 km. | **Valid — design change.** Battery raised to 15 kWh usable EOL (+≈10 kg). Operational rule: service radius is set by demonstrated effective speed (table); PV adds ≈ 1.9 kWh per DRM in sunlit routes (not credited). |
+| CDR-07 | The service spine adds unnecessary mass. | Spine overhead 14.6 kg vs ≈ 40 kg mean carried-kit saving per sortie (TS-07); MOD-KA keep-alive modules are only possible with a deployable-module interface and reduce asset losses (TS-07 table). | **Invalid — no change.** |
+| CDR-08 | Future assets will not be standardised enough. | ΔA: legacy base 2.4 pp, mixed 7.9 pp, standardised 13.4 pp. Robotic ORU success L0 ≈ 0, L1 ≈ 0.12. | **Valid — open (programmatic, TG-05).** The single most important condition for TSR-1 value. Recommendation: make an L2 robotic-service interface a Moon Base asset requirement; without it TSR-1 is mainly an inspection, emergency-power and recovery vehicle. |
+| CDR-09 | Robotic repair is too difficult; success assumptions are optimistic. | No lunar servicing statistics exist. Pessimism case (all robotic step probabilities × 0.9): L2 ORU success 0.44 (nominal 0.78); ΔA 4.3 pp vs 8.1 pp; assets lost with TSR-1 22.2 vs 20.6. | **Partially valid — accepted risk.** Value degrades but stays positive because emergency power + keep-alive modules prevent losses even when repair fails. Stage-3 field statistics must replace assumption A-31. |
+| CDR-10 | Autonomy adds unacceptable complexity. | Supervised autonomy halves human operator time vs teleop and works in comm outages (TS-09); ML is advisory behind deterministic guards. Verification of contact-rich skills is TRL 4 (TG-04). | **Partially valid — accepted risk with mitigation.** Skill library limited to DRM steps; formal verification of guards; teleop-assisted fallback (DM-7). |
+| CDR-11 | The design relies on infrastructure that does not exist yet. | Dependencies: ISPSIS-compliant charging nodes (A-06), relay services (S017/S018), surface network (S054), HPSC (S039), BMG actuators (S040), asset standards (TG-05), lunar failure-rate data (TG-08). | **Valid — open.** Each dependency has a degraded alternative (PV charging, DTE + mesh, GR740-class computing, heated actuators with −≈80 h survival) recorded in open_questions.md; asset standards have no substitute. |
+| CDR-12 | Low utilisation wastes a 1.2 t asset. | See CDR-01; idle time can host DRM-1 patrols (fault pre-detection, not credited in the value model) and light logistics. | **Valid — operational change.** Scheduled patrols and opportunistic logistics added to ConOps; not credited in value. |
+| CDR-13 | Effective autonomous speed is optimistic. | DRM-2 energy is speed-dominated (hotel loads): 6.9–15.1 kWh over 2.5–0.7 km/h (tornado). | **Valid — requirement change.** Service radius tied to demonstrated speed (CDR-06 table); SR-MOB-04 retains ≥ 0.35 m/s average. |
+| CDR-14 | Thermal margins are thin with dust on the radiator. | Radiator sized with dusty α (×2.0, S062 range 1.4–2.6); max steady WEB dissipation 350 W vs 380 W; 3 kW transfer is energy-limited (≈ 1 h) and absorbed by WEB heat capacity. | **Accepted.** EDS on radiator; operational throttling of charging if α degrades beyond ×2.6. |
+| CDR-15 | Slope capability is overstated. | Nominal 20.7°, conservative 15.6°, weak bound 10.3°; friction angle dominates (16–31° over 30–46°). | **Valid — requirement change.** SR-MOB-02 now states 20° nominal **and** 15° conservative; route planning uses the conservative value until in-situ traction is measured. |
+| CDR-16 | Launch loads are unknown. | No lander user-guide values retrieved (S075). Chassis is minimum-gauge driven and insensitive over 4–10 g; mechanisms need launch locks (in 5 % accommodation allowance). | **Accepted — open** until a lander is selected. |
+| CDR-17 | Value is an artefact of the assumed fault rate. | MTBF is the strongest correlate of ΔA (r ≈ -0.45); at small bases the case fails: 3 assets → net mass benefit -0.84 t; 5 assets → -0.61 t; break-even ≈ 9 assets. | **Valid — scope statement.** TSR-1 is *not* justified for an outpost of a few assets; it becomes rational at roughly ten or more serviceable assets, and only if their fault rate is not negligible. |
+| CDR-18 | A second TSR would be needed for redundancy. | Two units at 60 assets halve response time but save no additional assets in the model (utilisation per unit 1.5 %). | **Accepted.** One unit; peer servicing (MR-13) is the only argument for a second unit. |
+
+## Failed or rejected ideas (kept on record)
+
+- Asymmetric heavy service arm (TS-03): mass-inefficient in lunar gravity; replaced by crane boom.
+
+- Terrestrial-style towing on slopes (TS-05): traction-limited; replaced by anchored winching.
+
+- High winch fairlead (0.60 m): pitches the vehicle over at 4 kN (tip factor < 1).
+
+- Deep (0.4 m) spades: insertion force ≈ 15 kN exceeds vehicle weight.
+
+- Outriggers (TS-04): no stability need at 150 kg crane rating; do not resist sliding.
+
+- Fully active / 4-wheel suspensions (TS-01): +80–100 kg for no gradeability gain.
+
+- Fluid-servicing module (TS-07): no identified client asset.
+
+- Radioisotope power for the baseline (TS-06): availability/approval; retained only for a PSR-specialist variant.
+
+- Earth joystick teleoperation as primary control (TS-09): latency + 51 % DTE availability.
+
+- Second TSR-1 for capacity (CDR-18): no value at modelled fault rates.
+
+## Review outcome
+
+The review did not invalidate the engineering feasibility of a service-and-recovery capability, but it did invalidate two original Todaro hypotheses (heavy service arm; towing as the primary recovery method) and substantially weakened the case for a *dedicated* vehicle relative to a host-mounted kit (CDR-01). Design changes: battery 15 kWh (CDR-06); conservative slope requirement (CDR-15); service-radius rule tied to speed (CDR-13); kit variant (CDR-01). Open items are listed in `results/open_questions.md`.

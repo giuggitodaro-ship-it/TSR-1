@@ -1,0 +1,34 @@
+{
+ "crew_repair": {
+  "p_capable_10yr": 0.991,
+  "p_full_10yr": 0.1335,
+  "availability_full": 0.4052775445539375,
+  "availability_capable": 0.9971836498066705,
+  "fault_rate_per_yr": 1.264,
+  "mean_outage_days": 298.20721903604135
+ },
+ "slow_repair": {
+  "p_capable_10yr": 0.9815,
+  "p_full_10yr": 0.1065,
+  "availability_full": 0.31978393556312223,
+  "availability_capable": 0.993544665752645,
+  "fault_rate_per_yr": 1.24855,
+  "mean_outage_days": 379.48873292897224
+ },
+ "peer": {
+  "p_capable_10yr": 0.989,
+  "p_full_10yr": 0.1475,
+  "availability_full": 0.4372035750621379,
+  "availability_capable": 0.9968788561459593,
+  "fault_rate_per_yr": 1.2634,
+  "mean_outage_days": 279.59391006498936
+ },
+ "no_repair": {
+  "p_capable_10yr": 0.5945,
+  "p_full_10yr": 0.0,
+  "availability_full": 0.08330369520969842,
+  "availability_capable": 0.8424942388938289,
+  "fault_rate_per_yr": 1.03345,
+  "mean_outage_days": 1965.3079093815963
+ }
+}

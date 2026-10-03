@@ -1,0 +1,16 @@
+# TSR-1 Technology Gaps
+
+> TSR-1 is an independent conceptual engineering study by Todaro Corp. References to NASA, ESA and other
+> organizations are used solely as technical and architectural context.
+
+| ID | Gap | Why it matters for TSR-1 | Quantified sensitivity | Closure path | Related NASA/ESA activity (context only) |
+|---|---|---|---|---|---|
+| TG-01 | Cold-tolerant, dust-tolerant actuators at 50–200 N·m with 10-yr life | ≈ 30 external actuators; heated actuators would add ≈ 85 W survival power (≈ +100 % of survival load) | survival time 171 h → ≈ 90 h if all actuators need −55 °C survival heat (thermal.lumped.actuator_heater_power) | BMG/dry-lubricated strain-wave gear life tests in simulant + TVAC; flight demo | JPL COLDArm/BMG gears (S040); 2026 shortfalls: cold-tolerant mobility (S010) |
+| TG-02 | Robot-mateable dust-tolerant power connector (3 kW, 120 VDC, ISPSIS) | emergency power and charging are the main asset-loss mitigation | without emergency power, assets lost rise toward the no-TSR case (value model: losses with TSR depend mainly on power restoration) | kW-class robotic mating tests with simulant; connector standardisation | Honeybee DTC (S042); SBIR inductive links (S042) |
+| TG-03 | Regolith anchor/spade capacity and installability | recovery on slopes is impossible without ground reaction (direct tow ≤ 0.2 kN on 15°) | p_env 0.91 nominal; 0.83 at half-strength soil; ~0.46 if anchors/spades fail entirely | instrumented pull tests in simulants at multiple densities; parabolic-flight tests; lunar demo | anchoring for legged/tethered rovers (S045) |
+| TG-04 | Verified supervised servicing autonomy | effective speed and task success dominate energy, response time and value | DRM-2 energy 6.9–15.1 kWh across 0.7–2.5 km/h effective speed (tornado) | skill library + formal guard verification; analogue field tests | NASA capability gaps (S001); CADRE (S069) |
+| TG-05 | Asset-side robotic servicing standard (handles, fasteners, connectors, tow points, health data) | robotic ORU success ≈ 0 (L0), 0.12 (L1), 0.78 (L2), 0.96 (L3) | ΔA 2.2 pp (legacy) → 13.6 pp (standardised) | adopt IERIIS/NASA SP-20260001900 practices into Moon Base asset requirements | IERIIS (S013), NASA/SP-20260001900 (S002), LSIC |
+| TG-06 | Reduced-gravity terramechanics prediction | slope claims rest on Bekker/Wong-Reece with uncertain parameters | max slope 16.4–30.7° over the friction-angle range; −20 % DP lunar-g penalty | single-wheel tests in lunar-g (parabolic), in-situ wheel telemetry from VIPER/LTV | Kobayashi/Wong (S043) |
+| TG-07 | 10-year dust life of mechanisms, seals, optics | dust is certain to accumulate (F-25) | not quantified (no data) | long-duration simulant/vacuum/thermal-cycling tests | NASA dust roadmap (S020) |
+| TG-08 | Lunar infrastructure failure-rate data | value model inputs (MTBF 1–10 yr) dominate ΔA uncertainty | correlation of MTBF with ΔA ≈ −0.46 (more failures → more value) | early Moon Base asset telemetry; fault reporting standard | — |
+| TG-09 | ISPSIS surface power-quality and connector definition | interoperability of emergency power | — | standard development | ISPSIS (S011), NASA GRC grid work (S012) |

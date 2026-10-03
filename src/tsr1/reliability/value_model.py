@@ -94,7 +94,9 @@ class Scenario:
     crew_hours_task: tuple = (20.0, 8.0, 20.0, 30.0)   # A-21
     crew_recovery_p: float = 0.3
     immob_abandon_days: float = 30.0
-    keepalive_modules: int = 0           # deployable keep-alive power modules (service-spine module, TS-07)     # immobilised asset declared lost if not recovered (A-14 analogue)
+    keepalive_modules: int = 0           # deployable keep-alive power modules (service-spine module, TS-07)
+    host_busy_frac: float = 0.0          # CDR-01: probability the (shared) host vehicle is busy when a task arrives
+    host_delay_h: float = 0.0            # mean extra delay before a busy host can start the task     # immobilised asset declared lost if not recovered (A-14 analogue)
 
 
 FAULTS = ("electrical", "dust", "comm", "immobilization", "catastrophic")
@@ -184,9 +186,10 @@ def simulate(sc: Scenario, assets: list[Asset], with_tsr: bool, rng: np.random.G
     earth_mass = 0.0
     eva_h = 0.0
     responses = []
-    tsr_busy_until = 0.0
+    n_units = max(1, sc.n_tsr) if with_tsr else 0
+    busy_until = [0.0] * n_units
+    down_until = [0.0] * n_units
     tsr_busy_total = 0.0
-    tsr_down_until = 0.0
     tasks_tsr = 0
     tasks_ok = 0
     ka_free = sc.keepalive_modules if with_tsr else 0
@@ -196,10 +199,10 @@ def simulate(sc: Scenario, assets: list[Asset], with_tsr: bool, rng: np.random.G
     queue: list = []             # TSR priority queue (prio, t_fault, idx)
     amap = {a.idx: a for a in assets}
     # TSR self-fault process
-    if with_tsr:
+    for u in range(n_units):
         t = rng.exponential(sc.tsr_mtbf_yr * YEAR_H)
         while t < T:
-            push(t, "tsr_fault", None)
+            push(t, "tsr_fault", u)
             t += sc.tsr_repair_days * 24 + rng.exponential(sc.tsr_mtbf_yr * YEAR_H)
     for (w0, w1) in crew_windows:
         push(w0, "crew_start", (w0, w1))
@@ -231,9 +234,15 @@ def simulate(sc: Scenario, assets: list[Asset], with_tsr: bool, rng: np.random.G
         push(t + sc.replace_lead_yr * YEAR_H, "replaced", i)
 
     def try_start_tsr(t):
-        nonlocal tsr_busy_until, tsr_busy_total, tasks_tsr, tasks_ok, earth_mass
-        if not with_tsr or t < tsr_busy_until or t < tsr_down_until:
+        nonlocal tsr_busy_total, tasks_tsr, tasks_ok, earth_mass
+        if not with_tsr:
             return
+        free = [u for u in range(n_units) if t >= busy_until[u] and t >= down_until[u]]
+        for u in free:
+            _start_one(t, u)
+
+    def _start_one(t, u):
+        nonlocal tsr_busy_total, tasks_tsr, tasks_ok, earth_mass
         while queue:
             prio, tf, i = heapq.heappop(queue)
             if i not in fault_info or state[i] == "lost":
@@ -243,6 +252,8 @@ def simulate(sc: Scenario, assets: list[Asset], with_tsr: bool, rng: np.random.G
             ft = info["type"]
             j = {"electrical": 0, "dust": 1, "comm": 2, "immobilization": 3}[ft]
             travel = a.dist_km / sc.tsr_speed_kmh
+            if sc.host_busy_frac > 0 and rng.random() < sc.host_busy_frac:
+                travel += rng.exponential(sc.host_delay_h)   # shared host must finish/abort its current job
             t_arrive = t + travel
             responses.append(t_arrive - info["t"])
             dur = 2 * travel + sc.service_h[j] + sc.recharge_h
@@ -269,7 +280,7 @@ def simulate(sc: Scenario, assets: list[Asset], with_tsr: bool, rng: np.random.G
                 ok = (rng.random() < task_success("recovery_rig", a.level, "robot", rng) and
                       rng.random() < sc.recovery_envelope_p)
             t_done = t + dur
-            tsr_busy_until = t_done
+            busy_until[u] = t_done
             tsr_busy_total += dur
             push(t_done, "tsr_done", (i, ok))
             return
@@ -289,7 +300,10 @@ def simulate(sc: Scenario, assets: list[Asset], with_tsr: bool, rng: np.random.G
                 lose(i, t)
                 continue
             set_state(i, t, "degraded" if ft == "dust" else "down", 1 - sc.dust_loss if ft == "dust" else 0.0)
-            fault_info[i] = {"type": ft, "t": t, "unpowered": unp, "stabilised": False}
+            # triage (ConOps §7): with TSR-1 present, crew are tasked only with faults TSR-1 cannot repair
+            # (ORU work on L0/L1 assets) or after a failed TSR-1 attempt; TSR-1 still provides power/keep-alive.
+            crew_needed = (not with_tsr) or (ft in ("electrical", "comm") and a.level in ("L0", "L1"))
+            fault_info[i] = {"type": ft, "t": t, "unpowered": unp, "stabilised": False, "crew_needed": crew_needed}
             if unp:
                 push(t + sc.t_survive_h, "thermal_check", (i, t))
             if ft == "immobilization":
@@ -299,11 +313,12 @@ def simulate(sc: Scenario, assets: list[Asset], with_tsr: bool, rng: np.random.G
                 heapq.heappush(queue, (prio, t, i))
                 try_start_tsr(t)
             backlog.append(i)
-            # crew present now? respond immediately within window
-            for (w0, w1) in crew_windows:
-                if w0 <= t <= w1:
-                    push(t + 2.0, "crew_task", i)
-                    break
+            # crew present now? respond immediately within window (only if crew are needed for this fault)
+            if crew_needed:
+                for (w0, w1) in crew_windows:
+                    if w0 <= t <= w1:
+                        push(t + 2.0, "crew_task", i)
+                        break
         elif kind == "thermal_check":
             i, tf = data
             info = fault_info.get(i)
@@ -324,6 +339,7 @@ def simulate(sc: Scenario, assets: list[Asset], with_tsr: bool, rng: np.random.G
                         backlog.remove(i)
                 else:
                     info = fault_info[i]
+                    info["crew_needed"] = True        # TSR attempt failed -> eligible for crew
                     if info["type"] == "immobilization":
                         lose(i, t)
                     elif info.get("unpowered") and info.get("stabilised"):
@@ -352,8 +368,8 @@ def simulate(sc: Scenario, assets: list[Asset], with_tsr: bool, rng: np.random.G
                     if i in backlog:
                         backlog.remove(i)
         elif kind == "tsr_fault":
-            tsr_down_until = t + sc.tsr_repair_days * 24
-            push(tsr_down_until, "tsr_up", None)
+            down_until[data] = max(t, busy_until[data]) + sc.tsr_repair_days * 24
+            push(down_until[data], "tsr_up", data)
         elif kind == "tsr_up":
             try_start_tsr(t)
         elif kind == "crew_start":
@@ -368,6 +384,8 @@ def simulate(sc: Scenario, assets: list[Asset], with_tsr: bool, rng: np.random.G
             if i not in fault_info or state[i] == "lost":
                 continue
             info = fault_info[i]
+            if not info.get("crew_needed", True):
+                continue
             a = amap[i]
             j = {"electrical": 0, "dust": 1, "comm": 2, "immobilization": 3}[info["type"]]
             # crew-hour budget per window
@@ -410,7 +428,7 @@ def simulate(sc: Scenario, assets: list[Asset], with_tsr: bool, rng: np.random.G
         set_state(i, T, state[i], perf[i])
     avail = sum(up_int.values()) / (len(assets) * T)
     down = len(assets) * T - sum(up_int.values())
-    util = tsr_busy_total / T if with_tsr else 0.0
+    util = tsr_busy_total / (T * n_units) if with_tsr else 0.0
     return Metrics(avail, down, lost, eva_h, earth_mass, float(np.mean(responses)) if responses else float("nan"),
                    util, tasks_tsr, tasks_ok)
 

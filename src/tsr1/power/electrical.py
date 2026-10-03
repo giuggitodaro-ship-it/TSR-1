@@ -4,7 +4,9 @@ Architecture (selected in TS-06): Li-ion battery (PPR 18650-class pack) behind a
 buck-boost regulator producing a regulated **120 VDC** primary bus (ISPSIS, S011); 28 VDC secondary
 bus via isolated converters for avionics; a galvanically isolated bidirectional **power-transfer
 module (PTM)** for charging from infrastructure and emergency power delivery at 120 VDC through a
-tethered dust-tolerant connector (exchange distance < 100 m, S012).
+tethered dust-tolerant connector (exchange distance < 100 m, S012). The PTM is connected directly to
+the battery string (single isolated conversion stage, η ≈ 0.95), not behind the bus regulator, so that
+transferred power incurs one conversion loss (DESIGN decision, closure check THERMAL-1).
 """
 from __future__ import annotations
 

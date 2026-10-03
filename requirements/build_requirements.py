@@ -118,9 +118,10 @@ SYSTEM = [
          rat="Lunar Sourcebook: satisfactory mobility if contact pressure ≤ 7–10 kPa (S023).",
          src="S023", ver="A,T"),
     dict(id="SR-MOB-02", parent="MR-15", cat="Mobility",
-         text="TSR-1 shall climb and descend {slope_climb_deg}° slopes at maximum operational mass with wheel "
-              "slip ≤ 40 % under nominal soil, and shall hold position (brakes) on {slope_hold_deg}°.",
-         rat="Route slopes A-04; traction limit from terramechanics model.",
+         text="TSR-1 shall climb and descend {slope_climb_deg}° slopes under nominal soil and {slope_climb_cons_deg}° under "
+              "conservative (lunar-gravity-penalised) soil at maximum operational mass with wheel slip ≤ 40 %, and "
+              "shall hold position (brakes) on {slope_hold_deg}°.",
+         rat="Route slopes A-04; traction limit from terramechanics model; conservative value added by CDR-15.",
          src="ASSUMPTION A-04; DESIGN-DERIVED(mobility.vehicle)", ver="A,T"),
     dict(id="SR-MOB-03", parent="MR-15", cat="Mobility",
          text="TSR-1 shall negotiate step obstacles of {obstacle_m} m and ditches of {ditch_m} m width.",

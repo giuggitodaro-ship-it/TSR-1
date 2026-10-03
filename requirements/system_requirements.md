@@ -7,85 +7,85 @@ Verification: A = analysis, T = test, I = inspection, D = demonstration. `[TBD:k
 ## Mobility
 
 ### SR-MOB-01 (parent MR-10)
-- **Statement:** Mean static ground contact pressure shall not exceed 7 kPa at maximum operational mass on level ground (computed: [TBD:contact_pressure_kpa] kPa).
+- **Statement:** Mean static ground contact pressure shall not exceed 7 kPa at maximum operational mass on level ground (computed: 6.64 kPa).
 - **Rationale:** Lunar Sourcebook: satisfactory mobility if contact pressure ≤ 7–10 kPa (S023).
 - **Source:** S023
 - **Verification:** A,T
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ### SR-MOB-02 (parent MR-15)
-- **Statement:** TSR-1 shall climb and descend [TBD:slope_climb_deg]° slopes at maximum operational mass with wheel slip ≤ 40 % under nominal soil, and shall hold position (brakes) on [TBD:slope_hold_deg]°.
-- **Rationale:** Route slopes A-04; traction limit from terramechanics model.
+- **Statement:** TSR-1 shall climb and descend 20° slopes under nominal soil and 15° under conservative (lunar-gravity-penalised) soil at maximum operational mass with wheel slip ≤ 40 %, and shall hold position (brakes) on 25°.
+- **Rationale:** Route slopes A-04; traction limit from terramechanics model; conservative value added by CDR-15.
 - **Source:** ASSUMPTION A-04; DESIGN-DERIVED(mobility.vehicle)
 - **Verification:** A,T
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ### SR-MOB-03 (parent MR-15)
-- **Statement:** TSR-1 shall negotiate step obstacles of [TBD:obstacle_m] m and ditches of [TBD:ditch_m] m width.
+- **Statement:** TSR-1 shall negotiate step obstacles of 0.45 m and ditches of 0.4 m width.
 - **Rationale:** LRV heritage 0.30 m obstacles (S027); suspension geometry.
 - **Source:** S027; DESIGN-DERIVED(mobility trade)
 - **Verification:** T
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ### SR-MOB-04 (parent MR-15)
-- **Statement:** Autonomous average traverse speed shall be ≥ [TBD:v_avg_ms] m/s on ≤ 10° terrain; maximum speed [TBD:v_max_ms] m/s.
+- **Statement:** Autonomous average traverse speed shall be ≥ 0.35 m/s on ≤ 10° terrain; maximum speed 1 m/s.
 - **Rationale:** Response time MR-15; hazard-detection range (S064 10 cm at 15 m).
 - **Source:** S064; DESIGN-DERIVED(mobility, autonomy)
 - **Verification:** T
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ### SR-MOB-05 (parent MR-15)
-- **Statement:** Range on one charge shall be ≥ [TBD:range_km] km on nominal terrain at maximum operational mass while retaining the survival energy reserve.
+- **Statement:** Range on one charge shall be ≥ 34 km on nominal terrain at maximum operational mass while retaining the survival energy reserve.
 - **Rationale:** Round trip 2·R_s plus work energy and reserve.
 - **Source:** DESIGN-DERIVED(power.budget)
 - **Verification:** A,T
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ### SR-MOB-06 (parent MR-13)
-- **Statement:** Loss of any single wheel drive shall not prevent mobility on slopes ≤ [TBD:slope_one_wheel_out_deg]°.
+- **Statement:** Loss of any single wheel drive shall not prevent mobility on slopes ≤ 17°.
 - **Rationale:** Spirit was lost after one wheel failure (S046); redundancy.
 - **Source:** S046; DESIGN-DERIVED(mobility.vehicle)
 - **Verification:** A,T
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ## Manipulation
 
 ### SR-MAN-01 (parent MR-04)
-- **Statement:** The dexterous arm shall handle [TBD:dex_payload_kg] kg at [TBD:dex_reach_m] m reach in lunar gravity with end-effector positioning accuracy ≤ [TBD:dex_accuracy_mm] mm (visual-servo closed loop) and 6-axis force/torque sensing.
+- **Statement:** The dexterous arm shall handle 20 kg at 1.6 m reach in lunar gravity with end-effector positioning accuracy ≤ 2 mm (visual-servo closed loop) and 6-axis force/torque sensing.
 - **Rationale:** Connector/fastener work on L2/L3 ORUs; ISS OTCM practice (S067).
 - **Source:** S067; DESIGN-DERIVED(manipulation.arm)
 - **Verification:** T
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ### SR-MAN-02 (parent MR-04)
-- **Statement:** The heavy-handling system shall lift and place [TBD:heavy_payload_kg] kg at [TBD:heavy_reach_m] m horizontal reach in lunar gravity within the stability envelope.
+- **Statement:** The heavy-handling system shall lift and place 150 kg at 2.56 m horizontal reach in lunar gravity within the stability envelope.
 - **Rationale:** Heavy ORUs and recovery support (A-13).
 - **Source:** ASSUMPTION A-13; DESIGN-DERIVED(manipulation.arm, stability)
 - **Verification:** T
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ### SR-MAN-03 (parent MR-04)
-- **Statement:** Tools shall be exchanged autonomously via a tool changer; tool change time ≤ [TBD:tool_change_min] min.
+- **Statement:** Tools shall be exchanged autonomously via a tool changer; tool change time ≤ 5 min.
 - **Rationale:** Tool variety (DIRECTIVE §13).
 - **Source:** DESIGN-DERIVED(tools)
 - **Verification:** D
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ## Servicing
 
 ### SR-SRV-01 (parent MR-04)
-- **Statement:** The service spine shall carry ≥ [TBD:spine_payload_kg] kg of ORUs, tools and modules in ≥ [TBD:spine_slots] standard slots.
+- **Statement:** The service spine shall carry ≥ 150 kg of ORUs, tools and modules in ≥ 6 standard slots.
 - **Rationale:** Carry spares for DRM-2/DRM-5 in one sortie.
 - **Source:** DESIGN-DERIVED(service-module trade)
 - **Verification:** I,T
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ### SR-SRV-02 (parent MR-04)
-- **Statement:** The fastener tool shall deliver up to [TBD:fastener_torque_nm] N·m with reaction taken through the arm/fixture and torque measurement accuracy ±5 %.
+- **Statement:** The fastener tool shall deliver up to 50 N·m with reaction taken through the arm/fixture and torque measurement accuracy ±5 %.
 - **Rationale:** Captive robotic fasteners (S067 OTCM socket drive heritage).
 - **Source:** S067; DESIGN-DERIVED
 - **Verification:** T
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ## Power
 
@@ -97,18 +97,18 @@ Verification: A = analysis, T = test, I = inspection, D = demonstration. `[TBD:k
 - **Status:** DERIVED/CLOSED
 
 ### SR-PWR-02 (parent MR-05)
-- **Statement:** A bidirectional, galvanically isolated power-transfer port shall accept ≥ [TBD:p_charge_kw] kW for charging and deliver ≥ [TBD:p_emer_cont_kw] kW continuous / [TBD:p_emer_peak_kw] kW peak (60 s) at 120 VDC through a tether ≤ [TBD:tether_m] m.
+- **Statement:** A bidirectional, galvanically isolated power-transfer port shall accept ≥ 3 kW for charging and deliver ≥ 3 kW continuous / 4.5 kW peak (60 s) at 120 VDC through a tether ≤ 25 m.
 - **Rationale:** 120 VDC exchange limited to < 100 m (S012); emergency power analysis.
 - **Source:** S012; DESIGN-DERIVED(power.budget)
 - **Verification:** T
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ### SR-PWR-03 (parent MR-10)
-- **Statement:** Battery usable energy shall be ≥ [TBD:battery_usable_kwh] kWh at end of life, sufficient for the design-reference sortie plus [TBD:survival_h] h survival reserve.
+- **Statement:** Battery usable energy shall be ≥ 15 kWh at end of life, sufficient for the design-reference sortie plus 120 h survival reserve.
 - **Rationale:** Energy closure (DIRECTIVE §44).
 - **Source:** DESIGN-DERIVED(power.budget)
 - **Verification:** A,T
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ## Thermal
 
@@ -120,11 +120,11 @@ Verification: A = analysis, T = test, I = inspection, D = demonstration. `[TBD:k
 - **Status:** DERIVED/CLOSED
 
 ### SR-THM-02 (parent MR-10)
-- **Statement:** The thermal system shall reject [TBD:q_reject_max_w] W peak internal dissipation in the hot case and limit survival heater demand to ≤ [TBD:p_survival_w] W in the cold case.
+- **Statement:** The thermal system shall reject 350 W peak internal dissipation in the hot case and limit survival heater demand to ≤ 82 W in the cold case.
 - **Rationale:** Thermal closure; survival energy.
 - **Source:** DESIGN-DERIVED(thermal.lumped)
 - **Verification:** A,T
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ## Autonomy
 
@@ -136,11 +136,11 @@ Verification: A = analysis, T = test, I = inspection, D = demonstration. `[TBD:k
 - **Status:** DERIVED/CLOSED
 
 ### SR-AUT-02 (parent MR-08)
-- **Statement:** Every irreversible step (power connection, release of load-bearing fasteners, winch tension above [TBD:winch_hold_kN] kN, cutting) shall be preceded by a hold point requiring human approval or a pre-authorised rule.
+- **Statement:** Every irreversible step (power connection, release of load-bearing fasteners, winch tension above 1 kN, cutting) shall be preceded by a hold point requiring human approval or a pre-authorised rule.
 - **Rationale:** Safety and supervisability.
 - **Source:** DESIGN-DERIVED(autonomy trade)
 - **Verification:** D
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ## Avionics
 
@@ -163,11 +163,11 @@ Verification: A = analysis, T = test, I = inspection, D = demonstration. `[TBD:k
 ## Navigation
 
 ### SR-NAV-01 (parent MR-15)
-- **Statement:** TSR-1 shall localise to ≤ [TBD:loc_global_m] m in the base frame and determine relative pose to a servicing interface to ≤ [TBD:loc_rel_mm] mm / [TBD:loc_rel_deg]° before contact.
+- **Statement:** TSR-1 shall localise to ≤ 1 m in the base frame and determine relative pose to a servicing interface to ≤ 5 mm / 0.5° before contact.
 - **Rationale:** Docking/tool alignment tolerances.
 - **Source:** DESIGN-DERIVED(sensor suite)
 - **Verification:** T
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ## Dust
 
@@ -188,43 +188,43 @@ Verification: A = analysis, T = test, I = inspection, D = demonstration. `[TBD:k
 - **Status:** DERIVED/CLOSED
 
 ### SR-STR-02 (parent MR-06)
-- **Statement:** Recovery hard points and the winch load path shall withstand [TBD:winch_line_pull_kN] kN line pull at any angle within the recovery cone with FoS 1.4 (ultimate).
+- **Statement:** Recovery hard points and the winch load path shall withstand 4 kN line pull at any angle within the recovery cone with FoS 1.4 (ultimate).
 - **Rationale:** Recovery loads.
 - **Source:** DESIGN-DERIVED(recovery.towing)
 - **Verification:** A,T
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ## Recovery
 
 ### SR-REC-01 (parent MR-06)
-- **Statement:** The winch shall provide [TBD:winch_line_pull_kN] kN line pull, [TBD:winch_line_m] m usable line, with continuous tension measurement and automatic limiting.
+- **Statement:** The winch shall provide 4 kN line pull, 50 m usable line, with continuous tension measurement and automatic limiting.
 - **Rationale:** Recovery scenarios A–D.
 - **Source:** DESIGN-DERIVED(recovery.towing)
 - **Verification:** T
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ### SR-REC-02 (parent MR-06)
-- **Statement:** The ground-reaction system shall resist ≥ [TBD:anchor_capacity_kN] kN horizontal load (P50 soil) and ≥ [TBD:anchor_capacity_p10_kN] kN (P10 soil).
+- **Statement:** The ground-reaction system shall resist ≥ 5.9 kN horizontal load (P50 soil) and ≥ 3.9 kN (P10 soil).
 - **Rationale:** Traction-limited towing in lunar gravity.
 - **Source:** DESIGN-DERIVED(recovery.towing)
 - **Verification:** A,T
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ## Reliability
 
 ### SR-REL-01 (parent MR-09)
-- **Statement:** No single failure other than primary-structure failure shall cause loss of mobility on terrain ≤ [TBD:slope_one_wheel_out_deg]°, or loss of the ability to communicate and safe the vehicle.
+- **Statement:** No single failure other than primary-structure failure shall cause loss of mobility on terrain ≤ 17°, or loss of the ability to communicate and safe the vehicle.
 - **Rationale:** FMEA single-point-failure policy (DIRECTIVE §24).
 - **Source:** DIRECTIVE §24
 - **Verification:** A
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ### SR-REL-02 (parent MR-09)
-- **Statement:** Probability that TSR-1 retains at least degraded-mode servicing capability after 10 years shall be ≥ [TBD:p_mission_10yr] (with peer/crew ORU replacement).
+- **Statement:** Probability that TSR-1 retains at least degraded-mode servicing capability after 10 years shall be ≥ 0.99 (with peer/crew ORU replacement).
 - **Rationale:** Life (MR-09).
 - **Source:** DESIGN-DERIVED(reliability.tsr_reliability)
 - **Verification:** A
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ## Maintainability
 
@@ -254,11 +254,11 @@ Verification: A = analysis, T = test, I = inspection, D = demonstration. `[TBD:k
 ## Safety
 
 ### SR-SAF-01 (parent MR-14)
-- **Statement:** Within 10 m of crew, vehicle speed shall be limited to [TBD:v_crew_ms] m/s and manipulator end-effector force to [TBD:f_crew_n] N by the deterministic safety layer.
+- **Statement:** Within 10 m of crew, vehicle speed shall be limited to 0.2 m/s and manipulator end-effector force to 50 N by the deterministic safety layer.
 - **Rationale:** Crew coexistence.
 - **Source:** DESIGN-DERIVED(safety)
 - **Verification:** T
-- **Status:** OPEN (TBD)
+- **Status:** DERIVED/CLOSED
 
 ## Sensors
 

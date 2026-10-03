@@ -1,0 +1,571 @@
+{
+ "p_env": {
+  "R0 direct towing (drive)": {
+   "mid": 0.2725,
+   "low": 0.3525,
+   "high": 0.2375,
+   "weak_soil": 0.2725
+  },
+  "R1 winch + braked wheels": {
+   "mid": 0.505,
+   "low": 0.6475,
+   "high": 0.3975,
+   "weak_soil": 0.505
+  },
+  "R2 winch + braked wheels + lowered skid": {
+   "mid": 0.4975,
+   "low": 0.645,
+   "high": 0.395,
+   "weak_soil": 0.4975
+  },
+  "R3 winch + braked wheels + 2 rear spades": {
+   "mid": 0.845,
+   "low": 0.89,
+   "high": 0.67,
+   "weak_soil": 0.665
+  },
+  "R4 winch + 2 spades + 2 helical anchors": {
+   "mid": 0.915,
+   "low": 0.9575,
+   "high": 0.7725,
+   "weak_soil": 0.84
+  },
+  "R5 winch + 2 spades + 4 helical anchors": {
+   "mid": 0.925,
+   "low": 0.96,
+   "high": 0.7925,
+   "weak_soil": 0.9
+  }
+ },
+ "curves": {
+  "curves": {
+   "R0 direct towing (drive)": {
+    "slopes": [
+     0.0,
+     2.5,
+     5.0,
+     7.5,
+     10.0,
+     12.5,
+     15.0,
+     17.5,
+     20.0,
+     22.5,
+     25.0
+    ],
+    "free_kg": [
+     1547.4076929230778,
+     1126.98679959096,
+     831.7518092148792,
+     612.2981890475832,
+     442.1859289579594,
+     305.9840909160884,
+     194.0798814348296,
+     100.17170345463197,
+     19.955595651875438,
+     0.0,
+     0.0
+    ],
+    "locked_kg": [
+     437.92256294278144,
+     365.1653907882538,
+     300.0361654763684,
+     241.180976138026,
+     187.53899429771647,
+     138.2663291144416,
+     92.6823759041409,
+     50.231262014151326,
+     10.453649837300473,
+     0.0,
+     0.0
+    ]
+   },
+   "R1 winch + braked wheels": {
+    "slopes": [
+     0.0,
+     2.5,
+     5.0,
+     7.5,
+     10.0,
+     12.5,
+     15.0,
+     17.5,
+     20.0,
+     22.5,
+     25.0
+    ],
+    "free_kg": [
+     2967.417712443214,
+     2296.521646273893,
+     1825.5369776658044,
+     1475.5687995783433,
+     1204.3950779227264,
+     987.3745069117098,
+     809.1568811407057,
+     659.679611321173,
+     532.0699941350897,
+     421.47263778833343,
+     324.35860221872935
+    ],
+    "locked_kg": [
+     839.791075033473,
+     744.1171668733508,
+     658.5223003376287,
+     581.218644456033,
+     510.8055839384761,
+     446.1691067765439,
+     386.410902917249,
+     330.7974034471219,
+     278.7224949158567,
+     229.67979428788632,
+     183.24172395752262
+    ]
+   },
+   "R2 winch + braked wheels + lowered skid": {
+    "slopes": [
+     0.0,
+     2.5,
+     5.0,
+     7.5,
+     10.0,
+     12.5,
+     15.0,
+     17.5,
+     20.0,
+     22.5,
+     25.0
+    ],
+    "free_kg": [
+     2877.62822339283,
+     2222.950098060036,
+     1763.9766155389373,
+     1423.47956503495,
+     1160.12992154478,
+     949.8085252301498,
+     777.4913618819554,
+     633.3305567823492,
+     510.6009150482675,
+     404.5520992604045,
+     311.73235939667717
+    ],
+    "locked_kg": [
+     814.3802906938985,
+     720.2785707476811,
+     636.3157541140422,
+     560.7009740493974,
+     492.0319360996267,
+     429.1940072831717,
+     371.2891111197577,
+     317.58462761602846,
+     267.4760135269708,
+     220.4590158555585,
+     176.10870979975738
+    ]
+   },
+   "R3 winch + braked wheels + 2 rear spades": {
+    "slopes": [
+     0.0,
+     2.5,
+     5.0,
+     7.5,
+     10.0,
+     12.5,
+     15.0,
+     17.5,
+     20.0,
+     22.5,
+     25.0
+    ],
+    "free_kg": [
+     8225.3946408494,
+     6630.349178504277,
+     5517.489585383889,
+     4696.593055020189,
+     4065.8698607634046,
+     3565.92490528385,
+     3159.7683274653164,
+     2823.161668737978,
+     2539.5595590883595,
+     2297.2823215896306,
+     2087.8501889361996
+    ],
+    "locked_kg": [
+     2327.819564818235,
+     2148.3606105323124,
+     1990.3129754740369,
+     1849.962841299235,
+     1724.4084325113397,
+     1611.3496132273483,
+     1508.9396888078645,
+     1415.6789652170846,
+     1330.33695584947,
+     1251.894627875911,
+     1179.5009146318773
+    ]
+   },
+   "R4 winch + 2 spades + 2 helical anchors": {
+    "slopes": [
+     0.0,
+     2.5,
+     5.0,
+     7.5,
+     10.0,
+     12.5,
+     15.0,
+     17.5,
+     20.0,
+     22.5,
+     25.0
+    ],
+    "free_kg": [
+     11959.358450175398,
+     9708.026274001555,
+     8139.337800139144,
+     6984.010470985685,
+     6097.952432807862,
+     5397.088107242449,
+     4829.060184366651,
+     4359.563181052951,
+     3965.1826618902337,
+     3629.3926689472073,
+     3340.197594129155
+    ],
+    "locked_kg": [
+     3384.546249578822,
+     3145.587161637637,
+     2936.0870346357183,
+     2750.964306085222,
+     2586.2511482875057,
+     2438.8050968972343,
+     2306.1059598878605,
+     2186.1099777932527,
+     2077.143264046841,
+     1977.8227264480126,
+     1886.9965566513765
+    ]
+   },
+   "R5 winch + 2 spades + 4 helical anchors": {
+    "slopes": [
+     0.0,
+     2.5,
+     5.0,
+     7.5,
+     10.0,
+     12.5,
+     15.0,
+     17.5,
+     20.0,
+     22.5,
+     25.0
+    ],
+    "free_kg": [
+     12124.674533408328,
+     9993.624739647836,
+     8513.488052698407,
+     7427.547000150952,
+     6598.440978327988,
+     5946.0291998142075,
+     5420.411525051946,
+     4988.898993324181,
+     4629.186840431788,
+     4325.538550736932,
+     4066.537724012887
+    ],
+    "locked_kg": [
+     3431.3313619936835,
+     3238.126555492208,
+     3071.0535064199653,
+     2925.670968574857,
+     2798.5173294062974,
+     2686.8574369477583,
+     2588.5043560720437,
+     2501.6914343410317,
+     2424.9788934145577,
+     2357.1845843442816,
+     2297.331959101019
+    ]
+   }
+  },
+  "f_free": 0.20364553255971357,
+  "f_locked": 0.719585356814537
+ },
+ "scenarios": [
+  {
+   "id": "A",
+   "title": "Disabled 300 kg science rover on flat regolith (brakes released), tow 100 m",
+   "target_mass_kg": 300.0,
+   "slope_deg": 0.0,
+   "required_force_N": 86.89947718098092,
+   "direct_tow_capacity_N": 765.7480728209325,
+   "method": "direct tow (drive)",
+   "line_tension_N": 0.0,
+   "restraint_reaction_N": 0.0,
+   "wheel_slip": 0.052510622655502014,
+   "drive_torque_per_wheel_Nm": 28.370813985715923,
+   "drive_power_W": 109.21512690970523,
+   "energy_Wh": 15.168767626347949,
+   "heat_W": 32.76453807291158,
+   "hardpoint_load_N": 86.89947718098092,
+   "margin": 8.811883542476897,
+   "feasible": true
+  },
+  {
+   "id": "B",
+   "title": "Disabled 450 kg rover on 15\u00b0 slope (brakes released), winch 30 m upslope",
+   "target_mass_kg": 450.0,
+   "slope_deg": 15.0,
+   "required_force_N": 330.5118689352137,
+   "direct_tow_capacity_N": 214.83226563647634,
+   "method": "anchored winch (braked wheels + spades + helical anchors)",
+   "line_tension_N": 330.5118689352137,
+   "restraint_reaction_N": 330.5118689352137,
+   "restraint_capacity_N": 5345.417220129283,
+   "tipping_limit_N": 8919.29416480654,
+   "winch_rating_N": 4000.0,
+   "spade_share_N": 330.5118689352137,
+   "anchor_share_N": 0.0,
+   "drive_power_W": 0.0,
+   "winch_power_W": 25.423989918093366,
+   "energy_Wh": 4.237331653015561,
+   "heat_W": 8.898396471332678,
+   "hardpoint_load_N": 462.7166165092992,
+   "margin": 10.782098360239889,
+   "feasible": true
+  },
+  {
+   "id": "B2",
+   "title": "As B but fail-safe brakes locked (no release)",
+   "target_mass_kg": 450.0,
+   "slope_deg": 15.0,
+   "required_force_N": 695.7105478506764,
+   "direct_tow_capacity_N": 214.83226563647634,
+   "method": "anchored winch (braked wheels + spades + helical anchors)",
+   "line_tension_N": 695.7105478506764,
+   "restraint_reaction_N": 695.7105478506764,
+   "restraint_capacity_N": 5345.417220129283,
+   "tipping_limit_N": 8919.29416480654,
+   "winch_rating_N": 4000.0,
+   "spade_share_N": 695.7105478506764,
+   "anchor_share_N": 0.0,
+   "drive_power_W": 0.0,
+   "winch_power_W": 53.51619598851357,
+   "energy_Wh": 8.919365998085595,
+   "heat_W": 18.73066859597975,
+   "hardpoint_load_N": 973.9947669909469,
+   "margin": 5.12226168065956,
+   "feasible": true
+  },
+  {
+   "id": "C",
+   "title": "450 kg rover with all wheels embedded 0.15 m on flat (mid estimate)",
+   "target_mass_kg": 450.0,
+   "slope_deg": 0.0,
+   "required_force_N": 3685.0419123301504,
+   "direct_tow_capacity_N": 765.7480728209325,
+   "method": "anchored winch (braked wheels + spades + helical anchors)",
+   "line_tension_N": 3685.0419123301504,
+   "restraint_reaction_N": 3685.0419123301504,
+   "restraint_capacity_N": 5918.191907200106,
+   "tipping_limit_N": 8919.29416480654,
+   "winch_rating_N": 4000.0,
+   "spade_share_N": 2601.955333605874,
+   "anchor_share_N": 1083.0865787242765,
+   "drive_power_W": 0.0,
+   "winch_power_W": 283.46476248693466,
+   "energy_Wh": 7.87402118019263,
+   "heat_W": 99.21266687042713,
+   "hardpoint_load_N": 5159.05867726221,
+   "margin": 1.0706693072513567,
+   "feasible": true
+  },
+  {
+   "id": "C-hi",
+   "title": "As C, upper-bound (Bekker compaction) extraction resistance",
+   "target_mass_kg": 450.0,
+   "slope_deg": 0.0,
+   "required_force_N": 7602.0801396843835,
+   "direct_tow_capacity_N": 765.7480728209325,
+   "method": "anchored winch (braked wheels + spades + helical anchors)",
+   "line_tension_N": 7602.0801396843835,
+   "restraint_reaction_N": 7602.0801396843835,
+   "restraint_capacity_N": 5918.191907200106,
+   "tipping_limit_N": 8919.29416480654,
+   "winch_rating_N": 4000.0,
+   "spade_share_N": 2601.955333605874,
+   "anchor_share_N": 5000.124806078509,
+   "drive_power_W": 0.0,
+   "winch_power_W": 584.7753953603373,
+   "energy_Wh": 16.243760982231592,
+   "heat_W": 204.67138837611802,
+   "hardpoint_load_N": 10642.912195558136,
+   "margin": 0.5189975899978531,
+   "feasible": false
+  },
+  {
+   "id": "C-dig",
+   "title": "As C after excavating ramps to 0.05 m effective sinkage (scoop tool) + upper bound",
+   "target_mass_kg": 450.0,
+   "slope_deg": 0.0,
+   "required_force_N": 862.0924756939146,
+   "direct_tow_capacity_N": 765.7480728209325,
+   "method": "anchored winch (braked wheels + spades + helical anchors)",
+   "line_tension_N": 862.0924756939146,
+   "restraint_reaction_N": 862.0924756939146,
+   "restraint_capacity_N": 5918.191907200106,
+   "tipping_limit_N": 8919.29416480654,
+   "winch_rating_N": 4000.0,
+   "spade_share_N": 862.0924756939146,
+   "anchor_share_N": 0.0,
+   "drive_power_W": 0.0,
+   "winch_power_W": 66.31480582260882,
+   "energy_Wh": 1.8420779395169116,
+   "heat_W": 23.210182037913086,
+   "hardpoint_load_N": 1206.9294659714803,
+   "margin": 4.576610262479046,
+   "feasible": true
+  },
+  {
+   "id": "D",
+   "title": "1.5 t LTV-class vehicle (free-rolling) repositioned 200 m on flat",
+   "target_mass_kg": 1500.0,
+   "slope_deg": 0.0,
+   "required_force_N": 493.5912304366225,
+   "direct_tow_capacity_N": 765.7480728209325,
+   "method": "direct tow (drive)",
+   "line_tension_N": 0.0,
+   "restraint_reaction_N": 0.0,
+   "wheel_slip": 0.19251738830915816,
+   "drive_torque_per_wheel_Nm": 60.8610192184076,
+   "drive_power_W": 274.9105395186797,
+   "energy_Wh": 76.3640387551888,
+   "heat_W": 82.47316185560392,
+   "hardpoint_load_N": 493.5912304366225,
+   "margin": 1.5513810327293795,
+   "feasible": true
+  },
+  {
+   "id": "D2",
+   "title": "1.5 t LTV-class vehicle on 10\u00b0 slope, winch 30 m",
+   "target_mass_kg": 1500.0,
+   "slope_deg": 10.0,
+   "required_force_N": 905.8186535730132,
+   "direct_tow_capacity_N": 402.08218614998395,
+   "method": "anchored winch (braked wheels + spades + helical anchors)",
+   "line_tension_N": 905.8186535730132,
+   "restraint_reaction_N": 905.8186535730132,
+   "restraint_capacity_N": 5544.902912220686,
+   "tipping_limit_N": 8919.29416480654,
+   "winch_rating_N": 4000.0,
+   "spade_share_N": 905.8186535730132,
+   "anchor_share_N": 0.0,
+   "drive_power_W": 0.0,
+   "winch_power_W": 69.67835796715487,
+   "energy_Wh": 11.613059661192478,
+   "heat_W": 24.3874252885042,
+   "hardpoint_load_N": 1268.1461150022185,
+   "margin": 4.080951443094226,
+   "feasible": true
+  },
+  {
+   "id": "D3",
+   "title": "1.0 t infrastructure element on skids (sliding), drag 20 m on flat",
+   "target_mass_kg": 1000.0,
+   "slope_deg": 0.0,
+   "required_force_N": 1186.6871477723328,
+   "direct_tow_capacity_N": 765.7480728209325,
+   "method": "anchored winch (braked wheels + spades + helical anchors)",
+   "line_tension_N": 1186.6871477723328,
+   "restraint_reaction_N": 1186.6871477723328,
+   "restraint_capacity_N": 5918.191907200106,
+   "tipping_limit_N": 8919.29416480654,
+   "winch_rating_N": 4000.0,
+   "spade_share_N": 1186.6871477723328,
+   "anchor_share_N": 0.0,
+   "drive_power_W": 0.0,
+   "winch_power_W": 91.2836267517179,
+   "energy_Wh": 10.142625194635324,
+   "heat_W": 31.949269363101266,
+   "hardpoint_load_N": 1661.3620068812659,
+   "margin": 3.3247695307674117,
+   "feasible": true
+  }
+ ],
+ "stabilisation": [
+  {
+   "option": "S0 locked wheels only",
+   "added_mass_kg": 0.0,
+   "crane_side_capacity_15deg_kg": 379.52717766165733,
+   "winch_pull_limit_kN": 0.9789191989970804,
+   "deploy_time_min": 1
+  },
+  {
+   "option": "S1 body lowering (skid on ground)",
+   "added_mass_kg": 0.0,
+   "crane_side_capacity_15deg_kg": 424.43024480783305,
+   "winch_pull_limit_kN": 0.9789191989970804,
+   "deploy_time_min": 5
+  },
+  {
+   "option": "S2 deployable lateral outriggers (\u00b10.8 m)",
+   "added_mass_kg": 24.0,
+   "crane_side_capacity_15deg_kg": 762.5683845306959,
+   "winch_pull_limit_kN": 0.9789191989970804,
+   "deploy_time_min": 11
+  },
+  {
+   "option": "S3 rear spades",
+   "added_mass_kg": 17.6,
+   "crane_side_capacity_15deg_kg": 379.52717766165733,
+   "winch_pull_limit_kN": 2.7135560880676626,
+   "deploy_time_min": 17
+  },
+  {
+   "option": "S4 rear spades + 2 helical anchors",
+   "added_mass_kg": 25.6,
+   "crane_side_capacity_15deg_kg": 379.52717766165733,
+   "winch_pull_limit_kN": 3.9454122666520632,
+   "deploy_time_min": 67
+  },
+  {
+   "option": "S5 body lowering + spades + 2 anchors",
+   "added_mass_kg": 25.6,
+   "crane_side_capacity_15deg_kg": 424.43024480783305,
+   "winch_pull_limit_kN": 3.9454122666520632,
+   "deploy_time_min": 71
+  }
+ ],
+ "winch_sweep": [
+  {
+   "winch_kN": 1,
+   "p_env": 0.5875
+  },
+  {
+   "winch_kN": 2,
+   "p_env": 0.805
+  },
+  {
+   "winch_kN": 3,
+   "p_env": 0.8825
+  },
+  {
+   "winch_kN": 4,
+   "p_env": 0.915
+  },
+  {
+   "winch_kN": 5,
+   "p_env": 0.915
+  },
+  {
+   "winch_kN": 6,
+   "p_env": 0.915
+  }
+ ],
+ "restraint_mass": {
+  "R0 direct towing (drive)": 3.0,
+  "R1 winch + braked wheels": 0.0,
+  "R2 winch + braked wheels + lowered skid": 9.4,
+  "R3 winch + braked wheels + 2 rear spades": 17.6,
+  "R4 winch + 2 spades + 2 helical anchors": 25.6,
+  "R5 winch + 2 spades + 4 helical anchors": 29.6
+ }
+}

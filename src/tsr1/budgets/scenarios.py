@@ -26,6 +26,11 @@ R.define("solar_eol_factor", "f_PV,EOL", 0.85, "-", "ESTIMATE", "A: radiation, U
 R.define("solar_geom_factor", "f_geom", 2.0 / math.pi, "-", "CALCULATED",
          "mean |cos(azimuth)| for fixed vertical side panels with sun on the horizon", SUB,
          "projection factor of fixed vertical arrays")
+R.define("service_radius_km", "R_s", 10.0, "km", "ASSUMPTION", "A-20 (comm-tower cell ≈ 10 km, S054)", SUB,
+         "nominal service radius around the home charging node", low=5.0, high=30.0)
+R.define("p_keepalive_w", "P_ka", 300.0, "W", "DESIGN",
+         "TS-06: upper range of small-asset survival-heater demand (VIPER-class survives ~50 h on battery, S035)",
+         SUB, "client keep-alive power delivered through the PTM in DRMs", low=100.0, high=500.0)
 R.define("sortie_sunlit_frac", "f_sun", 0.5, "-", "ASSUMPTION", "A: routes partly in terrain shadow (ridge 92 % S030)", SUB,
          "fraction of sortie time with arrays illuminated", low=0.0, high=0.9)
 

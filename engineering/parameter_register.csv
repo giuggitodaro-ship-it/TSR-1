@@ -1,0 +1,182 @@
+name,symbol,value,unit,uncertainty_range,provenance,source,derivation,subsystem,note,last_update
+drive_duty,δ_drv,0.7,-,"[0.5, 0.9]",ASSUMPTION,A: autonomy stop-and-go (perceive/plan) duty cycle,fraction of traverse time in motion,budgets,,2026-10-03
+harness_frac,f_harn,0.06,-,"[0.04, 0.09]",ESTIMATE,L007 (harness 5-8 % of dry mass),harness CBE as fraction of other dry CBE,budgets,,2026-10-03
+lander_accommodation_frac,f_acc,0.05,-,"[0.03, 0.1]",ESTIMATE,"A: launch locks, deployment ramp/offload interface (~5 % of payload)",lander accommodation hardware as fraction of rover wet mass,budgets,,2026-10-03
+mass_cbe,mass_cbe,812.49,kg,,CALCULATED,design.configuration.build (bottom-up roll-up),design.configuration.build (bottom-up roll-up),budgets,,2026-10-03
+mass_delivered,mass_delivered,1207,kg,,CALCULATED,design.configuration.build (bottom-up roll-up),design.configuration.build (bottom-up roll-up),budgets,,2026-10-03
+mass_dry_allocation,mass_dry_allocation,1149.52,kg,,CALCULATED,design.configuration.build (bottom-up roll-up),design.configuration.build (bottom-up roll-up),budgets,,2026-10-03
+mass_operational,mass_operational,1249.52,kg,,CALCULATED,design.configuration.build (bottom-up roll-up),design.configuration.build (bottom-up roll-up),budgets,,2026-10-03
+mga_battery,MGA_battery,0.1,-,"[0.05, 0.15]",ASSUMPTION,A-23 / S052 (AIAA S-120A method),"mass growth allowance, battery category, conceptual maturity",budgets,,2026-10-03
+mga_electronics,MGA_electronics,0.25,-,"[0.125, 0.375]",ASSUMPTION,A-23 / S052 (AIAA S-120A method),"mass growth allowance, electronics category, conceptual maturity",budgets,,2026-10-03
+mga_harness,MGA_harness,0.6,-,"[0.3, 0.9]",ASSUMPTION,A-23 / S052 (AIAA S-120A method),"mass growth allowance, harness category, conceptual maturity",budgets,,2026-10-03
+mga_heritage,MGA_heritage,0.1,-,"[0.05, 0.15]",ASSUMPTION,A-23 / S052 (AIAA S-120A method),"mass growth allowance, heritage category, conceptual maturity",budgets,,2026-10-03
+mga_line,MGA_line,0.2,-,"[0.1, 0.3]",ASSUMPTION,A-23 / S052 (AIAA S-120A method),"mass growth allowance, line category, conceptual maturity",budgets,,2026-10-03
+mga_mechanism,MGA_mechanism,0.25,-,"[0.125, 0.375]",ASSUMPTION,A-23 / S052 (AIAA S-120A method),"mass growth allowance, mechanism category, conceptual maturity",budgets,,2026-10-03
+mga_solar,MGA_solar,0.2,-,"[0.1, 0.3]",ASSUMPTION,A-23 / S052 (AIAA S-120A method),"mass growth allowance, solar category, conceptual maturity",budgets,,2026-10-03
+mga_structure,MGA_structure,0.2,-,"[0.1, 0.3]",ASSUMPTION,A-23 / S052 (AIAA S-120A method),"mass growth allowance, structure category, conceptual maturity",budgets,,2026-10-03
+mga_thermal,MGA_thermal,0.25,-,"[0.125, 0.375]",ASSUMPTION,A-23 / S052 (AIAA S-120A method),"mass growth allowance, thermal category, conceptual maturity",budgets,,2026-10-03
+mga_tool,MGA_tool,0.25,-,"[0.125, 0.375]",ASSUMPTION,A-23 / S052 (AIAA S-120A method),"mass growth allowance, tool category, conceptual maturity",budgets,,2026-10-03
+p_keepalive_w,P_ka,300,W,"[100, 500]",DESIGN,"TS-06: upper range of small-asset survival-heater demand (VIPER-class survives ~50 h on battery, S035)",client keep-alive power delivered through the PTM in DRMs,budgets,,2026-10-03
+payload_carried_nom,m_pl,100,kg,,DESIGN,"TS-07 (ORUs, spares, modules per sortie)",nominal carried payload in operational mass,budgets,,2026-10-03
+reserve_survival_h,t_res,50,h,,DESIGN,TS-06: VIPER-class 50 h darkness survival (S035),survival reserve retained at end of any DRM (no solar),budgets,,2026-10-03
+service_radius_km,R_s,10,km,"[5, 30]",ASSUMPTION,"A-20 (comm-tower cell ≈ 10 km, S054)",nominal service radius around the home charging node,budgets,,2026-10-03
+solar_cell_eff,η_PV,0.3,-,"[0.28, 0.33]",SOURCE,"L007 (IMM/triple-junction BOL ~30 %, LITERATURE-RECALL)",solar cell efficiency BOL,budgets,,2026-10-03
+solar_eol_factor,"f_PV,EOL",0.85,-,"[0.75, 0.92]",ESTIMATE,"A: radiation, UV, thermal cycling, residual dust",end-of-life array output factor,budgets,,2026-10-03
+solar_geom_factor,f_geom,0.63662,-,,CALCULATED,mean |cos(azimuth)| for fixed vertical side panels with sun on the horizon,projection factor of fixed vertical arrays,budgets,,2026-10-03
+sortie_sunlit_frac,f_sun,0.5,-,"[0, 0.9]",ASSUMPTION,A: routes partly in terrain shadow (ridge 92 % S030),fraction of sortie time with arrays illuminated,budgets,,2026-10-03
+system_margin,M_sys,0.15,-,"[0.1, 0.25]",ASSUMPTION,A-23,system-level margin on top of MGA-inclusive predicted mass,budgets,,2026-10-03
+relay_gt_dbk,G/T_rel,0,dB/K,"[-5, 5]",ASSUMPTION,A: small relay satellite S-band receive,,comms,,2026-10-03
+relay_range_max_km,d_rel,10000,km,"[3000, 20000]",ASSUMPTION,A: elliptical lunar relay orbit slant range (no orbit data retrieved for LCRNS/Moonlight),,comms,,2026-10-03
+T_psr,T_PSR,40,K,"[28, 60]",SOURCE,S032,PSR floor temperatures < 40 K; cold bound 28 K,environment,,2026-10-03
+T_sink_zenith,T_sink,70,K,"[30, 150]",ASSUMPTION,A-29,effective radiative sink for zenith-facing radiator incl. terrain view,environment,,2026-10-03
+T_sunlit_rim_max,T_rim,300,K,"[223, 300]",SOURCE,S032,"sunlit polar rims often > 223 K, peaks ~300 K (secondary)",environment,,2026-10-03
+contact_pressure_limit,p_lim,7000,Pa,"[7000, 10000]",SOURCE,S023,satisfactory mobility if ground pressure <= 7-10 kPa; lower bound adopted,environment,,2026-10-03
+dark_max_best_site_h,t_dark,120,h,"[72, 120]",SOURCE,S030,longest continuous darkness typically 3-5 days at best sites (upper value),environment,,2026-10-03
+dose_rate_gcr_si,Ḋ_GCR,1.32e-05,Gy/h,"[1.22e-05, 1.42e-05]",SOURCE,S033,"Chang'e-4 LND, Si",environment,,2026-10-03
+dte_availability,f_DTE,0.51,-,,SOURCE,S073,average south-pole DTE availability,environment,,2026-10-03
+g_earth,g_0,9.80665,m/s^2,,SOURCE,L023,standard gravity,environment,,2026-10-03
+g_moon,g_m,1.62,m/s^2,,SOURCE,L018,NSSDC Moon fact sheet surface gravity,environment,,2026-10-03
+illum_frac_best_10m,"f_ill,10m",0.9565,-,,SOURCE,S030,"best ridge site, 10 m",environment,,2026-10-03
+illum_frac_best_2m,"f_ill,2m",0.9227,-,,SOURCE,S030,"best ridge site, 2 m height",environment,,2026-10-03
+lowg_dp_factor,"f_DP,g",0.8,-,"[0.7, 1]",SOURCE,S043,lunar-g drawbar-pull reduction vs 1-g test (~20 %); applied in conservative case only (A-03b),environment,,2026-10-03
+lowg_sinkage_factor,"f_z,g",1.4,-,"[1, 1.5]",SOURCE,S043,lunar-g sinkage increase up to 40 %; conservative case only (A-03b),environment,,2026-10-03
+mm_flux_pole,Φ_mm,1.07143,1/(m^2 yr),,CALCULATED,S061,15 000 impacts/yr over 14 000 m2 exposed area of 100x100x10 m base (10^-6..10 g),environment,,2026-10-03
+sigma_sb,σ,5.67037e-08,W/(m^2 K^4),,SOURCE,L023,CODATA 2018 Stefan-Boltzmann constant,environment,,2026-10-03
+soil_K,K,0.0178,m,"[0.01, 0.025]",SOURCE,S023,Table 9.14 shear deformation modulus 1.78 cm,environment,,2026-10-03
+soil_c,c,170,Pa,"[100, 1000]",SOURCE,S023,Table 9.14 trafficability cohesion; range 0.1-1 kPa (S023),environment,,2026-10-03
+soil_c_0_15,c_0-15,520,Pa,"[440, 620]",SOURCE,S023,in-situ 0-15 cm,environment,,2026-10-03
+soil_c_0_30,c_0-30,900,Pa,"[740, 1100]",SOURCE,S023,in-situ 0-30 cm,environment,,2026-10-03
+soil_c_30_60,c_30-60,3000,Pa,"[2400, 3800]",SOURCE,S023,in-situ 30-60 cm (LITERATURE-RECALL of S023 depth table: 2.4-3.8 kPa),environment,,2026-10-03
+soil_kc,k_c,1400,N/m^(n+1),"[700, 2800]",SOURCE,S023,Table 9.14 (0.14 N/cm2); range x0.5-x2 is ASSUMPTION A-03,environment,,2026-10-03
+soil_kphi,k_φ,820000,N/m^(n+2),"[410000, 1640000]",SOURCE,S023,Table 9.14 (0.82 N/cm3); range x0.5-x2 is ASSUMPTION A-03,environment,,2026-10-03
+soil_n,n,1,-,"[0.8, 1.2]",SOURCE,S023,Table 9.14; range ASSUMPTION A-03,environment,,2026-10-03
+soil_phi_0_15_deg,φ_0-15,42,deg,"[41, 43]",SOURCE,S023,in-situ 0-15 cm,environment,,2026-10-03
+soil_phi_0_30_deg,φ_0-30,46,deg,"[44, 47]",SOURCE,S023,in-situ 0-30 cm,environment,,2026-10-03
+soil_phi_30_60_deg,φ_30-60,54,deg,"[52, 55]",SOURCE,S023,in-situ 30-60 cm (LITERATURE-RECALL of S023: 52-55 deg),environment,,2026-10-03
+soil_phi_deg,φ,35,deg,"[30, 46]",SOURCE,S023,Table 9.14 friction angle; range 30-46 deg (S023 depth table),environment,,2026-10-03
+soil_rho_0_30,ρ_0-30,1580,kg/m^3,"[1530, 1630]",SOURCE,S023,0-30 cm average,environment,,2026-10-03
+soil_rho_30_60,ρ_30-60,1740,kg/m^3,"[1690, 1790]",SOURCE,S023,30-60 cm average,environment,,2026-10-03
+soil_rho_surface,ρ_0-15,1500,kg/m^3,"[1450, 1550]",SOURCE,S023,0-15 cm average,environment,,2026-10-03
+solar_constant,S,1361,W/m^2,"[1315, 1408]",SOURCE,L017,TSI 1360.8 W/m2 (Kopp & Lean 2011); ±3.4 % annual from orbit eccentricity,environment,,2026-10-03
+sun_elev_max_deg,β_max,1.54,deg,,SOURCE,L009,lunar obliquity to ecliptic 1.54 deg -> max solar elevation at pole (+ local topography),environment,,2026-10-03
+tid_design_krad,TID_d,10,krad(Si),"[3, 30]",ASSUMPTION,A-24,10-yr incl. SPE behind 3 mm Al,environment,,2026-10-03
+act_eff,η_act,0.6,-,"[0.4, 0.75]",ASSUMPTION,A-17 (strain-wave gear at low speed/cold),joint mechanical/electrical efficiency,manipulation,,2026-10-03
+act_min_mass,"m_act,min",1.2,kg,"[0.8, 2]",ESTIMATE,A: smallest practical space joint module,floor on actuator module mass,manipulation,,2026-10-03
+act_torque_density,τ_ρ,25,N m/kg,"[15, 40]",ESTIMATE,"A: space-rated strain-wave actuator units incl. motor, brake, encoder, housing, heater",peak output torque per unit actuator mass; terrestrial robot joints 30-80 N m/kg,manipulation,,2026-10-03
+cfrp_E,E_CFRP,1.2e+11,Pa,"[9e+10, 1.8e+11]",SOURCE,"L006/L007 (quasi-iso. high-modulus tube, LITERATURE-RECALL)",axial modulus of filament-wound high-modulus CFRP tube,manipulation,,2026-10-03
+cfrp_allow,σ_CFRP,4e+08,Pa,"[2.5e+08, 6e+08]",ESTIMATE,L007 (LITERATURE-RECALL) with knock-downs,design allowable bending stress after environmental/thermal-cycling knock-down,manipulation,,2026-10-03
+cfrp_rho,ρ_CFRP,1600,kg/m^3,"[1550, 1650]",SOURCE,L007 (LITERATURE-RECALL),CFRP density,manipulation,,2026-10-03
+fitting_frac,f_fit,0.25,-,"[0.15, 0.4]",ESTIMATE,A: Ti end fittings + cable routing per link,link fittings/harness mass as fraction of tube mass,manipulation,,2026-10-03
+fos_ult,FoS_u,1.4,-,,SOURCE,S053 (A-22),ultimate factor of safety,manipulation,,2026-10-03
+line_fos,FoS_line,5,-,"[4, 8]",ASSUMPTION,A: rope/line practice for lifting gear (5:1),breaking load / working load,manipulation,,2026-10-03
+motorisation_factor,MF,2,-,"[1.5, 3]",SOURCE,"L024 (ECSS-E-ST-33-01C, LITERATURE-RECALL); A-22",actuator torque capability / required resistive torque,manipulation,,2026-10-03
+t_min_cfrp,t_min,0.0015,m,"[0.001, 0.0025]",ASSUMPTION,A: minimum robust wall for handling/impact,minimum CFRP wall thickness,manipulation,,2026-10-03
+vectran_break_per_kg_m,B_line,1000000,N/(kg/m),"[600000, 1500000]",ESTIMATE,L: liquid-crystal-polymer fibre braid breaking strength per linear density (~1 GN/(kg/m) fibre; jacket and braid efficiency included),breaking load / linear mass,manipulation,,2026-10-03
+vectran_line_mass,μ_line,0.03,kg/m,"[0.02, 0.045]",ESTIMATE,L: 5-6 mm Vectran braid with abrasion jacket (LITERATURE-RECALL),linear mass of synthetic line,manipulation,,2026-10-03
+ti_density,ρ_Ti,4430,kg/m^3,,SOURCE,L005,Ti-6Al-4V density,materials,,2026-10-03
+contact_pressure,p,6643.71,Pa,,CALCULATED,terramechanics.contact_pressure,terramechanics.contact_pressure,mobility,,2026-10-03
+dpw40_min,"DP/W_40,min",0.36,-,,DESIGN,TS-02: ≈20° slope at 40 % slip (nominal soil),minimum single-wheel drawbar coefficient at 40 % slip,mobility,,2026-10-03
+drive_eff,η_drv,0.7,-,"[0.55, 0.8]",ASSUMPTION,A-17,TSR-1 battery-to-wheel efficiency (BLDC + strain-wave gear + controller),mobility,,2026-10-03
+drive_torque_margin,"k_T,drv",1.25,-,,DESIGN,TS-01: torque beyond soil-limited thrust is unusable,drive actuator rating / soil-limited wheel torque at i=0.6 on max-load wheel,mobility,,2026-10-03
+k_cal_lrv,k_cal,0.623352,-,,CALCULATED,mobility.vehicle.lrv_calibration: measured(S060)*η/model,mobility.vehicle.lrv_calibration: measured(S060)*η/model,mobility,,2026-10-03
+lrv_drive_eff,η_LRV,0.55,-,"[0.45, 0.65]",ASSUMPTION,A-17 (series DC motor x 80:1 harmonic drive),battery-to-wheel efficiency of LRV drive,mobility,,2026-10-03
+lrv_energy_per_km,e_LRV,58.5,Wh/km,"[56.88, 60.12]",SOURCE,S060,mean of 1.58 (A17) and 1.67 (A15) A h/km at 36 V nominal,mobility,,2026-10-03
+lrv_mass_loaded,m_LRV,680,kg,"[600, 700]",ASSUMPTION,"S027,A (210 kg + 2 suited crew + gear)","Apollo 15/17 traverse mass: 210 kg empty, <= 700 kg max loaded (S027)",mobility,,2026-10-03
+lrv_model_wheel_energy,"e_LRV,model",51.6161,Wh/km,,CALCULATED,"mobility.vehicle.lrv_calibration: Wong-Reece, nominal soil, level","mobility.vehicle.lrv_calibration: Wong-Reece, nominal soil, level",mobility,,2026-10-03
+obstacle_ratio_rb,h_obs/D,0.75,-,"[0.5, 1]",ESTIMATE,"L011 (rocker-bogie climbs obstacles of order one wheel diameter; 0.75 adopted for heavy, slow, quasi-static lunar operation)",step obstacle height / wheel diameter,mobility,,2026-10-03
+slip_design_limit,i_max,0.4,-,"[0.2, 0.6]",DESIGN,TS-01,maximum sustained slip used for slope capability claims,mobility,,2026-10-03
+slope_max_conservative,"θ_max,cons",15.6116,deg,,CALCULATED,mobility.vehicle.max_slope (conservative soil),mobility.vehicle.max_slope (conservative soil),mobility,,2026-10-03
+slope_max_nominal,"θ_max,nom",20.683,deg,,CALCULATED,"mobility.vehicle.max_slope (nominal soil, i<=0.4)","mobility.vehicle.max_slope (nominal soil, i<=0.4)",mobility,,2026-10-03
+v_drive_max,v_max,1,m/s,,DESIGN,TS-01,maximum speed on benign terrain,mobility,,2026-10-03
+v_drive_nom,v_nom,0.5,m/s,"[0.3, 1]",DESIGN,TS-01/autonomy: hazard detection 10 cm @ 15 m (S064),nominal autonomous driving speed,mobility,,2026-10-03
+wheel_rim_t,t_rim,0.0012,m,"[0.0008, 0.002]",ESTIMATE,A: Ti-6Al-4V rim skin with internal stiffeners,wheel rim skin thickness,mobility,,2026-10-03
+wr_c1,c_1,0.43,-,"[0.35, 0.5]",SOURCE,L003,Wong-Reece max-stress angle coefficient (theta_m=(c1+c2 i) theta1),mobility,,2026-10-03
+wr_c2,c_2,0.32,-,"[0.15, 0.4]",SOURCE,L003,Wong-Reece coefficient,mobility,,2026-10-03
+batt_dod,DoD,0.8,-,"[0.7, 0.9]",ASSUMPTION,A-16,"usable depth of discharge, nominal",power,,2026-10-03
+batt_eol_fade,f_fade,0.2,-,"[0.1, 0.3]",ASSUMPTION,A-16,capacity loss at end of 10-yr life (~3000 moderate-DoD cycles + calendar),power,,2026-10-03
+batt_spec_energy,e_bat,160,Wh/kg,"[130, 200]",ASSUMPTION,A-15 (S070: 150-170 Wh/kg PPR today),pack-level specific energy incl. PPR features,power,,2026-10-03
+battery_nameplate_kwh,E_bat,23.6376,kWh,,CALCULATED,power.electrical.size_battery,power.electrical.size_battery,power,,2026-10-03
+bus_voltage,V_bus,120,V,,SOURCE,S011,ISPSIS interoperability bus voltage,power,,2026-10-03
+cell_energy_wh,E_cell,12.6,Wh,"[11, 13.5]",SOURCE,S070 (18650 class: 3.5 Ah x 3.6 V),nominal 18650 cell energy,power,,2026-10-03
+cell_v_nom,V_cell,3.6,V,,SOURCE,S070 (Li-ion NCA/NMC nominal),cell nominal voltage,power,,2026-10-03
+charge_power_w,P_chg,3000,W,,DESIGN,closure THERMAL-1a (steady charging within radiator),steady grid-charging power accepted through the PTM,power,,2026-10-03
+conv_eff,η_conv,0.95,-,"[0.92, 0.97]",ASSUMPTION,A-17,DC-DC converter efficiency,power,,2026-10-03
+conv_spec_power,p_conv,300,W/kg,"[150, 500]",ESTIMATE,"L007 (space power-conditioning units, LITERATURE-RECALL)",specific power of space DC-DC converters incl. housing/thermal mount,power,,2026-10-03
+cu_alpha,α_Cu,0.00393,1/K,,SOURCE,L023 (LITERATURE-RECALL),temperature coefficient,power,,2026-10-03
+cu_density,"ρ_m,Cu",8960,kg/m^3,,SOURCE,L023,copper density,power,,2026-10-03
+cu_resistivity,ρ_Cu,1.72e-08,ohm m,,SOURCE,"L023 (CRC handbook, 20 C, LITERATURE-RECALL)",copper resistivity at 20 C,power,,2026-10-03
+mmrtg_mass,m_MMRTG,45,kg,,SOURCE,"L028 (NASA MMRTG fact sheet, LITERATURE-RECALL)",MMRTG mass,power,,2026-10-03
+mmrtg_power,P_MMRTG,110,W,,SOURCE,"L028 (BOL electrical, LITERATURE-RECALL)",MMRTG BOL electrical output,power,,2026-10-03
+pcdu_rating_w,P_PCDU,4000,W,,DESIGN,TS-06,bus regulator continuous rating,power,,2026-10-03
+ptm_rating_w,P_PTM,3000,W,,DESIGN,TS-06 / power.budget (emergency + charging),power-transfer module continuous rating,power,,2026-10-03
+rfc_spec_energy,e_RFC,350,Wh/kg,"[200, 600]",ESTIMATE,"L007 (regenerative fuel cell system incl. tanks, long-duration storage; LITERATURE-RECALL)",,power,,2026-10-03
+helix_Kt,K_t,33,1/m,"[20, 50]",SOURCE,"L026 (Hoyt & Clemence 1989, LITERATURE-RECALL)",capacity-to-installation-torque factor,recovery,,2026-10-03
+helix_Nq,N_q*,20,-,"[10, 40]",ESTIMATE,"L025 (breakout factor for phi 45-54 deg, H/D 4-5)",plate-anchor breakout factor,recovery,,2026-10-03
+p_brake_release,p_br,0.7,-,"[0.4, 0.9]",ASSUMPTION,A: probability TSR-1 can release a disabled vehicle's fail-safe brakes (emergency power to brake solenoids or manual release on L1+ assets),,recovery,,2026-10-03
+recovery_fos,FoS_rec,1.5,-,"[1.25, 2]",DESIGN,TS-05,required ratio restraint capacity / line pull for planned recovery,recovery,,2026-10-03
+spade_shape_factor,S_3D,1.3,-,"[1, 1.8]",ESTIMATE,"L025 (Das, Earth Anchors; 3-D plate effect, LITERATURE-RECALL)",passive resistance enhancement of finite-width plate vs plane strain,recovery,,2026-10-03
+winch_eff,η_w,0.65,-,"[0.5, 0.75]",ASSUMPTION,A-17 (motor x gear x drum/level-wind),winch electrical-to-line efficiency,recovery,,2026-10-03
+asset_mtbf_yr,MTBF_a,4,yr,"[1, 10]",ASSUMPTION,A-08,per-asset serviceable-fault MTBF (log-uniform),reliability,,2026-10-03
+crew_maint_hours,H_crew,120,crew-h,"[60, 240]",ASSUMPTION,"A-07, S049 (ISS ~1.9 h/workday)",crew-hours available for external maintenance per mission,reliability,,2026-10-03
+crew_mission_days,t_crew,30,d,,ASSUMPTION,A-07,surface stay per mission,reliability,,2026-10-03
+crew_missions_per_yr,n_crew,1,1/yr,"[0, 2]",ASSUMPTION,A-07,surface crew missions per year,reliability,,2026-10-03
+dust_loss,d_dust,0.3,-,"[0.1, 0.5]",ASSUMPTION,A-09; S062 (sub-monolayer degrades surfaces),performance loss of dust-degraded asset,reliability,,2026-10-03
+frac_unpowered,f_unp,0.5,-,"[0.3, 0.7]",ASSUMPTION,A-14,fraction of electrical/comm faults that remove keep-alive power,reliability,,2026-10-03
+lambda_autonomy_computer,λ_autonomy_computer,0.05,1/yr,"[0.02, 0.15]",ESTIMATE,A: calendar failure rate incl. dust/thermal cycling; no lunar data (literature gap L-3),1 unit(s),reliability,,2026-10-03
+lambda_battery_module,λ_battery_module,0.01,1/yr,"[0.003, 0.03]",ESTIMATE,A: calendar failure rate incl. dust/thermal cycling; no lunar data (literature gap L-3),4 unit(s),reliability,,2026-10-03
+lambda_camera,λ_camera,0.02,1/yr,"[0.007, 0.06]",ESTIMATE,A: calendar failure rate incl. dust/thermal cycling; no lunar data (literature gap L-3),10 unit(s),reliability,,2026-10-03
+lambda_comm_link,λ_comm_link,0.03,1/yr,"[0.01, 0.09]",ESTIMATE,A: calendar failure rate incl. dust/thermal cycling; no lunar data (literature gap L-3),3 unit(s),reliability,,2026-10-03
+lambda_crane,λ_crane,0.05,1/yr,"[0.02, 0.15]",ESTIMATE,A: calendar failure rate incl. dust/thermal cycling; no lunar data (literature gap L-3),1 unit(s),reliability,,2026-10-03
+lambda_dexterous_arm,λ_dexterous_arm,0.08,1/yr,"[0.03, 0.24]",ESTIMATE,A: calendar failure rate incl. dust/thermal cycling; no lunar data (literature gap L-3),1 unit(s),reliability,,2026-10-03
+lambda_drive_unit,λ_drive_unit,0.03,1/yr,"[0.01, 0.09]",ESTIMATE,A: calendar failure rate incl. dust/thermal cycling; no lunar data (literature gap L-3),6 unit(s),reliability,,2026-10-03
+lambda_lidar,λ_lidar,0.05,1/yr,"[0.02, 0.15]",ESTIMATE,A: calendar failure rate incl. dust/thermal cycling; no lunar data (literature gap L-3),2 unit(s),reliability,,2026-10-03
+lambda_pcdu_converter,λ_pcdu_converter,0.015,1/yr,"[0.005, 0.045]",ESTIMATE,A: calendar failure rate incl. dust/thermal cycling; no lunar data (literature gap L-3),3 unit(s),reliability,,2026-10-03
+lambda_ptm,λ_ptm,0.04,1/yr,"[0.015, 0.12]",ESTIMATE,A: calendar failure rate incl. dust/thermal cycling; no lunar data (literature gap L-3),1 unit(s),reliability,,2026-10-03
+lambda_safety_computer,λ_safety_computer,0.02,1/yr,"[0.007, 0.06]",ESTIMATE,A: calendar failure rate incl. dust/thermal cycling; no lunar data (literature gap L-3),2 unit(s),reliability,,2026-10-03
+lambda_steer_unit,λ_steer_unit,0.02,1/yr,"[0.007, 0.06]",ESTIMATE,A: calendar failure rate incl. dust/thermal cycling; no lunar data (literature gap L-3),6 unit(s),reliability,,2026-10-03
+lambda_thermal_loop,λ_thermal_loop,0.01,1/yr,"[0.003, 0.03]",ESTIMATE,A: calendar failure rate incl. dust/thermal cycling; no lunar data (literature gap L-3),1 unit(s),reliability,,2026-10-03
+lambda_winch,λ_winch,0.03,1/yr,"[0.01, 0.09]",ESTIMATE,A: calendar failure rate incl. dust/thermal cycling; no lunar data (literature gap L-3),1 unit(s),reliability,,2026-10-03
+p_spare,p_sp,0.75,-,"[0.5, 0.9]",ASSUMPTION,A-10,ORU spare available on base when needed,reliability,,2026-10-03
+replace_lead_yr,t_repl,1.5,yr,"[1, 2]",ASSUMPTION,A-11,Earth replacement lead time,reliability,,2026-10-03
+robot_step_factor,k_skill,1,-,"[0.9, 1]",ASSUMPTION,A-31 / CDR-09: multiplier on every robotic step probability (pessimism case 0.9),robot dexterity/maturity factor,reliability,,2026-10-03
+spare_lead_yr,t_spare,0.5,yr,"[0.25, 1]",ASSUMPTION,A-11 (next-lander ORU delivery),Earth ORU spare lead time,reliability,,2026-10-03
+t_survive_h,"t_surv,a",50,h,"[24, 120]",ASSUMPTION,A-14 (S035 VIPER ~50 h),time to irreversible thermal damage of an unpowered asset,reliability,,2026-10-03
+tsr_mtbf_yr,MTBF_T,3.84615,yr,"[1.28205, 10.2041]",CALCULATED,reliability.tsr_reliability.critical_fault_rate (single-string servicing-critical ORUs),TSR-1 mean time between faults that remove a servicing function,reliability,,2026-10-03
+tsr_repair_days,"t_rep,T",30,d,"[7, 120]",ASSUMPTION,A: ORU swap by crew/peer with on-base spares,mean TSR-1 outage per fault,reliability,,2026-10-03
+tsr_speed_eff,v_eff,1.26,km/h,"[0.7, 2.5]",CALCULATED,0.5 m/s nominal × 0.7 driving duty (autonomy stops),effective TSR traverse speed incl. perception/planning stops,reliability,,2026-10-03
+value_dA_mean,ΔA,0.0767913,-,,CALCULATED,reliability.value_model.monte_carlo (N=30),reliability.value_model.monte_carlo (N=30),reliability,,2026-10-03
+anchor_strap_angle_deg,ε_strap,35,deg,,DESIGN,TS-05,front hold-down strap angle below horizontal (toward anchors),stability,,2026-10-03
+fairlead_height,h_fl,0.25,m,,DESIGN,TS-05 (pitch stability under line pull),winch fairlead height above ground,stability,,2026-10-03
+tip_factor_req,TF_req,1.5,-,,DESIGN,TS-04 (static tipping safety factor),minimum restoring/overturning moment ratio for planned operations,stability,,2026-10-03
+adhesive_areal,w_adh,0.3,kg/m^2,,ESTIMATE,"L007 (film adhesive 2 faces, LITERATURE-RECALL)",adhesive areal mass,structure,,2026-10-03
+core_density,ρ_core,50,kg/m^3,,SOURCE,"L007 (Al 5056 honeycomb 3.1 pcf, LITERATURE-RECALL)",honeycomb core density,structure,,2026-10-03
+core_thk,t_core,0.025,m,,DESIGN,TS-10,core thickness,structure,,2026-10-03
+f1_req,f_1,35,Hz,"[25, 50]",ASSUMPTION,A-05b (typical lander payload stiffness requirement),minimum first-mode frequency on launch locks,structure,,2026-10-03
+fitting_kg_per_kN,k_fit,0.35,kg/kN,"[0.2, 0.6]",ESTIMATE,A: Ti-6Al-4V machined hard points sized at FoS 1.4,hard-point fitting mass per kN of design load,structure,,2026-10-03
+fos_yield,FoS_y,1.25,-,,SOURCE,S053 (A-22),yield factor of safety,structure,,2026-10-03
+insert_frac,f_ins,0.3,-,"[0.2, 0.45]",ESTIMATE,"L007 (inserts, edge closeouts, internal frames)",inserts/frames as fraction of panel mass,structure,,2026-10-03
+launch_g_axial,n_ax,6,g,"[4, 10]",ASSUMPTION,A-05,quasi-static axial load factor,structure,,2026-10-03
+launch_g_lateral,n_lat,3,g,"[2, 4]",ASSUMPTION,A-05,quasi-static lateral load factor,structure,,2026-10-03
+stowed_env_H,H_env,2,m,,ASSUMPTION,A-32,allowable stowed height,structure,,2026-10-03
+stowed_env_L,L_env,4,m,,ASSUMPTION,A-32 (Mk1/Argonaut-class deck; no lander data),allowable stowed length,structure,,2026-10-03
+stowed_env_W,W_env,2.6,m,,ASSUMPTION,A-32,allowable stowed width,structure,,2026-10-03
+t_face_min,"t_f,min",0.0005,m,,ASSUMPTION,A: handling/MMOD/insert pull-out minimum per face,minimum face-sheet thickness (each face),structure,,2026-10-03
+T_rad_max,"T_rad,max",293,K,,DESIGN,TS thermal: battery <= 30 C charging with 10 K gradient,maximum radiator operating temperature in hot case,thermal,,2026-10-03
+T_web_survival,T_surv,263,K,,DESIGN,S071 (battery discharge >= -20 C) + 10 K margin,minimum WEB/battery temperature held in survival,thermal,,2026-10-03
+cp_al,"c_p,Al",900,J/(kg K),,SOURCE,L005,specific heat aluminium,thermal,,2026-10-03
+cp_battery,"c_p,bat",1000,J/(kg K),,SOURCE,"L006 (Li-ion cells ~0.9-1.1 kJ/kgK, LITERATURE-RECALL)",specific heat of Li-ion pack,thermal,,2026-10-03
+mli_eps_eff,ε*,0.03,-,"[0.015, 0.05]",SOURCE,"L006 (Gilmore: practical blankets 0.01-0.05, LITERATURE-RECALL)",effective emittance of flight MLI incl. seams/penetrations,thermal,,2026-10-03
+q_web_hot,Q_hot,380,W,,DESIGN,"budgets.closure (max WEB dissipation over modes, verified)",hot-case WEB dissipation used to size the radiator,thermal,,2026-10-03
+rad_alpha_bol,α_rad,0.15,-,"[0.08, 0.25]",SOURCE,L006 (LITERATURE-RECALL),radiator solar absorptance BOL,thermal,,2026-10-03
+rad_alpha_dust_factor,"f_α,dust",2,-,"[1.4, 2.6]",SOURCE,S062,absorptance multiplication at ~25 % dust coverage (1.4-2.6),thermal,,2026-10-03
+rad_eps,ε_rad,0.85,-,"[0.75, 0.9]",SOURCE,"L006 (white paint / OSR BOL, LITERATURE-RECALL)",radiator IR emittance (BOL),thermal,,2026-10-03
+rad_off_eps,ε_off,0.04,-,"[0.02, 0.1]",ESTIMATE,"L006 (closed louver / LHP shut-off effective, LITERATURE-RECALL)",effective radiator emittance with heat rejection switched off,thermal,,2026-10-03
+radiator_area,A_rad,1.64294,m^2,,CALCULATED,thermal.lumped.radiator_area(q_web_hot),thermal.lumped.radiator_area(q_web_hot),thermal,,2026-10-03
+sun_inc_worst_deg,β_inc,12,deg,"[2, 20]",ASSUMPTION,A: 1.54 deg max solar elevation (L009) + 10 deg vehicle tilt toward sun on slopes,worst-case solar incidence angle above radiator plane,thermal,,2026-10-03
+survival_power,P_surv,81.8333,W,,CALCULATED,configuration mode M10 (heaters + survival avionics),configuration mode M10 (heaters + survival avionics),thermal,,2026-10-03
+terrain_vf_rad,F_terr,0.1,-,"[0, 0.25]",ASSUMPTION,A: zenith radiator near sloped terrain,radiator view factor to sunlit terrain,thermal,,2026-10-03
+web_H,H_WEB,0.35,m,,DESIGN,TS thermal,warm electronics box height,thermal,,2026-10-03
+web_L,L_WEB,1,m,,DESIGN,TS thermal (packaging of ~120 L of WEB equipment),warm electronics box length,thermal,,2026-10-03
+web_W,W_WEB,0.8,m,,DESIGN,TS thermal,warm electronics box width,thermal,,2026-10-03
+web_cond_leak,G_leak,0.25,W/K,"[0.1, 0.5]",ESTIMATE,A: titanium/GFRP standoffs + harness feed-throughs,conductive coupling WEB->structure,thermal,,2026-10-03
+web_dT_allow,ΔT_WEB,15,K,,DESIGN,S071 battery window (≤ 40 C discharge from ~20 C nominal) with margin,allowed WEB temperature rise during transient high-dissipation modes,thermal,,2026-10-03

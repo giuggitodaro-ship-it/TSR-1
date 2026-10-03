@@ -90,14 +90,15 @@ class Options:
     # mobility
     n_wheels: int = 6
     suspension: str = "rocker_bogie_lowering"      # rocker_bogie | rocker_bogie_lowering | active_6 | active_4
-    wheel_r: float = 0.40
-    wheel_b: float = 0.30
-    grouser_h: float = 0.015
-    wheelbase: float = 2.4
+    wheel_r: float = 0.45
+    wheel_b: float = 0.40
+    grouser_h: float = 0.02
+    wheelbase: float = 2.6
     track: float = 2.0
     ground_clearance: float = 0.45
     # manipulation
-    manip: str = "dex+crane"                         # general | dual_identical | heavy+dex | dex+crane | dex+fixtures
+    manip: str = "dual_dex+crane"                    # general | dual_identical | heavy+dex | dex+crane | dex+fixtures | dual_dex+crane
+    dex_link_material: str = "Ti-6Al-4V"
     dex_payload: float = 20.0
     dex_links: tuple = (0.75, 0.70, 0.15)
     heavy_payload: float = 150.0
@@ -110,7 +111,7 @@ class Options:
     n_anchors: int = 2
     recovery: bool = True
     # power
-    battery_usable_eol_kwh: float = 12.0
+    battery_usable_eol_kwh: float = 14.0
     ptm_kw: float = 3.0
     tether_m: float = 25.0
     solar_area: float = 1.5
@@ -310,12 +311,14 @@ def build(opts: Options, iterate: int = 25) -> Config:
 
         # ---------------- manipulation
         dex = size_arm(ArmSpec("dexterous", opts.dex_links, opts.dex_payload, 0.003, 7, 3, 6.0, 3.0,
-                               math.radians(5)))
+                               math.radians(5), link_material=opts.dex_link_material))
         derived["dex"] = dex
         x_arm = opts.wheelbase / 2 - 0.15
         manip_items = [("dexterous_arm", dex.mass, (x_arm - 0.5, -0.45, 1.05), dex)]
         crane = heavy = None
-        if opts.manip in ("dex+crane",):
+        if opts.manip == "dual_dex+crane":
+            manip_items.append(("dexterous_arm_2", dex.mass, (x_arm - 0.5, 0.45, 1.05), dex))
+        if opts.manip in ("dex+crane", "dual_dex+crane"):
             crane = size_crane(CraneSpec(boom_length=opts.crane_boom, payload=opts.heavy_payload))
             manip_items.append(("crane_boom", crane.mass, (0.3, 0.0, 1.05), crane))
         if opts.manip in ("heavy+dex",):
@@ -360,6 +363,7 @@ def build(opts: Options, iterate: int = 25) -> Config:
             ("tool_oru_adapter_androgynous", 2.5, "Ti-6Al-4V/Al 7075", 5, 10),
             ("tool_lifting_fixture_slings", 2.0, "Vectran slings, Ti hooks", 6, 0),
             ("tool_recovery_shackle_hitch", 2.0, "Ti-6Al-4V", 6, 0),
+            ("tool_regolith_scoop", 2.0, "Ti-6Al-4V blade, PTFE-coated", 6, 30),
             ("tool_rack_holsters", 6.0, "Al 7075, Ti latches", 6, 5),
         ]
         for nm, m, mat, trl, pk in tools:
@@ -493,7 +497,13 @@ def build(opts: Options, iterate: int = 25) -> Config:
                     "Al 6063 heat-pipe panel, OSR/AgFEP, ITO EDS film", 5))
         A(Component("loop_heat_pipe_switch", "thermal", "thermal", 3.5, (0, 0, zc), "ESTIMATE: LHP with thermal switch",
                     "SS/Al, ammonia", 6))
-        heater_cold = max(0.0, leak - 25.0) + act_heat
+        web_names = ("pcdu_bus_regulator", "power_transfer_module", "autonomy_computer_hpsc", "safety_rt_computer_A",
+                     "safety_rt_computer_B", "motor_control_units", "mass_memory_and_timing", "imu_ln200s",
+                     "electrical_diagnostic_unit", "surface_network_radio", "lunanet_relay_transceiver", "mesh_uhf_radio",
+                     "solar_array_regulator")
+        p_elec_surv = sum(c.power.get("M10_survival", 0.0) for c in comps if c.name in web_names)
+        heater_cold = max(0.0, leak - p_elec_surv) + act_heat
+        derived["p_elec_survival"] = p_elec_surv
         A(Component("heaters_thermostats", "thermal", "thermal", 2.0 + 0.1 * n_act_ext, (0, 0, zc),
                     "ESTIMATE: Kapton heaters, PRTs, thermostats", "Kapton/Inconel", 8,
                     power={"M10_survival": heater_cold, "M1_dormant": heater_cold * 0.6,

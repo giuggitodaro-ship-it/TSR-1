@@ -1,0 +1,697 @@
+{
+ "mode_power_W": {
+  "M1_dormant": 60.20000587471297,
+  "M2_comm_standby": 75.4166715622608,
+  "M3_driving": 468.3363989016704,
+  "M4_inspection": 241.5,
+  "M5_manipulation": 391.2866955904575,
+  "M6_heavy_manip": 301.31115931742914,
+  "M7_recovery_winch": 364.61538461538464,
+  "M8_emergency_power": 110.0,
+  "M9_charging": 74.0,
+  "M10_survival": 81.83334312452162,
+  "M11_safe": 136.4166715622608
+ },
+ "web_dissipation_W": {
+  "M1_dormant": 25.81600046997704,
+  "M2_comm_standby": 50.033333724980864,
+  "M3_driving": 180.46691191213367,
+  "M4_inspection": 165.32000000000002,
+  "M5_manipulation": 202.3029356472366,
+  "M6_heavy_manip": 167.10489274539435,
+  "M7_recovery_winch": 152.1692307692308,
+  "M8_emergency_power": 349.8000000000001,
+  "M9_charging": 79.92,
+  "M10_survival": 25.54666744996173,
+  "M11_safe": 109.91333372498087
+ },
+ "peak_sum_W": 3382.03012437234,
+ "drms": [
+  {
+   "id": "DRM-1",
+   "title": "Routine inspection patrol",
+   "duration_h": 20.373015873015873,
+   "distance_km": 20.0,
+   "energy_kwh": 7.387946101355245,
+   "energy_with_solar_kwh": 5.699974950226637,
+   "peak_W": 400.28547923116923,
+   "tools": [
+    "mast cameras",
+    "thermal IR",
+    "LiDAR",
+    "macro camera on arm"
+   ],
+   "crew": "none",
+   "risks": [
+    "terrain hazard",
+    "lighting (long shadows)"
+   ],
+   "branches": [
+    "anomaly found \u2192 schedule DRM-2/3/5",
+    "comm outage \u2192 store-and-forward"
+   ],
+   "phases": [
+    [
+     "patrol loop (2\u00b7R_s)",
+     "drive",
+     15.873015873015873,
+     20.0,
+     400.28547923116923,
+     6.353737765574115
+    ],
+    [
+     "stand-off inspection stop 1",
+     "M4_inspection",
+     0.5,
+     0.0,
+     241.5,
+     0.12075
+    ],
+    [
+     "stand-off inspection stop 2",
+     "M4_inspection",
+     0.5,
+     0.0,
+     241.5,
+     0.12075
+    ],
+    [
+     "stand-off inspection stop 3",
+     "M4_inspection",
+     0.5,
+     0.0,
+     241.5,
+     0.12075
+    ],
+    [
+     "stand-off inspection stop 4",
+     "M4_inspection",
+     0.5,
+     0.0,
+     241.5,
+     0.12075
+    ],
+    [
+     "stand-off inspection stop 5",
+     "M4_inspection",
+     0.5,
+     0.0,
+     241.5,
+     0.12075
+    ],
+    [
+     "stand-off inspection stop 6",
+     "M4_inspection",
+     0.5,
+     0.0,
+     241.5,
+     0.12075
+    ],
+    [
+     "stand-off inspection stop 7",
+     "M4_inspection",
+     0.5,
+     0.0,
+     241.5,
+     0.12075
+    ],
+    [
+     "stand-off inspection stop 8",
+     "M4_inspection",
+     0.5,
+     0.0,
+     241.5,
+     0.12075
+    ],
+    [
+     "report via relay",
+     "M11_safe",
+     0.5,
+     0.0,
+     136.4166715622608,
+     0.0682083357811304
+    ]
+   ]
+  },
+  {
+   "id": "DRM-2",
+   "title": "Electrical failure: emergency power + ORU replacement",
+   "duration_h": 22.873015873015873,
+   "distance_km": 20.0,
+   "energy_kwh": 10.016973875105348,
+   "energy_with_solar_kwh": 8.121869528571398,
+   "peak_W": 707.076169274668,
+   "tools": [
+    "electrical probe",
+    "connector tool",
+    "socket driver",
+    "OTCM/androgynous adapter",
+    "power tether"
+   ],
+   "crew": "none (task-level approvals from MOC)",
+   "risks": [
+    "connector damage",
+    "wrong diagnosis",
+    "ORU fastener seized"
+   ],
+   "branches": [
+    "no spare \u2192 leave keep-alive module, request spare",
+    "unpowered > t_survive \u2192 loss",
+    "fastener seized \u2192 abort, report"
+   ],
+   "phases": [
+    [
+     "traverse to asset",
+     "drive",
+     7.936507936507937,
+     10.0,
+     400.28547923116923,
+     3.1768688827870575
+    ],
+    [
+     "stand-off inspection",
+     "M4_inspection",
+     0.5,
+     0.0,
+     241.5,
+     0.12075
+    ],
+    [
+     "close inspection + diagnosis",
+     "M5_manipulation",
+     1.0,
+     0.0,
+     391.2866955904575,
+     0.3912866955904575
+    ],
+    [
+     "deploy tether, connect ISPSIS port",
+     "M5_manipulation",
+     0.5,
+     0.0,
+     391.2866955904575,
+     0.19564334779522874
+    ],
+    [
+     "keep-alive + bus diagnosis",
+     "M8_emergency_power",
+     1.0,
+     0.0,
+     425.7894736842105,
+     0.4257894736842105
+    ],
+    [
+     "ORU swap (keep-alive on)",
+     "M5_manipulation",
+     3.0,
+     0.0,
+     707.076169274668,
+     2.1212285078240036
+    ],
+    [
+     "functional test",
+     "M8_emergency_power",
+     0.5,
+     0.0,
+     425.7894736842105,
+     0.21289473684210525
+    ],
+    [
+     "disconnect, stow",
+     "M5_manipulation",
+     0.5,
+     0.0,
+     391.2866955904575,
+     0.19564334779522874
+    ],
+    [
+     "return to home node",
+     "drive",
+     7.936507936507937,
+     10.0,
+     400.28547923116923,
+     3.1768688827870575
+    ]
+   ]
+  },
+  {
+   "id": "DRM-3",
+   "title": "Dust contamination of solar array / radiator",
+   "duration_h": 11.936507936507937,
+   "distance_km": 10.0,
+   "energy_kwh": 4.5922289695584295,
+   "energy_with_solar_kwh": 3.603250157210386,
+   "peak_W": 400.28547923116923,
+   "tools": [
+    "dust brush",
+    "EDS wand",
+    "thermal IR"
+   ],
+   "crew": "none",
+   "risks": [
+    "re-contamination by own wheels",
+    "abrasion of coating"
+   ],
+   "branches": [
+    "insufficient recovery \u2192 schedule crew / coating replacement"
+   ],
+   "phases": [
+    [
+     "traverse to array",
+     "drive",
+     3.9682539682539684,
+     5.0,
+     400.28547923116923,
+     1.5884344413935287
+    ],
+    [
+     "inspect (IR, imaging, I-V telemetry)",
+     "M4_inspection",
+     0.5,
+     0.0,
+     241.5,
+     0.12075
+    ],
+    [
+     "clean 30 m\u00b2 (brush + EDS wand, 10 m\u00b2/h)",
+     "M5_manipulation",
+     3.0,
+     0.0,
+     391.2866955904575,
+     1.1738600867713727
+    ],
+    [
+     "verify recovery",
+     "M4_inspection",
+     0.5,
+     0.0,
+     241.5,
+     0.12075
+    ],
+    [
+     "return",
+     "drive",
+     3.9682539682539684,
+     5.0,
+     400.28547923116923,
+     1.5884344413935287
+    ]
+   ]
+  },
+  {
+   "id": "DRM-4",
+   "title": "Immobilized rover recovery (450 kg, 10\u00b0 slope)",
+   "duration_h": 20.298412698412697,
+   "distance_km": 16.2,
+   "energy_kwh": 7.864569792864191,
+   "energy_with_solar_kwh": 6.182779759312757,
+   "peak_W": 600.2854792311692,
+   "tools": [
+    "anchor driver",
+    "helical anchors",
+    "spades",
+    "shackle/hitch",
+    "winch"
+   ],
+   "crew": "none",
+   "risks": [
+    "anchor pull-out",
+    "line snag",
+    "target structural damage"
+   ],
+   "branches": [
+    "anchor creep \u2192 add anchor / reduce load",
+    "target beyond envelope \u2192 keep-alive + crew/LTV assist"
+   ],
+   "phases": [
+    [
+     "traverse to target",
+     "drive",
+     6.349206349206349,
+     8.0,
+     400.28547923116923,
+     2.541495106229646
+    ],
+    [
+     "stand-off assessment",
+     "M4_inspection",
+     1.0,
+     0.0,
+     241.5,
+     0.2415
+    ],
+    [
+     "keep-alive power to target",
+     "M8_emergency_power",
+     2.0,
+     0.0,
+     267.89473684210526,
+     0.5357894736842105
+    ],
+    [
+     "deploy spades, install 2 helical anchors",
+     "M5_manipulation",
+     1.5,
+     0.0,
+     391.2866955904575,
+     0.5869300433856863
+    ],
+    [
+     "rig line to tow point",
+     "M5_manipulation",
+     1.0,
+     0.0,
+     391.2866955904575,
+     0.3912866955904575
+    ],
+    [
+     "winch 30 m (0.05 m/s) + monitoring",
+     "M7_recovery_winch",
+     0.5,
+     0.0,
+     549.2307692307693,
+     0.27461538461538465
+    ],
+    [
+     "stow anchors/line",
+     "M5_manipulation",
+     1.0,
+     0.0,
+     391.2866955904575,
+     0.3912866955904575
+    ],
+    [
+     "tow 200 m to flat service zone",
+     "drive",
+     0.6000000000000001,
+     0.2,
+     600.2854792311692,
+     0.36017128753870165
+    ],
+    [
+     "return",
+     "drive",
+     6.349206349206349,
+     8.0,
+     400.28547923116923,
+     2.541495106229646
+    ]
+   ]
+  },
+  {
+   "id": "DRM-5",
+   "title": "Communication node electronics replacement",
+   "duration_h": 19.873015873015873,
+   "distance_km": 20.0,
+   "energy_kwh": 8.074607769130846,
+   "energy_with_solar_kwh": 6.428063257083305,
+   "peak_W": 511.83747510690284,
+   "tools": [
+    "crane",
+    "socket driver",
+    "connector tool",
+    "lifting fixture"
+   ],
+   "crew": "none",
+   "risks": [
+    "ORU drop",
+    "mast access geometry"
+   ],
+   "branches": [
+    "access infeasible \u2192 lower mast if designed (L3)"
+   ],
+   "phases": [
+    [
+     "traverse to comm tower",
+     "drive",
+     7.936507936507937,
+     10.0,
+     400.28547923116923,
+     3.1768688827870575
+    ],
+    [
+     "inspect",
+     "M4_inspection",
+     0.5,
+     0.0,
+     241.5,
+     0.12075
+    ],
+    [
+     "temporary power to node",
+     "M8_emergency_power",
+     0.5,
+     0.0,
+     320.5263157894737,
+     0.16026315789473686
+    ],
+    [
+     "ORU swap at 2.5 m height (crane-assisted)",
+     "M6_heavy_manip",
+     2.5,
+     0.0,
+     511.83747510690284,
+     1.2795936877672571
+    ],
+    [
+     "link test",
+     "M8_emergency_power",
+     0.5,
+     0.0,
+     320.5263157894737,
+     0.16026315789473686
+    ],
+    [
+     "return",
+     "drive",
+     7.936507936507937,
+     10.0,
+     400.28547923116923,
+     3.1768688827870575
+    ]
+   ]
+  },
+  {
+   "id": "DRM-6",
+   "title": "Heavy ORU exchange (100 kg battery module of a power node)",
+   "duration_h": 9.061904761904762,
+   "distance_km": 6.0,
+   "energy_kwh": 3.216841503214979,
+   "energy_with_solar_kwh": 2.4660329872980937,
+   "peak_W": 400.28547923116923,
+   "tools": [
+    "crane",
+    "lifting fixture",
+    "socket driver"
+   ],
+   "crew": "none",
+   "risks": [
+    "load swing",
+    "tip-over"
+   ],
+   "branches": [
+    "outside stability envelope \u2192 reposition / crew"
+   ],
+   "phases": [
+    [
+     "traverse",
+     "drive",
+     2.380952380952381,
+     3.0,
+     400.28547923116923,
+     0.9530606648361172
+    ],
+    [
+     "inspect",
+     "M4_inspection",
+     0.5,
+     0.0,
+     241.5,
+     0.12075
+    ],
+    [
+     "lower body, lock differential",
+     "M6_heavy_manip",
+     0.3,
+     0.0,
+     301.31115931742914,
+     0.09039334779522873
+    ],
+    [
+     "crane lift-out / lift-in with arm guidance",
+     "M6_heavy_manip",
+     3.0,
+     0.0,
+     301.31115931742914,
+     0.9039334779522874
+    ],
+    [
+     "test",
+     "M5_manipulation",
+     0.5,
+     0.0,
+     391.2866955904575,
+     0.19564334779522874
+    ],
+    [
+     "return",
+     "drive",
+     2.380952380952381,
+     3.0,
+     400.28547923116923,
+     0.9530606648361172
+    ]
+   ]
+  }
+ ],
+ "battery": {
+  "usable_eol_kwh": 14.0,
+  "nameplate_kwh": 22.226399999999998,
+  "mass": 138.915,
+  "n_cells": 1764,
+  "n_series": 28,
+  "n_parallel": 63,
+  "v_nominal": 100.8
+ },
+ "reserve_kwh": 4.091667156226081,
+ "survival_power_W": 81.83334312452162,
+ "survival_full_battery_h": 171.0794092659384,
+ "keepalive_duration_at_edge_h": 8.348245548306092,
+ "emergency_3kW_duration_at_edge_h": 1.087732428503725,
+ "range_km": 31.188988936431553,
+ "energy_per_km_kwh": 0.3176868882787057,
+ "battery_vs_radius": [
+  {
+   "radius_km": 5,
+   "drm2_kwh": 6.840104992318291,
+   "drm2_with_solar_kwh": 5.6025663454838375,
+   "reserve_kwh": 4.091667156226081,
+   "usable_eol_required_kwh": 10.931772148544372,
+   "pack_mass_kg": 108.045,
+   "pack_mass_with_solar_kg": 94.815
+  },
+  {
+   "radius_km": 7.5,
+   "drm2_kwh": 8.42853943371182,
+   "drm2_with_solar_kwh": 6.862217937027618,
+   "reserve_kwh": 4.091667156226081,
+   "usable_eol_required_kwh": 12.5202065899379,
+   "pack_mass_kg": 123.47999999999999,
+   "pack_mass_with_solar_kg": 108.045
+  },
+  {
+   "radius_km": 10,
+   "drm2_kwh": 10.016973875105348,
+   "drm2_with_solar_kwh": 8.121869528571398,
+   "reserve_kwh": 4.091667156226081,
+   "usable_eol_required_kwh": 14.10864103133143,
+   "pack_mass_kg": 138.915,
+   "pack_mass_with_solar_kg": 121.275
+  },
+  {
+   "radius_km": 12.5,
+   "drm2_kwh": 11.605408316498877,
+   "drm2_with_solar_kwh": 9.381521120115178,
+   "reserve_kwh": 4.091667156226081,
+   "usable_eol_required_kwh": 15.697075472724958,
+   "pack_mass_kg": 154.35,
+   "pack_mass_with_solar_kg": 132.3
+  },
+  {
+   "radius_km": 15,
+   "drm2_kwh": 13.193842757892407,
+   "drm2_with_solar_kwh": 10.64117271165896,
+   "reserve_kwh": 4.091667156226081,
+   "usable_eol_required_kwh": 17.28550991411849,
+   "pack_mass_kg": 169.785,
+   "pack_mass_with_solar_kg": 145.53
+  },
+  {
+   "radius_km": 20,
+   "drm2_kwh": 16.370711640679463,
+   "drm2_with_solar_kwh": 13.16047589474652,
+   "reserve_kwh": 4.091667156226081,
+   "usable_eol_required_kwh": 20.462378796905544,
+   "pack_mass_kg": 200.65499999999997,
+   "pack_mass_with_solar_kg": 169.785
+  },
+  {
+   "radius_km": 25,
+   "drm2_kwh": 19.54758052346652,
+   "drm2_with_solar_kwh": 15.679779077834079,
+   "reserve_kwh": 4.091667156226081,
+   "usable_eol_required_kwh": 23.639247679692602,
+   "pack_mass_kg": 231.525,
+   "pack_mass_with_solar_kg": 194.04
+  }
+ ],
+ "solar_avg_W": 165.70655632427324,
+ "thermal": {
+  "a_rad": 1.6429435507420518,
+  "q_env_abs": 123.93087123570615,
+  "heater_cold_w": 62.83334312452162,
+  "leak_cold_w": 81.83334312452162,
+  "survival_h": 171.0794092659384,
+  "cooldown_h": "inf"
+ },
+ "psr_excursion_energy_limited_h": 16.366841021499464,
+ "tether": {
+  "area_mm2": 6.9110555555555555,
+  "resistance": 0.144,
+  "loss_w": 90.0,
+  "drop_v": 3.5999999999999996,
+  "mass": 4.953844622222223
+ },
+ "energy_alternatives": [
+  {
+   "option": "E1 Li-ion battery only, grid charging at nodes",
+   "added_mass_kg": 0.0,
+   "survival_dark_h": 171.0794092659384,
+   "survival_sunlit": "limited by battery",
+   "indefinite_survival_in_sun": false,
+   "trl": 6,
+   "issues": "stranded TSR in darkness dies after battery exhaustion",
+   "selected": false
+  },
+  {
+   "option": "E2 Li-ion battery + fixed vertical solar arrays (1.5 m\u00b2)",
+   "added_mass_kg": 5.7,
+   "survival_dark_h": 171.0794092659384,
+   "survival_sunlit": "indefinite (166 W avg > 82 W)",
+   "indefinite_survival_in_sun": true,
+   "trl": 7,
+   "issues": "dust on arrays (vertical: low deposition)",
+   "selected": true
+  },
+  {
+   "option": "E3 battery + MMRTG-class radioisotope power",
+   "added_mass_kg": 45.0,
+   "survival_dark_h": "inf",
+   "survival_sunlit": "indefinite",
+   "indefinite_survival_in_sun": true,
+   "trl": 9,
+   "issues": "Pu-238 supply and launch approval; ~2 kW waste heat helps PSR ops; not available to an independent commercial programme with confidence",
+   "selected": false
+  },
+  {
+   "option": "E4 battery + regenerative fuel cell",
+   "added_mass_kg": 39.285714285714285,
+   "survival_dark_h": 232.17919828948783,
+   "survival_sunlit": "needs electrolysis power",
+   "indefinite_survival_in_sun": false,
+   "trl": 4,
+   "issues": "mobile H2/O2 storage, cryo/pressure hazards near crew, low TRL on surface",
+   "selected": false
+  },
+  {
+   "option": "E5 battery + wireless/beamed power",
+   "added_mass_kg": 8.0,
+   "survival_dark_h": 171.0794092659384,
+   "survival_sunlit": "n/a",
+   "indefinite_survival_in_sun": false,
+   "trl": 3,
+   "issues": "requires transmitter infrastructure and line of sight; low TRL",
+   "selected": false
+  }
+ ]
+}

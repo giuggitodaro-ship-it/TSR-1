@@ -1,0 +1,104 @@
+{
+ "description": "TSR-1 master run configuration. All stochastic analyses are seeded for reproducibility.",
+ "baseline_options": {
+  "label": "TSR-1 baseline (DESIGN_FREEZE_V1)",
+  "n_wheels": 6,
+  "suspension": "rocker_bogie_lowering",
+  "wheel_r": 0.45,
+  "wheel_b": 0.4,
+  "grouser_h": 0.02,
+  "wheelbase": 2.6,
+  "track": 2.0,
+  "ground_clearance": 0.45,
+  "manip": "dual_dex+crane",
+  "dex_payload": 20.0,
+  "dex_links": [
+   0.75,
+   0.7,
+   0.15
+  ],
+  "dex_link_material": "Ti-6Al-4V",
+  "heavy_payload": 150.0,
+  "crane_boom": 2.6,
+  "winch_pull_kN": 4.0,
+  "winch_line_m": 50.0,
+  "n_spades": 2,
+  "n_anchors": 2,
+  "recovery": true,
+  "battery_usable_eol_kwh": 15.0,
+  "ptm_kw": 3.0,
+  "tether_m": 25.0,
+  "solar_area": 1.5,
+  "spine": "modular",
+  "spine_slots": 6,
+  "spine_payload": 150.0,
+  "cold_tolerant_actuators": true
+ },
+ "value_model": {
+  "ref_assets": 30,
+  "keepalive_modules": 2,
+  "asset_sweep": [
+   3,
+   5,
+   10,
+   15,
+   20,
+   30,
+   45,
+   60
+  ],
+  "tsr_spares_kg_per_yr": 15.0
+ },
+ "seeds": {
+  "value": 2026,
+  "recovery_cases": 1,
+  "mass_mc": 42
+ },
+ "full": {
+  "value_runs": 400,
+  "value_runs_sweep": 200,
+  "recovery_cases": 400,
+  "tsr_rel_runs": 2000,
+  "servicing_samples": 4000,
+  "mass_mc": 120
+ },
+ "quick": {
+  "value_runs": 30,
+  "value_runs_sweep": 20,
+  "recovery_cases": 60,
+  "tsr_rel_runs": 200,
+  "servicing_samples": 400,
+  "mass_mc": 8
+ },
+ "cdr": {
+  "skill_factors": [
+   0.9,
+   0.95,
+   1.0
+  ],
+  "host_cases": [
+   {
+    "label": "dedicated TSR-1",
+    "host_busy_frac": 0.0,
+    "host_delay_h": 0.0
+   },
+   {
+    "label": "kit on shared utility rover (busy 30 %, 24 h)",
+    "host_busy_frac": 0.3,
+    "host_delay_h": 24.0
+   },
+   {
+    "label": "kit on shared utility rover (busy 60 %, 72 h)",
+    "host_busy_frac": 0.6,
+    "host_delay_h": 72.0
+   }
+  ],
+  "speeds_kmh": [
+   0.7,
+   1.0,
+   1.26,
+   1.8,
+   2.5
+  ]
+ }
+}

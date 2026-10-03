@@ -1,0 +1,215 @@
+{
+ "options": {
+  "label": "TSR-1 baseline (DESIGN_FREEZE_V1)",
+  "n_wheels": 6,
+  "suspension": "rocker_bogie_lowering",
+  "wheel_r": 0.45,
+  "wheel_b": 0.4,
+  "grouser_h": 0.02,
+  "wheelbase": 2.6,
+  "track": 2.0,
+  "ground_clearance": 0.45,
+  "manip": "dual_dex+crane",
+  "dex_link_material": "Ti-6Al-4V",
+  "dex_payload": 20.0,
+  "dex_links": [
+   0.75,
+   0.7,
+   0.15
+  ],
+  "heavy_payload": 150.0,
+  "heavy_links": [
+   1.1,
+   1.0,
+   0.2
+  ],
+  "crane_boom": 2.6,
+  "winch_pull_kN": 4.0,
+  "winch_line_m": 50.0,
+  "n_spades": 2,
+  "n_anchors": 2,
+  "recovery": true,
+  "battery_usable_eol_kwh": 15.0,
+  "ptm_kw": 3.0,
+  "tether_m": 25.0,
+  "solar_area": 1.5,
+  "spine": "modular",
+  "spine_slots": 6,
+  "spine_payload": 150.0,
+  "cold_tolerant_actuators": true,
+  "payload_carried": 100.0
+ },
+ "cbe": 812.4898037920893,
+ "predicted": 999.5849199517197,
+ "dry_allocation": 1149.5226579444775,
+ "operational": 1249.5226579444775,
+ "delivered": 1206.9987908417015,
+ "subsystems": [
+  [
+   "avionics",
+   24.500000000000004,
+   30.625
+  ],
+  [
+   "communications",
+   6.7,
+   8.375
+  ],
+  [
+   "dust",
+   13.979999999999999,
+   17.061
+  ],
+  [
+   "harness",
+   45.98998889389185,
+   73.58398223022697
+  ],
+  [
+   "manipulation",
+   73.84923552867781,
+   92.31154441084725
+  ],
+  [
+   "mobility",
+   211.33569010951163,
+   261.11744423563584
+  ],
+  [
+   "power",
+   193.22217795555554,
+   219.15747244444444
+  ],
+  [
+   "recovery",
+   50.2688,
+   62.611
+  ],
+  [
+   "sensors",
+   17.25,
+   21.5625
+  ],
+  [
+   "service_spine",
+   14.600000000000001,
+   17.52
+  ],
+  [
+   "stabilisation",
+   9.4416,
+   11.32992
+  ],
+  [
+   "structure",
+   97.20665000000001,
+   116.64798
+  ],
+  [
+   "thermal",
+   20.64566130445231,
+   25.807076630565387
+  ],
+  [
+   "tools",
+   33.5,
+   41.875
+  ]
+ ],
+ "com_stowed": [
+  0.0120513440662144,
+  0.0028008763043974806,
+  0.7738005003202455
+ ],
+ "vehicle": {
+  "mass": 1249.5226579444775,
+  "h_cg": 0.7738005003202455,
+  "x_cg": 0.0120513440662144
+ },
+ "derived_keys": [
+  "drive_torque_soil",
+  "drive_rating",
+  "p_drive_nom",
+  "p_drive_15",
+  "k_cal",
+  "steer_torque",
+  "chassis",
+  "dex",
+  "crane",
+  "heavy",
+  "spine_payload_pos",
+  "winch",
+  "battery",
+  "tether",
+  "a_mli",
+  "a_rad",
+  "q_hot",
+  "web_leak_cold",
+  "actuator_heaters",
+  "n_external_actuators",
+  "p_elec_survival",
+  "heater_cold"
+ ],
+ "dex": {
+  "name": "dexterous",
+  "reach_m": 1.5999999999999999,
+  "payload_kg": 20.0,
+  "mass_kg": 26.9731213238477,
+  "shoulder_torque_Nm": 98.25010601748173,
+  "shoulder_rating_Nm": 196.50021203496345,
+  "base_moment_Nm": 98.25010601748173,
+  "power_move_W": 19.551579658714573,
+  "tip_deflection_mm": 1.8854207354851715,
+  "dof": 7
+ },
+ "crane": {
+  "mass": 19.902992880982403,
+  "reach": 2.560500157831741,
+  "t_luff": 751.1430248804904,
+  "boom_od": 0.05,
+  "breakdown": {
+   "boom": 1.1884645008530206,
+   "mast": 0.7130787005118123,
+   "luff_winch": 3.4036576796175693,
+   "hoist_winch": 2.2,
+   "slew": 5.121792,
+   "lines": 0.27599999999999997,
+   "sheaves_fittings": 2.0,
+   "turntable": 3.0,
+   "hook_block": 2.0
+  }
+ },
+ "chassis": {
+  "material": "Al 7075-T7351",
+  "t_face": 0.001,
+  "t_face_strength": 0.00012004742567176204,
+  "t_face_stiffness": 0.0007161281307600399,
+  "panel_mass": 65.12532,
+  "fittings_mass": 7.839999999999999,
+  "mass": 72.96532,
+  "f1": 41.35925215664028,
+  "margin_strength": 9.500236125313089
+ },
+ "a_rad": 1.6429435507420518,
+ "a_mli": 2.86,
+ "heater_cold": 62.83334312452162,
+ "winch": {
+  "line_pull": 4000.0,
+  "line_speed": 0.05,
+  "power_elec": 307.6923076923077,
+  "drum_torque": 240.0,
+  "mass": 25.7,
+  "line_mass": 1.5
+ },
+ "battery": {
+  "usable_eol_kwh": 15.0,
+  "nameplate_kwh": 23.6376,
+  "mass": 147.73499999999999,
+  "n_cells": 1876,
+  "n_series": 28,
+  "n_parallel": 67,
+  "v_nominal": 100.8
+ },
+ "steer_torque": 49.32463210711997,
+ "anchor_q": 923.8921339383007
+}

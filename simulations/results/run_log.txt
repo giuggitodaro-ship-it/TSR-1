@@ -1,0 +1,15 @@
+[19:21:56] building baseline configuration
+[19:21:58] mobility analysis
+[19:22:08] stability analysis
+[19:22:12] recovery analysis
+[19:22:47] power, energy and thermal analysis
+[19:22:47] TSR self-reliability
+[19:22:48] servicing success distributions
+[19:22:49] value model Monte Carlo
+[19:23:31] critical-design-review analyses
+[19:23:44] trade studies
+[19:24:33] sensitivity analysis
+[19:30:43] design values, budgets and closure
+requirements: 48 total, 0 open
+[19:30:43] done in 528 s; parameters=181; closure checks=44 failed=0
+EXIT 0

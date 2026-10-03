@@ -56,6 +56,7 @@ class ArmSpec:
     joint_speed: float = math.radians(3.0)   # reference joint speed for power [rad/s]
     roll_joint_torque_frac: float = 0.25     # roll/yaw joint torque as fraction of adjacent pitch joint
     dynamic_factor: float = 1.15             # quasi-static acceleration allowance
+    link_material: str = "CFRP"              # "CFRP" | "Ti-6Al-4V" | "Al 7075-T7351"
 
 
 @dataclass
@@ -107,10 +108,19 @@ def _tube_for(moment: float, length: float, stiffness_share: float, E: float, rh
     return best
 
 
+LINK_MATERIALS = {   # E [Pa], rho [kg/m3], design allowable (yield-based for metals) [Pa], min wall [m]
+    "Ti-6Al-4V": (113.8e9, 4430.0, 880e6 / 1.25 * 1.4, 1.0e-3),
+    "Al 7075-T7351": (71.7e9, 2810.0, 390e6 / 1.25 * 1.4, 1.2e-3),
+}
+
+
 def size_arm(spec: ArmSpec, g: float = G_MOON) -> ArmResult:
-    E, rho = R.v("cfrp_E"), R.v("cfrp_rho")
-    sigma = R.v("cfrp_allow") / R.v("fos_ult")
-    tmin, ff = R.v("t_min_cfrp"), R.v("fitting_frac")
+    if spec.link_material == "CFRP":
+        E, rho, allow, tmin_m = R.v("cfrp_E"), R.v("cfrp_rho"), R.v("cfrp_allow"), R.v("t_min_cfrp")
+    else:
+        E, rho, allow, tmin_m = LINK_MATERIALS[spec.link_material]
+    sigma = allow / R.v("fos_ult")
+    tmin, ff = tmin_m, R.v("fitting_frac")
     mf, eta = R.v("motorisation_factor"), R.v("act_eff")
     L = np.asarray(spec.link_lengths, float)
     n = len(L)

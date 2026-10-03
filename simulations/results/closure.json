@@ -1,0 +1,354 @@
+[
+ {
+  "check": "MASS-1 component CBE sum reproduces total",
+  "claimed": 812.4898037920893,
+  "computed": 812.4898037920893,
+  "limit": null,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "MASS-2 MGA roll-up reproduces predicted mass",
+  "claimed": 999.5849199517197,
+  "computed": 999.5849199517197,
+  "limit": null,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "MASS-3 delivered mass \u2264 1.5 t (goal, Argonaut-class)",
+  "claimed": 1206.9987908417015,
+  "computed": 1206.9987908417015,
+  "limit": 1500.0,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "MASS-4 delivered mass \u2264 3.0 t (threshold, Mk1-class)",
+  "claimed": 1206.9987908417015,
+  "computed": 1206.9987908417015,
+  "limit": 3000.0,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "MASS-5 sizing mass = operational mass (iteration converged)",
+  "claimed": 1249.5226579444775,
+  "computed": 1249.5226579444775,
+  "limit": null,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "POWER-1 subsystem loads reproduce all mode totals",
+  "claimed": true,
+  "computed": true,
+  "limit": null,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "POWER-2 worst mode + full PTM delivery \u2264 PCDU rating",
+  "claimed": 3471.306818677412,
+  "computed": 3471.306818677412,
+  "limit": 4000.0,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "POWER-3 simultaneous-peak discharge C-rate \u2264 1C",
+  "claimed": 0.14390544321583895,
+  "computed": 0.14390544321583895,
+  "limit": 1.0,
+  "passed": true,
+  "note": "sum of all component peaks (non-coincident in practice)"
+ },
+ {
+  "check": "ENERGY-1 worst DRM (DRM-2) + 50 h reserve \u2264 usable EOL (no solar)",
+  "claimed": 15.0,
+  "computed": 14.141645695506341,
+  "limit": 15.0,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "ENERGY-2 full-battery survival \u2265 120 h (longest darkness at best sites, S030)",
+  "claimed": 120,
+  "computed": 183.2993670706483,
+  "limit": 120.0,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "ENERGY-3 solar average \u2265 survival power (indefinite survival in sunlight)",
+  "claimed": 165.70655632427324,
+  "computed": 165.70655632427324,
+  "limit": 81.83334312452162,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "THERMAL-1a max steady WEB dissipation (M9_charging) \u2264 radiator design load",
+  "claimed": 380.0,
+  "computed": 319.9200000000002,
+  "limit": 380.0,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "THERMAL-1b 3 kW delivery transient (3.3 h, energy-limited): WEB \u0394T \u2264 15 K",
+  "claimed": 15.0,
+  "computed": 0.0,
+  "limit": 15.0,
+  "passed": true,
+  "note": "peak dissipation 350 W, excess 0 W"
+ },
+ {
+  "check": "THERMAL-2 survival heater + electronics \u2264 survival-mode power used for energy closure",
+  "claimed": 81.83334312452162,
+  "computed": 81.83334312452162,
+  "limit": 81.83334312452162,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "MOB-1 ground pressure \u2264 7 kPa",
+  "claimed": 6.64,
+  "computed": 6.706410166808035,
+  "limit": 7.0,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "MOB-2 traction supports claimed 20\u00b0 climb at \u2264 40 % slip",
+  "claimed": true,
+  "computed": true,
+  "limit": null,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "MOB-3 drive actuator rating \u2265 wheel torque at claimed slope",
+  "claimed": 209.63614952361954,
+  "computed": 102.10558584896155,
+  "limit": 209.63614952361954,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "REC-A claimed scenario feasible with FoS (margin)",
+  "claimed": true,
+  "computed": 8.811883542476897,
+  "limit": 1.0,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "REC-B claimed scenario feasible with FoS (margin)",
+  "claimed": true,
+  "computed": 10.782098360239889,
+  "limit": 1.0,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "REC-B2 claimed scenario feasible with FoS (margin)",
+  "claimed": true,
+  "computed": 5.12226168065956,
+  "limit": 1.0,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "REC-C-dig claimed scenario feasible with FoS (margin)",
+  "claimed": true,
+  "computed": 4.576610262479046,
+  "limit": 1.0,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "REC-D claimed scenario feasible with FoS (margin)",
+  "claimed": true,
+  "computed": 1.5513810327293795,
+  "limit": 1.0,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "REC-D2 claimed scenario feasible with FoS (margin)",
+  "claimed": true,
+  "computed": 4.080951443094226,
+  "limit": 1.0,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "REC-D3 claimed scenario feasible with FoS (margin)",
+  "claimed": true,
+  "computed": 3.3247695307674117,
+  "limit": 1.0,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "REC-W winch rating \u2265 max claimed line tension",
+  "claimed": 4000.0,
+  "computed": 1186.6871477723328,
+  "limit": 4000.0,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "MAN-1 dexterous shoulder rating \u2265 payload moment \u00d7 MF",
+  "claimed": 196.50021203496345,
+  "computed": 150.336,
+  "limit": 196.50021203496345,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "STAB C2 crane side lift 150 kg @ 2.56 m, level",
+  "claimed": 1.5,
+  "computed": 4.981672645620386,
+  "limit": 1.5,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "STAB C2 crane side lift 150 kg @ 2.56 m, 10\u00b0 lateral, load downhi",
+  "claimed": 1.5,
+  "computed": 3.9778288498094123,
+  "limit": 1.5,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "STAB C3 crane front lift 150 kg",
+  "claimed": 1.5,
+  "computed": 6.4556083824856945,
+  "limit": 1.5,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "STAB C4 dexterous arm extended (front-right) with rated payload",
+  "claimed": 1.5,
+  "computed": 104.93558886655144,
+  "limit": 1.5,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "STAB C5 both extended same side (worst)",
+  "claimed": 1.5,
+  "computed": 4.697007396328747,
+  "limit": 1.5,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "STAB C7b winch 4.0 kN + spades + 2 front hold-down anchors (80 % ",
+  "claimed": 1.5,
+  "computed": "inf",
+  "limit": 1.5,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "GEOM-1 WEB volume \u2265 packaged equipment volume",
+  "claimed": 0.27999999999999997,
+  "computed": 0.16142298295099503,
+  "limit": 0.27999999999999997,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "GEOM-2 stowed length \u2264 envelope",
+  "claimed": 3.6,
+  "computed": 3.6,
+  "limit": 4.0,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "GEOM-3 stowed width \u2264 envelope",
+  "claimed": 2.4,
+  "computed": 2.4,
+  "limit": 2.6,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "GEOM-4 stowed height (mast folded) \u2264 envelope",
+  "claimed": 1.2,
+  "computed": 1.2,
+  "limit": 2.0,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "GEOM-5 deck area \u2265 allocations (radiator, spine, crane, arms, mast, tool rack)",
+  "claimed": 3.9000000000000004,
+  "computed": 3.6429435507420513,
+  "limit": 3.9000000000000004,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "GEOM-6 adjacent wheel clearance \u2265 0.15 m",
+  "claimed": 0.15,
+  "computed": 0.4,
+  "limit": 0.15,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "MISSION DRM-1 duration \u2264 30 h (fits one comm/approval shift cycle + margin)",
+  "claimed": 30.0,
+  "computed": 20.373015873015873,
+  "limit": 30.0,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "MISSION DRM-2 duration \u2264 30 h (fits one comm/approval shift cycle + margin)",
+  "claimed": 30.0,
+  "computed": 22.873015873015873,
+  "limit": 30.0,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "MISSION DRM-3 duration \u2264 30 h (fits one comm/approval shift cycle + margin)",
+  "claimed": 30.0,
+  "computed": 11.936507936507937,
+  "limit": 30.0,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "MISSION DRM-4 duration \u2264 30 h (fits one comm/approval shift cycle + margin)",
+  "claimed": 30.0,
+  "computed": 20.298412698412697,
+  "limit": 30.0,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "MISSION DRM-5 duration \u2264 30 h (fits one comm/approval shift cycle + margin)",
+  "claimed": 30.0,
+  "computed": 19.873015873015873,
+  "limit": 30.0,
+  "passed": true,
+  "note": ""
+ },
+ {
+  "check": "MISSION DRM-6 duration \u2264 30 h (fits one comm/approval shift cycle + margin)",
+  "claimed": 30.0,
+  "computed": 9.061904761904762,
+  "limit": 30.0,
+  "passed": true,
+  "note": ""
+ }
+]

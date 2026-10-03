@@ -1,0 +1,705 @@
+{
+ "mobility": [
+  {
+   "candidate": "M1 6-wheel rocker-bogie (passive)",
+   "n_wheels": 6,
+   "suspension": "rocker_bogie",
+   "wheel_D_m": 0.8,
+   "wheel_b_m": 0.4,
+   "operational_mass_kg": 1200.3940968856014,
+   "delivered_mass_kg": 1155.4138017298815,
+   "mobility_mass_pred_kg": 233.44034902473078,
+   "wheel_load_N": 324.1064061591124,
+   "sinkage_m": 0.018499618960083453,
+   "contact_pressure_kPa": 6.738785538642438,
+   "max_slope_nom_deg": 19.814126710407436,
+   "max_slope_cons_deg": 14.729522005654875,
+   "max_slope_one_wheel_out_deg": 16.62508659996092,
+   "max_slope_two_wheels_out_deg": 12.657032953575253,
+   "wheel_energy_Wh_per_km": 81.19088632079475,
+   "obstacle_m": 0.6000000000000001,
+   "body_lowering": false,
+   "mobility_actuators": 13,
+   "p_no_drive_failure_10yr": 0.16529888822158656,
+   "p_mobility_retained_10yr": 0.815778217336581
+  },
+  {
+   "candidate": "M2 6-wheel rocker-bogie + body lowering + differential lock",
+   "n_wheels": 6,
+   "suspension": "rocker_bogie_lowering",
+   "wheel_D_m": 0.8,
+   "wheel_b_m": 0.4,
+   "operational_mass_kg": 1228.8448991709565,
+   "delivered_mass_kg": 1185.2871441295044,
+   "mobility_mass_pred_kg": 255.75244343947898,
+   "wheel_load_N": 331.7881227761583,
+   "sinkage_m": 0.018784674193704866,
+   "contact_pressure_kPa": 6.847209771395636,
+   "max_slope_nom_deg": 19.815334668383002,
+   "max_slope_cons_deg": 14.698984930291775,
+   "max_slope_one_wheel_out_deg": 16.611993229016665,
+   "max_slope_two_wheels_out_deg": 12.628666372038424,
+   "wheel_energy_Wh_per_km": 83.734293036301,
+   "obstacle_m": 0.6000000000000001,
+   "body_lowering": true,
+   "mobility_actuators": 15,
+   "p_no_drive_failure_10yr": 0.16529888822158656,
+   "p_mobility_retained_10yr": 0.815778217336581
+  },
+  {
+   "candidate": "M3 6-wheel independently articulated legs (active)",
+   "n_wheels": 6,
+   "suspension": "active_6",
+   "wheel_D_m": 0.9,
+   "wheel_b_m": 0.4,
+   "operational_mass_kg": 1339.293112019337,
+   "delivered_mass_kg": 1301.2577676203039,
+   "mobility_mass_pred_kg": 344.2212971350949,
+   "wheel_load_N": 361.609140245221,
+   "sinkage_m": 0.019125889467917413,
+   "contact_pressure_kPa": 6.964848343952195,
+   "max_slope_nom_deg": 20.68562293890863,
+   "max_slope_cons_deg": 15.52272438537329,
+   "max_slope_one_wheel_out_deg": 17.54243188071996,
+   "max_slope_two_wheels_out_deg": 13.609801875427364,
+   "wheel_energy_Wh_per_km": 86.32450083340244,
+   "obstacle_m": 0.9,
+   "body_lowering": true,
+   "mobility_actuators": 18,
+   "p_no_drive_failure_10yr": 0.16529888822158656,
+   "p_mobility_retained_10yr": 0.815778217336581
+  },
+  {
+   "candidate": "M4 4-wheel independent active suspension",
+   "n_wheels": 4,
+   "suspension": "active_4",
+   "wheel_D_m": 0.9,
+   "wheel_b_m": 0.6,
+   "operational_mass_kg": 1325.0651302550536,
+   "delivered_mass_kg": 1286.3183867678065,
+   "mobility_mass_pred_kg": 339.3979705601519,
+   "wheel_load_N": 536.6513777532967,
+   "sinkage_m": 0.019010546983583714,
+   "contact_pressure_kPa": 6.911277599690067,
+   "max_slope_nom_deg": 20.69949582684786,
+   "max_slope_cons_deg": 15.552393053658307,
+   "max_slope_one_wheel_out_deg": 15.071629970334472,
+   "max_slope_two_wheels_out_deg": 7.853145981207491,
+   "wheel_energy_Wh_per_km": 85.15511085541148,
+   "obstacle_m": 0.54,
+   "body_lowering": true,
+   "mobility_actuators": 12,
+   "p_no_drive_failure_10yr": 0.30119421191220214,
+   "p_mobility_retained_10yr": 0.7226960032257902
+  }
+ ],
+ "wheel_types": [
+  {
+   "type": "Rigid Ti-6Al-4V rim with grousers",
+   "trl": 6,
+   "heritage": "VIPER/Yutu/Pragyan rigid wheels; MSL Al wheels",
+   "dust": "no mesh to fill; grousers shed regolith",
+   "cold": "Ti ductile to cryogenic T",
+   "fatigue": "rim cracking risk (MSL) mitigated by thicker Ti, low speed",
+   "model_confidence": "high (rigid-wheel terramechanics applies)",
+   "mass_note": "computed by MER",
+   "selected": true
+  },
+  {
+   "type": "Woven wire-mesh (LRV-type) with Ti chevrons",
+   "trl": 6,
+   "heritage": "Apollo LRV (S027, S029)",
+   "dust": "mesh openings admit dust; abrasion of wire crossings",
+   "cold": "steel/Ti wire OK",
+   "fatigue": "low-cycle fatigue at wire crossings over 10-yr life and >1000 km unproven",
+   "model_confidence": "low (flexible wheel)",
+   "mass_note": "light (~5 kg class)",
+   "selected": false
+  },
+  {
+   "type": "Superelastic NiTi spring tyre",
+   "trl": 4,
+   "heritage": "NASA GRC prototypes (no flight)",
+   "dust": "open spring mesh admits dust",
+   "cold": "NiTi transformation temperatures must be tuned for 40-390 K range",
+   "fatigue": "superelastic fatigue promising but unqualified",
+   "model_confidence": "low",
+   "mass_note": "heavier than wire mesh",
+   "selected": false
+  },
+  {
+   "type": "Rigid Al 7075 wheel",
+   "trl": 7,
+   "heritage": "MSL/M2020 wheels",
+   "dust": "as rigid Ti",
+   "cold": "OK",
+   "fatigue": "MSL wheel punctures/cracks on sharp rocks (thin skin)",
+   "model_confidence": "high",
+   "mass_note": "~35 % lighter than Ti at equal thickness but needs thicker skin for 10-yr life",
+   "selected": false
+  }
+ ],
+ "manipulators": [
+  {
+   "architecture": "A1 one general-purpose 7-DOF arm (100 kg)",
+   "mass_kg": 102.18482361936348,
+   "joints": 7,
+   "move_power_W": 64.59757201912012,
+   "max_base_moment_Nm": 548.7550871469318,
+   "weighted_coverage": 0.8340000000000001,
+   "coverage_per_kg": 0.0081616816515399,
+   "backup_after_primary_arm_failure": 0.0,
+   "per_task": {
+    "T01 small ORU swap (\u226420 kg) with connectors": 1.0,
+    "T02 medium ORU swap (20\u201350 kg)": 1.0,
+    "T03 heavy ORU swap (50\u2013150 kg)": 0.0,
+    "T04 open and hold access panel while working": 0.4,
+    "T05 connector mate/demate (\u2264150 N)": 1.0,
+    "T06 fastener operations (\u226450 N m, tool-reacted)": 1.0,
+    "T07 cable/tether manipulation": 0.4,
+    "T08 electrical diagnostic probing": 1.0,
+    "T09 dust cleaning of surfaces (brush/EDS wand)": 1.0,
+    "T10 support/stabilise damaged equipment (50\u2013150 kg)": 0.0,
+    "T11 lift wheel corner of immobilised rover (\u2264150 kg)": 0.0,
+    "T12 rig tow line / shackle": 1.0,
+    "T13 install helical anchors (30 N m, 200 N crowd)": 1.0,
+    "T14 heavy push/pull on structure (200\u2013300 N)": 1.0,
+    "T15 close-range inspection (macro, IR)": 1.0
+   }
+  },
+  {
+   "architecture": "A2 two identical dexterous arms",
+   "mass_kg": 50.89994979448868,
+   "joints": 14,
+   "move_power_W": 19.285025467432213,
+   "max_base_moment_Nm": 96.53190444509846,
+   "weighted_coverage": 0.7750000000000001,
+   "coverage_per_kg": 0.015225948220560235,
+   "backup_after_primary_arm_failure": 1.0,
+   "per_task": {
+    "T01 small ORU swap (\u226420 kg) with connectors": 1.0,
+    "T02 medium ORU swap (20\u201350 kg)": 0.0,
+    "T03 heavy ORU swap (50\u2013150 kg)": 0.0,
+    "T04 open and hold access panel while working": 1.0,
+    "T05 connector mate/demate (\u2264150 N)": 1.0,
+    "T06 fastener operations (\u226450 N m, tool-reacted)": 1.0,
+    "T07 cable/tether manipulation": 1.0,
+    "T08 electrical diagnostic probing": 1.0,
+    "T09 dust cleaning of surfaces (brush/EDS wand)": 1.0,
+    "T10 support/stabilise damaged equipment (50\u2013150 kg)": 0.0,
+    "T11 lift wheel corner of immobilised rover (\u2264150 kg)": 0.0,
+    "T12 rig tow line / shackle": 1.0,
+    "T13 install helical anchors (30 N m, 200 N crowd)": 0.25,
+    "T14 heavy push/pull on structure (200\u2013300 N)": 0.25,
+    "T15 close-range inspection (macro, IR)": 1.0
+   }
+  },
+  {
+   "architecture": "A3 asymmetric heavy arm + dexterous arm",
+   "mass_kg": 158.30105113441724,
+   "joints": 13,
+   "move_power_W": 79.8666018719673,
+   "max_base_moment_Nm": 770.1169264392382,
+   "weighted_coverage": 1.0,
+   "coverage_per_kg": 0.006317077447267712,
+   "backup_after_primary_arm_failure": 0.5004000000000001,
+   "per_task": {
+    "T01 small ORU swap (\u226420 kg) with connectors": 1.0,
+    "T02 medium ORU swap (20\u201350 kg)": 1.0,
+    "T03 heavy ORU swap (50\u2013150 kg)": 1.0,
+    "T04 open and hold access panel while working": 1.0,
+    "T05 connector mate/demate (\u2264150 N)": 1.0,
+    "T06 fastener operations (\u226450 N m, tool-reacted)": 1.0,
+    "T07 cable/tether manipulation": 1.0,
+    "T08 electrical diagnostic probing": 1.0,
+    "T09 dust cleaning of surfaces (brush/EDS wand)": 1.0,
+    "T10 support/stabilise damaged equipment (50\u2013150 kg)": 1.0,
+    "T11 lift wheel corner of immobilised rover (\u2264150 kg)": 1.0,
+    "T12 rig tow line / shackle": 1.0,
+    "T13 install helical anchors (30 N m, 200 N crowd)": 1.0,
+    "T14 heavy push/pull on structure (200\u2013300 N)": 1.0,
+    "T15 close-range inspection (macro, IR)": 1.0
+   }
+  },
+  {
+   "architecture": "A4 dexterous arm + crane boom",
+   "mass_kg": 45.35296777822674,
+   "joints": 10,
+   "move_power_W": 27.49302546743221,
+   "max_base_moment_Nm": 96.53190444509846,
+   "weighted_coverage": 0.9365000000000001,
+   "coverage_per_kg": 0.020649144827289544,
+   "backup_after_primary_arm_failure": 0.0,
+   "per_task": {
+    "T01 small ORU swap (\u226420 kg) with connectors": 1.0,
+    "T02 medium ORU swap (20\u201350 kg)": 0.9,
+    "T03 heavy ORU swap (50\u2013150 kg)": 0.9,
+    "T04 open and hold access panel while working": 0.75,
+    "T05 connector mate/demate (\u2264150 N)": 1.0,
+    "T06 fastener operations (\u226450 N m, tool-reacted)": 1.0,
+    "T07 cable/tether manipulation": 0.75,
+    "T08 electrical diagnostic probing": 1.0,
+    "T09 dust cleaning of surfaces (brush/EDS wand)": 1.0,
+    "T10 support/stabilise damaged equipment (50\u2013150 kg)": 1.0,
+    "T11 lift wheel corner of immobilised rover (\u2264150 kg)": 1.0,
+    "T12 rig tow line / shackle": 1.0,
+    "T13 install helical anchors (30 N m, 200 N crowd)": 0.6,
+    "T14 heavy push/pull on structure (200\u2013300 N)": 0.6,
+    "T15 close-range inspection (macro, IR)": 1.0
+   }
+  },
+  {
+   "architecture": "A5 dexterous arm + passive fixtures",
+   "mass_kg": 33.44997489724434,
+   "joints": 7,
+   "move_power_W": 19.285025467432213,
+   "max_base_moment_Nm": 96.53190444509846,
+   "weighted_coverage": 0.7475,
+   "coverage_per_kg": 0.022346803018425593,
+   "backup_after_primary_arm_failure": 0.0,
+   "per_task": {
+    "T01 small ORU swap (\u226420 kg) with connectors": 1.0,
+    "T02 medium ORU swap (20\u201350 kg)": 0.0,
+    "T03 heavy ORU swap (50\u2013150 kg)": 0.0,
+    "T04 open and hold access panel while working": 0.75,
+    "T05 connector mate/demate (\u2264150 N)": 1.0,
+    "T06 fastener operations (\u226450 N m, tool-reacted)": 1.0,
+    "T07 cable/tether manipulation": 0.75,
+    "T08 electrical diagnostic probing": 1.0,
+    "T09 dust cleaning of surfaces (brush/EDS wand)": 1.0,
+    "T10 support/stabilise damaged equipment (50\u2013150 kg)": 0.0,
+    "T11 lift wheel corner of immobilised rover (\u2264150 kg)": 0.0,
+    "T12 rig tow line / shackle": 1.0,
+    "T13 install helical anchors (30 N m, 200 N crowd)": 0.25,
+    "T14 heavy push/pull on structure (200\u2013300 N)": 0.25,
+    "T15 close-range inspection (macro, IR)": 1.0
+   }
+  },
+  {
+   "architecture": "A6 dexterous arm + crane boom + passive fixtures",
+   "mass_kg": 53.35296777822674,
+   "joints": 10,
+   "move_power_W": 27.49302546743221,
+   "max_base_moment_Nm": 96.53190444509846,
+   "weighted_coverage": 0.9365000000000001,
+   "coverage_per_kg": 0.01755291296808018,
+   "backup_after_primary_arm_failure": 0.0,
+   "per_task": {
+    "T01 small ORU swap (\u226420 kg) with connectors": 1.0,
+    "T02 medium ORU swap (20\u201350 kg)": 0.9,
+    "T03 heavy ORU swap (50\u2013150 kg)": 0.9,
+    "T04 open and hold access panel while working": 0.75,
+    "T05 connector mate/demate (\u2264150 N)": 1.0,
+    "T06 fastener operations (\u226450 N m, tool-reacted)": 1.0,
+    "T07 cable/tether manipulation": 0.75,
+    "T08 electrical diagnostic probing": 1.0,
+    "T09 dust cleaning of surfaces (brush/EDS wand)": 1.0,
+    "T10 support/stabilise damaged equipment (50\u2013150 kg)": 1.0,
+    "T11 lift wheel corner of immobilised rover (\u2264150 kg)": 1.0,
+    "T12 rig tow line / shackle": 1.0,
+    "T13 install helical anchors (30 N m, 200 N crowd)": 0.6,
+    "T14 heavy push/pull on structure (200\u2013300 N)": 0.6,
+    "T15 close-range inspection (macro, IR)": 1.0
+   }
+  },
+  {
+   "architecture": "A7 two dexterous arms + crane boom",
+   "mass_kg": 70.80294267547109,
+   "joints": 17,
+   "move_power_W": 27.49302546743221,
+   "max_base_moment_Nm": 96.53190444509846,
+   "weighted_coverage": 0.9640000000000002,
+   "coverage_per_kg": 0.013615253315367747,
+   "backup_after_primary_arm_failure": 1.0,
+   "per_task": {
+    "T01 small ORU swap (\u226420 kg) with connectors": 1.0,
+    "T02 medium ORU swap (20\u201350 kg)": 0.9,
+    "T03 heavy ORU swap (50\u2013150 kg)": 0.9,
+    "T04 open and hold access panel while working": 1.0,
+    "T05 connector mate/demate (\u2264150 N)": 1.0,
+    "T06 fastener operations (\u226450 N m, tool-reacted)": 1.0,
+    "T07 cable/tether manipulation": 1.0,
+    "T08 electrical diagnostic probing": 1.0,
+    "T09 dust cleaning of surfaces (brush/EDS wand)": 1.0,
+    "T10 support/stabilise damaged equipment (50\u2013150 kg)": 1.0,
+    "T11 lift wheel corner of immobilised rover (\u2264150 kg)": 1.0,
+    "T12 rig tow line / shackle": 1.0,
+    "T13 install helical anchors (30 N m, 200 N crowd)": 0.6,
+    "T14 heavy push/pull on structure (200\u2013300 N)": 0.6,
+    "T15 close-range inspection (macro, IR)": 1.0
+   }
+  }
+ ],
+ "service_modules": {
+  "spine_overhead_kg": 14.600000000000001,
+  "integrated_carried_kg": 65.0,
+  "modular_mean_carried_kg": 24.700000000000003,
+  "mass_saving_per_sortie_kg": 40.3,
+  "modules": [
+   {
+    "name": "MOD-KA keep-alive power module (2 kWh, 0.75 m\u00b2 vertical PV, ISPSIS port)",
+    "mass_kg": 23.0,
+    "function": "left connected to a disabled asset until spare/crew arrives",
+    "carry_fraction": 0.25
+   },
+   {
+    "name": "MOD-ORU generic ORU cradle (passive standard interface)",
+    "mass_kg": 4.0,
+    "function": "carry ORUs/spares",
+    "carry_fraction": 0.6
+   },
+   {
+    "name": "MOD-REC recovery kit (anchors, slings, shackles)",
+    "mass_kg": 9.0,
+    "function": "immobilised-vehicle recovery",
+    "carry_fraction": 0.15
+   },
+   {
+    "name": "MOD-RPT deployable comm repeater (UHF/LTE, 8 h battery + PV)",
+    "mass_kg": 6.0,
+    "function": "link into PSRs/shadowed terrain",
+    "carry_fraction": 0.1
+   },
+   {
+    "name": "MOD-SOL solar mast module (4 m\u00b2 vertical, tracking)",
+    "mass_kg": 15.0,
+    "function": "no-grid charging scenario",
+    "carry_fraction": 0.0
+   },
+   {
+    "name": "MOD-FLD fluid servicing coupling + 10 kg tank",
+    "mass_kg": 15.0,
+    "function": "not baselined: no fluid-serviceable asset identified",
+    "carry_fraction": 0.0
+   }
+  ]
+ },
+ "comms": {
+  "link_10000km": {
+   "eirp_dbw": 16.989700043360187,
+   "fspl_db": 179.49121507242396,
+   "cn0_dbhz": 63.09848497093623,
+   "max_rate_bps": 407238.18865821196
+  },
+  "link_3000km": {
+   "eirp_dbw": 16.989700043360187,
+   "fspl_db": 169.0336401668172,
+   "cn0_dbhz": 73.55605987654297,
+   "max_rate_bps": 4524868.762869018
+  },
+  "ka_band_10000km": {
+   "eirp_dbw": 40.0,
+   "fspl_db": 200.74703166961308,
+   "cn0_dbhz": 74.85296833038691,
+   "max_rate_bps": 6099536.479533106
+  },
+  "availability": {
+   "C1 DTE only": 0.51,
+   "C2 relay only": 0.8,
+   "C3 surface network only": 0.9,
+   "C4 surface network + relay + mesh + DTN (selected)": 0.98,
+   "C5 C4 + DTE backup": 0.9902
+  }
+ },
+ "autonomy": [
+  {
+   "option": "AU1 Earth joystick teleoperation",
+   "task_h": 5.3921568627450975,
+   "works_in_outage": false,
+   "contact_safety": "poor: force loops through 8 s latency",
+   "operator_h": 5.3921568627450975,
+   "selected": false
+  },
+  {
+   "option": "AU2 local crew teleoperation (crew present only)",
+   "task_h": 2.1,
+   "works_in_outage": true,
+   "contact_safety": "good",
+   "operator_h": 2.0833333333333335,
+   "selected": false
+  },
+  {
+   "option": "AU3 supervised autonomy: verified skills + hold-point approvals (selected)",
+   "task_h": 3.333333333333333,
+   "works_in_outage": true,
+   "contact_safety": "good: local F/T loops, deterministic guards",
+   "operator_h": 0.8,
+   "selected": true
+  },
+  {
+   "option": "AU4 full autonomy (no human approval)",
+   "task_h": 2.0,
+   "works_in_outage": true,
+   "contact_safety": "unverifiable for novel faults",
+   "operator_h": 0.0,
+   "selected": false
+  }
+ ],
+ "arm_materials": [
+  {
+   "material": "CFRP high-modulus tube",
+   "arm_mass_kg": 25.44997489724434,
+   "link_mass_kg": 1.169614944931482,
+   "specific_stiffness_MNm_per_kg": 75.0,
+   "cte_per_K": 5e-07,
+   "thermal_growth_mm_1p5m_250K": 0.1875
+  },
+  {
+   "material": "Al 7075-T7351 tube",
+   "arm_mass_kg": 26.884284105457347,
+   "link_mass_kg": 2.418286105495142,
+   "specific_stiffness_MNm_per_kg": 25.516014234875446,
+   "cte_per_K": 2.34e-05,
+   "thermal_growth_mm_1p5m_250K": 8.775
+  },
+  {
+   "material": "Ti-6Al-4V tube",
+   "arm_mass_kg": 27.840695021286653,
+   "link_mass_kg": 3.238371378779042,
+   "specific_stiffness_MNm_per_kg": 25.688487584650115,
+   "cte_per_K": 8.6e-06,
+   "thermal_growth_mm_1p5m_250K": 3.2250000000000005
+  }
+ ],
+ "chassis_materials": [
+  {
+   "material": "Al 7075-T7351",
+   "chassis_mass_kg": 65.31352,
+   "t_face_mm": 1.0,
+   "f1_Hz": 45.681118684384735,
+   "cte_per_K": 2.34e-05,
+   "source": "L005"
+  },
+  {
+   "material": "Al 2219-T87",
+   "chassis_mass_kg": 65.70898,
+   "t_face_mm": 1.0,
+   "f1_Hz": 46.34526116911419,
+   "cte_per_K": 2.23e-05,
+   "source": "L005 (LRV heritage S027)"
+  },
+  {
+   "material": "Al-Li 2195-T8",
+   "chassis_mass_kg": 63.995319999999985,
+   "t_face_mm": 1.0,
+   "f1_Hz": 47.030971415595516,
+   "cte_per_K": 2.16e-05,
+   "source": "L005 (LITERATURE-RECALL)"
+  },
+  {
+   "material": "Ti-6Al-4V",
+   "chassis_mass_kg": 86.66835999999999,
+   "t_face_mm": 1.0,
+   "f1_Hz": 57.55039171606607,
+   "cte_per_K": 8.6e-06,
+   "source": "L005"
+  },
+  {
+   "material": "CFRP quasi-iso (M55J/cyanate)",
+   "chassis_mass_kg": 50.0224,
+   "t_face_mm": 1.0,
+   "f1_Hz": 56.581374789394424,
+   "cte_per_K": 5e-07,
+   "source": "L007 (LITERATURE-RECALL)"
+  }
+ ],
+ "energy": [
+  {
+   "option": "E1 Li-ion battery only, grid charging at nodes",
+   "added_mass_kg": 0.0,
+   "survival_dark_h": 183.2993670706483,
+   "survival_sunlit": "limited by battery",
+   "indefinite_survival_in_sun": false,
+   "trl": 6,
+   "issues": "stranded TSR in darkness dies after battery exhaustion",
+   "selected": false
+  },
+  {
+   "option": "E2 Li-ion battery + fixed vertical solar arrays (1.5 m\u00b2)",
+   "added_mass_kg": 5.7,
+   "survival_dark_h": 183.2993670706483,
+   "survival_sunlit": "indefinite (166 W avg > 82 W)",
+   "indefinite_survival_in_sun": true,
+   "trl": 7,
+   "issues": "dust on arrays (vertical: low deposition)",
+   "selected": true
+  },
+  {
+   "option": "E3 battery + MMRTG-class radioisotope power",
+   "added_mass_kg": 45.0,
+   "survival_dark_h": "inf",
+   "survival_sunlit": "indefinite",
+   "indefinite_survival_in_sun": true,
+   "trl": 9,
+   "issues": "Pu-238 supply and launch approval; ~2 kW waste heat helps PSR ops; not available to an independent commercial programme with confidence",
+   "selected": false
+  },
+  {
+   "option": "E4 battery + regenerative fuel cell",
+   "added_mass_kg": 39.285714285714285,
+   "survival_dark_h": 244.3991560941977,
+   "survival_sunlit": "needs electrolysis power",
+   "indefinite_survival_in_sun": false,
+   "trl": 4,
+   "issues": "mobile H2/O2 storage, cryo/pressure hazards near crew, low TRL on surface",
+   "selected": false
+  },
+  {
+   "option": "E5 battery + wireless/beamed power",
+   "added_mass_kg": 8.0,
+   "survival_dark_h": 183.2993670706483,
+   "survival_sunlit": "n/a",
+   "indefinite_survival_in_sun": false,
+   "trl": 3,
+   "issues": "requires transmitter infrastructure and line of sight; low TRL",
+   "selected": false
+  }
+ ],
+ "battery_vs_radius": [
+  {
+   "radius_km": 5,
+   "drm2_kwh": 6.856607324405747,
+   "drm2_with_solar_kwh": 5.619068677571294,
+   "reserve_kwh": 4.091667156226081,
+   "usable_eol_required_kwh": 10.948274480631827,
+   "pack_mass_kg": 108.045,
+   "pack_mass_with_solar_kg": 97.02
+  },
+  {
+   "radius_km": 7.5,
+   "drm2_kwh": 8.453292931843004,
+   "drm2_with_solar_kwh": 6.886971435158801,
+   "reserve_kwh": 4.091667156226081,
+   "usable_eol_required_kwh": 12.544960088069086,
+   "pack_mass_kg": 123.47999999999999,
+   "pack_mass_with_solar_kg": 108.045
+  },
+  {
+   "radius_km": 10,
+   "drm2_kwh": 10.049978539280259,
+   "drm2_with_solar_kwh": 8.154874192746309,
+   "reserve_kwh": 4.091667156226081,
+   "usable_eol_required_kwh": 14.141645695506341,
+   "pack_mass_kg": 138.915,
+   "pack_mass_with_solar_kg": 121.275
+  },
+  {
+   "radius_km": 12.5,
+   "drm2_kwh": 11.646664146717514,
+   "drm2_with_solar_kwh": 9.422776950333814,
+   "reserve_kwh": 4.091667156226081,
+   "usable_eol_required_kwh": 15.738331302943596,
+   "pack_mass_kg": 154.35,
+   "pack_mass_with_solar_kg": 132.3
+  },
+  {
+   "radius_km": 15,
+   "drm2_kwh": 13.243349754154771,
+   "drm2_with_solar_kwh": 10.690679707921324,
+   "reserve_kwh": 4.091667156226081,
+   "usable_eol_required_kwh": 17.33501691038085,
+   "pack_mass_kg": 169.785,
+   "pack_mass_with_solar_kg": 145.53
+  },
+  {
+   "radius_km": 20,
+   "drm2_kwh": 16.436720969029285,
+   "drm2_with_solar_kwh": 13.22648522309634,
+   "reserve_kwh": 4.091667156226081,
+   "usable_eol_required_kwh": 20.528388125255365,
+   "pack_mass_kg": 200.65499999999997,
+   "pack_mass_with_solar_kg": 169.785
+  },
+  {
+   "radius_km": 25,
+   "drm2_kwh": 19.630092183903795,
+   "drm2_with_solar_kwh": 15.762290738271354,
+   "reserve_kwh": 4.091667156226081,
+   "usable_eol_required_kwh": 23.721759340129875,
+   "pack_mass_kg": 233.72999999999996,
+   "pack_mass_with_solar_kg": 194.04
+  }
+ ],
+ "stabilisation": [
+  {
+   "option": "S0 locked wheels only",
+   "added_mass_kg": 0.0,
+   "crane_side_capacity_15deg_kg": 379.52717766165733,
+   "winch_pull_limit_kN": 0.9789191989970804,
+   "deploy_time_min": 1
+  },
+  {
+   "option": "S1 body lowering (skid on ground)",
+   "added_mass_kg": 0.0,
+   "crane_side_capacity_15deg_kg": 424.43024480783305,
+   "winch_pull_limit_kN": 0.9789191989970804,
+   "deploy_time_min": 5
+  },
+  {
+   "option": "S2 deployable lateral outriggers (\u00b10.8 m)",
+   "added_mass_kg": 24.0,
+   "crane_side_capacity_15deg_kg": 762.5683845306959,
+   "winch_pull_limit_kN": 0.9789191989970804,
+   "deploy_time_min": 11
+  },
+  {
+   "option": "S3 rear spades",
+   "added_mass_kg": 17.6,
+   "crane_side_capacity_15deg_kg": 379.52717766165733,
+   "winch_pull_limit_kN": 2.7135560880676626,
+   "deploy_time_min": 17
+  },
+  {
+   "option": "S4 rear spades + 2 helical anchors",
+   "added_mass_kg": 25.6,
+   "crane_side_capacity_15deg_kg": 379.52717766165733,
+   "winch_pull_limit_kN": 3.9454122666520632,
+   "deploy_time_min": 67
+  },
+  {
+   "option": "S5 body lowering + spades + 2 anchors",
+   "added_mass_kg": 25.6,
+   "crane_side_capacity_15deg_kg": 424.43024480783305,
+   "winch_pull_limit_kN": 3.9454122666520632,
+   "deploy_time_min": 71
+  }
+ ],
+ "recovery_p_env": {
+  "R0 direct towing (drive)": {
+   "mid": 0.2725,
+   "low": 0.3525,
+   "high": 0.2375,
+   "weak_soil": 0.2725
+  },
+  "R1 winch + braked wheels": {
+   "mid": 0.505,
+   "low": 0.6475,
+   "high": 0.3975,
+   "weak_soil": 0.505
+  },
+  "R2 winch + braked wheels + lowered skid": {
+   "mid": 0.4975,
+   "low": 0.645,
+   "high": 0.395,
+   "weak_soil": 0.4975
+  },
+  "R3 winch + braked wheels + 2 rear spades": {
+   "mid": 0.845,
+   "low": 0.89,
+   "high": 0.67,
+   "weak_soil": 0.665
+  },
+  "R4 winch + 2 spades + 2 helical anchors": {
+   "mid": 0.915,
+   "low": 0.9575,
+   "high": 0.7725,
+   "weak_soil": 0.84
+  },
+  "R5 winch + 2 spades + 4 helical anchors": {
+   "mid": 0.925,
+   "low": 0.96,
+   "high": 0.7925,
+   "weak_soil": 0.9
+  }
+ }
+}
