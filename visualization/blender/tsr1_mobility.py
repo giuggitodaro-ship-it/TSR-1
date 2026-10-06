@@ -6,7 +6,8 @@ def build(ctx):
     u=ctx['utils'];p=ctx['params'];z=ctx['deck'];body=ctx['body'];mode=ctx['mode']
     chassis=u.box('chassis_torque_box',(0,0,z-.225),(2.6,1.5,.45),'White','STRUCTURE',body,bevel=.007)
     chassis['engineering_material']='Al7075 faces / Al5056 honeycomb; white thermal finish';chassis['nominal_dimensions_m']=[2.6,1.5,.45]
-    u.box('deck_structural_face',(0,0,z-.002),(2.59,1.49,.004),'Al','STRUCTURE',body,bevel=.001)
+    # Offset the finish by 1 mm to avoid coplanar faces with the closed torque box.
+    u.box('deck_structural_face',(0,0,z-.001),(2.59,1.49,.004),'Al','STRUCTURE',body,bevel=.001)
     skid=u.box('belly_skid',(0,0,z-.446),(2.30,.61,.008),'Al','STRUCTURE',body,bevel=.001)
     for x in (-.85,0,.85):
         u.box('belly_titanium_cleat_'+str(x),(x,0,z-.446),(0.08,.6,.008),'Ti','STRUCTURE',body,bevel=.001)

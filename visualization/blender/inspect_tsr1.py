@@ -32,6 +32,8 @@ for mode in ('TRAVERSE','SERVICING','RECOVERY','LANDER_STOW'):
     links=[o for o in group('MOBILITY') if any(t in o.name for t in ('link_','pin_','guide_','screw_','carriage_','steering_fork'))]
     wheel=[o for o in group('MOBILITY') if any(t in o.name for t in ('wheel_rim','grouser','flexure_spoke'))]
     case['LINKS__WHEEL']=pairs(links,wheel,G)
+    case['DEX_ARM_L__MOBILITY']=pairs(group('DEX_ARM_L'),group('MOBILITY'),G)
+    case['DEX_ARM_R__MOBILITY']=pairs(group('DEX_ARM_R'),group('MOBILITY'),G)
     out[mode]=case
     if mode in ('TRAVERSE','SERVICING','RECOVERY'):
         sensor_specs=[('NAV_L','NavCam_L_optical_center',(1,0,0),.006),('NAV_R','NavCam_R_optical_center',(1,0,0),.006),('LIDAR_FRONT','front_LiDAR',(1,0,0),.080),('LIDAR_REAR','rear_LiDAR',(-1,0,0),.080),('HAZ_SIDE_L','HazCam_L_housing',(0,1,0),.045),('HAZ_SIDE_R','HazCam_R_housing',(0,-1,0),.045)]
@@ -56,7 +58,19 @@ for st in steers:
         hit=pairs(desc,fixed,G);res.append({'assembly':st.name,'degrees':deg,'intersections':hit})
     st.rotation_euler=original
 bpy.context.view_layer.update();out['steering_samples']=res;out['sensor_sightlines']=sightlines
+# Independent concept-pivot excursions, not a closed-loop suspension/contact solver.
+motion=[]
+for pivot in [o for o in s.objects if o.type=='EMPTY' and any(k in o.name for k in ('rocker_pivot_','bogie_pivot_'))]:
+    original=pivot.rotation_euler.copy();desc=list(pivot.children_recursive)
+    fixed=[o for o in s.objects if o.name.endswith('chassis_torque_box') or '_solar_array_' in o.name]
+    for deg in (-10,-5,0,5,10):
+        pivot.rotation_euler.y=radians(deg);bpy.context.view_layer.update();dg=bpy.context.evaluated_depsgraph_get()
+        objects=[o for o in desc+fixed if o.type in ('MESH','CURVE')];G={o.name:geometry(o,dg) for o in objects};G={k:v for k,v in G.items() if v}
+        motion.append({'pivot':pivot.name,'degrees':deg,'intersections':pairs(desc,fixed,G)})
+    pivot.rotation_euler=original;bpy.context.view_layer.update()
+out['rocker_bogie_samples']=motion
 (HERE/'collision_review.json').write_text(json.dumps(out,indent=2))
 for k,v in out.items():
-    if k not in ('steering_samples','sensor_sightlines'):print(k,{a:len(b) for a,b in v.items() if b})
+    if k not in ('steering_samples','sensor_sightlines','rocker_bogie_samples'):print(k,{a:len(b) for a,b in v.items() if b})
 print('Steering sampled results',[(r['assembly'],r['degrees'],len(r['intersections'])) for r in res])
+print('Rocker/bogie sampled results',[(r['pivot'],r['degrees'],len(r['intersections'])) for r in motion])

@@ -7,7 +7,7 @@ Only visualization outputs are written. Engineering source files are read-only.
 from pathlib import Path
 import sys, json, math, importlib, datetime, random
 import bpy
-from mathutils import Vector
+from mathutils import Vector, Matrix
 HERE=Path(__file__).resolve().parent
 REPO=HERE.parent.parent
 sys.path.insert(0,str(HERE));sys.path.insert(0,str(REPO/'src'))
@@ -122,19 +122,34 @@ def build_all():
     progress('SAVED TSR1.blend')
 
 def make_slope_scene():
-    src=bpy.data.scenes['RECOVERY'];dst=bpy.data.scenes.new('RECOVERY_SLOPE_12DEG');scene_settings(dst);dst.world=src.world.copy();cl=bpy.data.collections.new('RECOVERY_SLOPE_CONTEXT');dst.collection.children.link(cl)
+    src=bpy.data.scenes['RECOVERY'];bpy.context.window.scene=src;bpy.context.view_layer.update()
+    dst=bpy.data.scenes.new('RECOVERY_SLOPE_12DEG');scene_settings(dst);dst.world=src.world.copy();cl=bpy.data.collections.new('RECOVERY_SLOPE_CONTEXT');dst.collection.children.link(cl)
     mapping={}
     for ob in src.objects:
         n=ob.copy();n.name='SLOPE_'+ob.name;cl.objects.link(n);mapping[ob]=n
     for ob,n in mapping.items():
+        # Object.copy() parenting can reset the inverse; restore both explicitly.
         if ob.parent:n.parent=mapping[ob.parent]
+        n.matrix_parent_inverse=ob.matrix_parent_inverse.copy()
+        n.matrix_basis=ob.matrix_basis.copy()
     root=bpy.data.objects.new('RECOVERY_TERRAIN_FRAME_12DEG',None);cl.objects.link(root)
     for ob,n in mapping.items():
-        if not ob.parent and ob.get('subsystem')!='PRESENTATION':n.parent=root
+        if not ob.parent and ob.get('subsystem')!='PRESENTATION':
+            n.parent=root;n.matrix_parent_inverse=Matrix.Identity(4);n.matrix_basis=ob.matrix_world.copy()
     root.rotation_euler.y=math.radians(-12)
     ground=mapping[src.objects['RECOVERY_presentation_ground']];ground.rotation_euler.y=math.radians(-12)
     dst.camera=mapping[src.objects['RECOVERY_FUNCTIONAL']]
     dst['terrain_slope_degrees']=12;dst['dimension_note']='Primary flat RECOVERY scene retains engineering frame; this pose rotates hardware and terrain together.'
+    bpy.context.window.scene=dst;bpy.context.view_layer.update()
+    deviations=[]
+    for ob,n in mapping.items():
+        if ob.get('subsystem')!='PRESENTATION':
+            expected=root.matrix_world@ob.matrix_world
+            deviations.append(max(abs(n.matrix_world[i][j]-expected[i][j]) for i in range(4) for j in range(4)))
+    largest=max(deviations)
+    assert largest<1e-5, f'Slope assembly transform error: {largest}'
+    dst['verified_rigid_transform_max_error']=largest
+    progress('SLOPE rigid transform checked: '+str(len(deviations))+' objects, max error '+str(largest))
 
 
 def points(o):
@@ -217,7 +232,15 @@ def render_views(names=None):
     for mode,v,f in jobs:
         if names and f not in names:continue
         s=bpy.data.scenes[mode];bpy.context.window.scene=s;s.camera=bpy.data.objects[mode+'_'+v];s.render.filepath=str(rd/(f+'.png'))
+        # Horizontal orthographic views use a seamless neutral background.
+        ortho=v in ('FRONT','REAR','LEFT','RIGHT')
+        ground=s.objects[mode+'_presentation_ground'];bg=s.world.node_tree.nodes['Background']
+        old=(ground.hide_render,tuple(bg.inputs[0].default_value),bg.inputs[1].default_value)
+        if ortho:
+            ground.hide_render=True;bg.inputs[0].default_value=(.65,.68,.71,1);bg.inputs[1].default_value=.8
         progress('RENDER '+f);bpy.ops.render.render(write_still=True,scene=mode)
+        if ortho:
+            ground.hide_render,bg.inputs[0].default_value,bg.inputs[1].default_value=old
     if not names or '14_recovery_slope_12deg' in names:
         s=bpy.data.scenes['RECOVERY_SLOPE_12DEG'];bpy.context.window.scene=s;s.render.filepath=str(rd/'14_recovery_slope_12deg.png');progress('RENDER recovery slope 12deg');bpy.ops.render.render(write_still=True)
     # A physically distinct lunar lighting setup; technical views above retain neutral clarity.
@@ -242,3 +265,5 @@ if __name__=='__main__':
     export_models()
     bpy.ops.wm.save_as_mainfile(filepath=str(HERE/'TSR1.blend'),compress=True)
     if '--render' in sys.argv:render_views()
+    from finalize_tsr1 import finalize
+    finalize()

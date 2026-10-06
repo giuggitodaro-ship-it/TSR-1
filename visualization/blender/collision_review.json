@@ -1,0 +1,1661 @@
+{
+  "TRAVERSE": {
+    "DEX_ARM_L__DEX_ARM_R": [],
+    "DEX_ARM_L__SENSOR_MAST": [],
+    "DEX_ARM_R__SENSOR_MAST": [],
+    "DEX_ARM_L__CRANE": [],
+    "DEX_ARM_R__CRANE": [],
+    "DEX_ARM_L__DUST_MITIGATION": [],
+    "DEX_ARM_R__DUST_MITIGATION": [],
+    "DEX_ARM_L__TOOL_RACK": [],
+    "DEX_ARM_R__TOOL_RACK": [],
+    "CRANE__THERMAL": [],
+    "CRANE__SERVICE_SPINE": [],
+    "SENSOR_MAST__SERVICE_SPINE": [],
+    "POWER__DUST_MITIGATION": [],
+    "POWER__MOBILITY": [],
+    "RECOVERY__DUST_MITIGATION": [],
+    "RECOVERY__MOBILITY": [],
+    "RECOVERY__POWER": [],
+    "LINKS__WHEEL": [],
+    "DEX_ARM_L__MOBILITY": [],
+    "DEX_ARM_R__MOBILITY": []
+  },
+  "SERVICING": {
+    "DEX_ARM_L__DEX_ARM_R": [],
+    "DEX_ARM_L__SENSOR_MAST": [],
+    "DEX_ARM_R__SENSOR_MAST": [],
+    "DEX_ARM_L__CRANE": [],
+    "DEX_ARM_R__CRANE": [],
+    "DEX_ARM_L__DUST_MITIGATION": [],
+    "DEX_ARM_R__DUST_MITIGATION": [],
+    "DEX_ARM_L__TOOL_RACK": [],
+    "DEX_ARM_R__TOOL_RACK": [],
+    "CRANE__THERMAL": [],
+    "CRANE__SERVICE_SPINE": [],
+    "SENSOR_MAST__SERVICE_SPINE": [],
+    "POWER__DUST_MITIGATION": [],
+    "POWER__MOBILITY": [],
+    "RECOVERY__DUST_MITIGATION": [],
+    "RECOVERY__MOBILITY": [],
+    "RECOVERY__POWER": [],
+    "LINKS__WHEEL": [],
+    "DEX_ARM_L__MOBILITY": [],
+    "DEX_ARM_R__MOBILITY": []
+  },
+  "RECOVERY": {
+    "DEX_ARM_L__DEX_ARM_R": [],
+    "DEX_ARM_L__SENSOR_MAST": [],
+    "DEX_ARM_R__SENSOR_MAST": [],
+    "DEX_ARM_L__CRANE": [],
+    "DEX_ARM_R__CRANE": [],
+    "DEX_ARM_L__DUST_MITIGATION": [],
+    "DEX_ARM_R__DUST_MITIGATION": [],
+    "DEX_ARM_L__TOOL_RACK": [],
+    "DEX_ARM_R__TOOL_RACK": [],
+    "CRANE__THERMAL": [],
+    "CRANE__SERVICE_SPINE": [],
+    "SENSOR_MAST__SERVICE_SPINE": [],
+    "POWER__DUST_MITIGATION": [],
+    "POWER__MOBILITY": [],
+    "RECOVERY__DUST_MITIGATION": [],
+    "RECOVERY__MOBILITY": [],
+    "RECOVERY__POWER": [],
+    "LINKS__WHEEL": [],
+    "DEX_ARM_L__MOBILITY": [],
+    "DEX_ARM_R__MOBILITY": []
+  },
+  "LANDER_STOW": {
+    "DEX_ARM_L__DEX_ARM_R": [],
+    "DEX_ARM_L__SENSOR_MAST": [],
+    "DEX_ARM_R__SENSOR_MAST": [],
+    "DEX_ARM_L__CRANE": [],
+    "DEX_ARM_R__CRANE": [],
+    "DEX_ARM_L__DUST_MITIGATION": [],
+    "DEX_ARM_R__DUST_MITIGATION": [],
+    "DEX_ARM_L__TOOL_RACK": [],
+    "DEX_ARM_R__TOOL_RACK": [],
+    "CRANE__THERMAL": [],
+    "CRANE__SERVICE_SPINE": [],
+    "SENSOR_MAST__SERVICE_SPINE": [],
+    "POWER__DUST_MITIGATION": [],
+    "POWER__MOBILITY": [],
+    "RECOVERY__DUST_MITIGATION": [],
+    "RECOVERY__MOBILITY": [],
+    "RECOVERY__POWER": [],
+    "LINKS__WHEEL": [],
+    "DEX_ARM_L__MOBILITY": [],
+    "DEX_ARM_R__MOBILITY": []
+  },
+  "steering_samples": [
+    {
+      "assembly": "TRAVERSE_steering_FL",
+      "degrees": 0,
+      "intersections": []
+    },
+    {
+      "assembly": "TRAVERSE_steering_FL",
+      "degrees": 10,
+      "intersections": [
+        [
+          "TRAVERSE_fender_end_lip_FL",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_fender_FL",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_replaceable_fabric_skirt_FL",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_FL.004",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_FL.005",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_FL_7",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_FL_8",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_FL",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_wheel_rim_FL",
+          "TRAVERSE_chassis_torque_box"
+        ]
+      ]
+    },
+    {
+      "assembly": "TRAVERSE_steering_FL",
+      "degrees": 15,
+      "intersections": [
+        [
+          "TRAVERSE_fender_end_lip_FL",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_fender_FL",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_replaceable_fabric_skirt_FL",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_FL.004",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_FL.005",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_FL_6",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_FL_7",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_FL_8",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_FL",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_wheel_rim_FL",
+          "TRAVERSE_chassis_torque_box"
+        ]
+      ]
+    },
+    {
+      "assembly": "TRAVERSE_steering_FL",
+      "degrees": 30,
+      "intersections": [
+        [
+          "TRAVERSE_fender_end_lip_FL",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_fender_FL",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_replaceable_fabric_skirt_FL",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_FL.004",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_FL.005",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_FL_5",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_FL_6",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_FL_7",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_FL_8",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_FL",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_wheel_rim_FL",
+          "TRAVERSE_chassis_torque_box"
+        ]
+      ]
+    },
+    {
+      "assembly": "TRAVERSE_steering_FL",
+      "degrees": 60,
+      "intersections": [
+        [
+          "TRAVERSE_fender_FL",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_FL.004",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_FL.005",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_FL.015",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_FL_6",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_FL_7",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_FL",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_FL.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_wheel_rim_FL",
+          "TRAVERSE_chassis_torque_box"
+        ]
+      ]
+    },
+    {
+      "assembly": "TRAVERSE_steering_FL",
+      "degrees": 90,
+      "intersections": [
+        [
+          "TRAVERSE_fender_end_lip_FL",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_fender_FL",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_replaceable_fabric_skirt_FL",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_FL.014",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_FL.015",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_FL_6",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_FL_7",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_FL_8",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_FL.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_wheel_rim_FL",
+          "TRAVERSE_chassis_torque_box"
+        ]
+      ]
+    },
+    {
+      "assembly": "TRAVERSE_steering_ML",
+      "degrees": 0,
+      "intersections": []
+    },
+    {
+      "assembly": "TRAVERSE_steering_ML",
+      "degrees": 10,
+      "intersections": [
+        [
+          "TRAVERSE_fender_end_lip_ML",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_fender_ML",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_replaceable_fabric_skirt_ML",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_ML.004",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_ML.005",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_ML_7",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_ML_8",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_ML",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_wheel_rim_ML",
+          "TRAVERSE_chassis_torque_box"
+        ]
+      ]
+    },
+    {
+      "assembly": "TRAVERSE_steering_ML",
+      "degrees": 15,
+      "intersections": [
+        [
+          "TRAVERSE_fender_end_lip_ML",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_fender_ML",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_replaceable_fabric_skirt_ML",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_ML.004",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_ML.005",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_ML_6",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_ML_7",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_ML_8",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_ML",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_wheel_rim_ML",
+          "TRAVERSE_chassis_torque_box"
+        ]
+      ]
+    },
+    {
+      "assembly": "TRAVERSE_steering_ML",
+      "degrees": 30,
+      "intersections": [
+        [
+          "TRAVERSE_fender_end_lip_ML",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_fender_ML",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_replaceable_fabric_skirt_ML",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_ML.004",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_ML.005",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_ML_5",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_ML_6",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_ML_7",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_ML_8",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_ML",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_wheel_rim_ML",
+          "TRAVERSE_chassis_torque_box"
+        ]
+      ]
+    },
+    {
+      "assembly": "TRAVERSE_steering_ML",
+      "degrees": 60,
+      "intersections": [
+        [
+          "TRAVERSE_fender_ML",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_ML.004",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_ML.005",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_ML.015",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_ML_6",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_ML_7",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_ML",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_ML.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_wheel_rim_ML",
+          "TRAVERSE_chassis_torque_box"
+        ]
+      ]
+    },
+    {
+      "assembly": "TRAVERSE_steering_ML",
+      "degrees": 90,
+      "intersections": [
+        [
+          "TRAVERSE_fender_ML",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_ML.004",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_ML.005",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_ML.014",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_ML.015",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_ML",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_ML.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_wheel_rim_ML",
+          "TRAVERSE_chassis_torque_box"
+        ]
+      ]
+    },
+    {
+      "assembly": "TRAVERSE_steering_RL",
+      "degrees": 0,
+      "intersections": []
+    },
+    {
+      "assembly": "TRAVERSE_steering_RL",
+      "degrees": 10,
+      "intersections": []
+    },
+    {
+      "assembly": "TRAVERSE_steering_RL",
+      "degrees": 15,
+      "intersections": []
+    },
+    {
+      "assembly": "TRAVERSE_steering_RL",
+      "degrees": 30,
+      "intersections": []
+    },
+    {
+      "assembly": "TRAVERSE_steering_RL",
+      "degrees": 60,
+      "intersections": [
+        [
+          "TRAVERSE_fender_RL",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_RL.004",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_RL_6",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_RL",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_wheel_rim_RL",
+          "TRAVERSE_chassis_torque_box"
+        ]
+      ]
+    },
+    {
+      "assembly": "TRAVERSE_steering_RL",
+      "degrees": 90,
+      "intersections": [
+        [
+          "TRAVERSE_fender_end_lip_RL",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_fender_RL",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_replaceable_fabric_skirt_RL",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_RL.004",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_RL.005",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_RL_6",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_RL_7",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_RL_8",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_RL",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_wheel_rim_RL",
+          "TRAVERSE_chassis_torque_box"
+        ]
+      ]
+    },
+    {
+      "assembly": "TRAVERSE_steering_FR",
+      "degrees": 0,
+      "intersections": []
+    },
+    {
+      "assembly": "TRAVERSE_steering_FR",
+      "degrees": 10,
+      "intersections": []
+    },
+    {
+      "assembly": "TRAVERSE_steering_FR",
+      "degrees": 15,
+      "intersections": []
+    },
+    {
+      "assembly": "TRAVERSE_steering_FR",
+      "degrees": 30,
+      "intersections": []
+    },
+    {
+      "assembly": "TRAVERSE_steering_FR",
+      "degrees": 60,
+      "intersections": [
+        [
+          "TRAVERSE_fender_FR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_FR.010",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_FR.011",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_FR_2",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_FR.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_wheel_rim_FR",
+          "TRAVERSE_chassis_torque_box"
+        ]
+      ]
+    },
+    {
+      "assembly": "TRAVERSE_steering_FR",
+      "degrees": 90,
+      "intersections": [
+        [
+          "TRAVERSE_fender_end_lip_FR.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_fender_FR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_FR.010",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_FR.011",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_FR_0",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_FR_1",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_FR_2",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_FR.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_wheel_rim_FR",
+          "TRAVERSE_chassis_torque_box"
+        ]
+      ]
+    },
+    {
+      "assembly": "TRAVERSE_steering_MR",
+      "degrees": 0,
+      "intersections": []
+    },
+    {
+      "assembly": "TRAVERSE_steering_MR",
+      "degrees": 10,
+      "intersections": [
+        [
+          "TRAVERSE_fender_end_lip_MR.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_fender_MR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_fender_support_offset_MR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_MR.010",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_MR.011",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_MR_0",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_MR_1",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_MR.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_wheel_rim_MR",
+          "TRAVERSE_chassis_torque_box"
+        ]
+      ]
+    },
+    {
+      "assembly": "TRAVERSE_steering_MR",
+      "degrees": 15,
+      "intersections": [
+        [
+          "TRAVERSE_fender_end_lip_MR.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_fender_MR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_fender_support_offset_MR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_MR.010",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_MR.011",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_MR_0",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_MR_1",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_MR_2",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_MR.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_wheel_rim_MR",
+          "TRAVERSE_chassis_torque_box"
+        ]
+      ]
+    },
+    {
+      "assembly": "TRAVERSE_steering_MR",
+      "degrees": 30,
+      "intersections": [
+        [
+          "TRAVERSE_fender_end_lip_MR.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_fender_MR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_fender_support_offset_MR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_MR.010",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_MR.011",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_MR_0",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_MR_1",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_MR_2",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_MR_3",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_MR.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_wheel_rim_MR",
+          "TRAVERSE_chassis_torque_box"
+        ]
+      ]
+    },
+    {
+      "assembly": "TRAVERSE_steering_MR",
+      "degrees": 60,
+      "intersections": [
+        [
+          "TRAVERSE_fender_MR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_fender_support_offset_MR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_MR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_MR.010",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_MR.011",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_MR_1",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_MR_2",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_MR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_MR.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_wheel_rim_MR",
+          "TRAVERSE_chassis_torque_box"
+        ]
+      ]
+    },
+    {
+      "assembly": "TRAVERSE_steering_MR",
+      "degrees": 90,
+      "intersections": [
+        [
+          "TRAVERSE_fender_MR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_fender_support_offset_MR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_MR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_MR.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_MR.010",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_MR.011",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_MR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_MR.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_wheel_rim_MR",
+          "TRAVERSE_chassis_torque_box"
+        ]
+      ]
+    },
+    {
+      "assembly": "TRAVERSE_steering_RR",
+      "degrees": 0,
+      "intersections": []
+    },
+    {
+      "assembly": "TRAVERSE_steering_RR",
+      "degrees": 10,
+      "intersections": [
+        [
+          "TRAVERSE_fender_end_lip_RR.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_fender_RR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_RR.010",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_RR.011",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_RR_0",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_RR_1",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_RR.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_wheel_rim_RR",
+          "TRAVERSE_chassis_torque_box"
+        ]
+      ]
+    },
+    {
+      "assembly": "TRAVERSE_steering_RR",
+      "degrees": 15,
+      "intersections": [
+        [
+          "TRAVERSE_fender_end_lip_RR.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_fender_RR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_RR.010",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_RR.011",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_RR_0",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_RR_1",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_RR_2",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_RR.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_wheel_rim_RR",
+          "TRAVERSE_chassis_torque_box"
+        ]
+      ]
+    },
+    {
+      "assembly": "TRAVERSE_steering_RR",
+      "degrees": 30,
+      "intersections": [
+        [
+          "TRAVERSE_fender_end_lip_RR.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_fender_RR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_RR.010",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_RR.011",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_RR_0",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_RR_1",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_RR_2",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_RR_3",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_RR.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_wheel_rim_RR",
+          "TRAVERSE_chassis_torque_box"
+        ]
+      ]
+    },
+    {
+      "assembly": "TRAVERSE_steering_RR",
+      "degrees": 60,
+      "intersections": [
+        [
+          "TRAVERSE_fender_RR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_RR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_RR.010",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_RR.011",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_RR_1",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_RR_2",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_RR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_RR.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_wheel_rim_RR",
+          "TRAVERSE_chassis_torque_box"
+        ]
+      ]
+    },
+    {
+      "assembly": "TRAVERSE_steering_RR",
+      "degrees": 90,
+      "intersections": [
+        [
+          "TRAVERSE_fender_end_lip_RR.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_fender_RR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_RR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_flexure_spoke_RR.001",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_RR_0",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_RR_1",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_grouser_RR_2",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_rim_edge_RR",
+          "TRAVERSE_chassis_torque_box"
+        ],
+        [
+          "TRAVERSE_wheel_rim_RR",
+          "TRAVERSE_chassis_torque_box"
+        ]
+      ]
+    }
+  ],
+  "sensor_sightlines": [
+    {
+      "mode": "TRAVERSE",
+      "sensor": "NAV_L",
+      "vertical_slope": 0,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "TRAVERSE",
+      "sensor": "NAV_L",
+      "vertical_slope": -0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "TRAVERSE",
+      "sensor": "NAV_L",
+      "vertical_slope": 0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "TRAVERSE",
+      "sensor": "NAV_R",
+      "vertical_slope": 0,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "TRAVERSE",
+      "sensor": "NAV_R",
+      "vertical_slope": -0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "TRAVERSE",
+      "sensor": "NAV_R",
+      "vertical_slope": 0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "TRAVERSE",
+      "sensor": "LIDAR_FRONT",
+      "vertical_slope": 0,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "TRAVERSE",
+      "sensor": "LIDAR_FRONT",
+      "vertical_slope": -0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "TRAVERSE",
+      "sensor": "LIDAR_FRONT",
+      "vertical_slope": 0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "TRAVERSE",
+      "sensor": "LIDAR_REAR",
+      "vertical_slope": 0,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "TRAVERSE",
+      "sensor": "LIDAR_REAR",
+      "vertical_slope": -0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "TRAVERSE",
+      "sensor": "LIDAR_REAR",
+      "vertical_slope": 0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "TRAVERSE",
+      "sensor": "HAZ_SIDE_L",
+      "vertical_slope": 0,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "TRAVERSE",
+      "sensor": "HAZ_SIDE_L",
+      "vertical_slope": -0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "TRAVERSE",
+      "sensor": "HAZ_SIDE_L",
+      "vertical_slope": 0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "TRAVERSE",
+      "sensor": "HAZ_SIDE_R",
+      "vertical_slope": 0,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "TRAVERSE",
+      "sensor": "HAZ_SIDE_R",
+      "vertical_slope": -0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "TRAVERSE",
+      "sensor": "HAZ_SIDE_R",
+      "vertical_slope": 0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "SERVICING",
+      "sensor": "NAV_L",
+      "vertical_slope": 0,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "SERVICING",
+      "sensor": "NAV_L",
+      "vertical_slope": -0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "SERVICING",
+      "sensor": "NAV_L",
+      "vertical_slope": 0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "SERVICING",
+      "sensor": "NAV_R",
+      "vertical_slope": 0,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "SERVICING",
+      "sensor": "NAV_R",
+      "vertical_slope": -0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "SERVICING",
+      "sensor": "NAV_R",
+      "vertical_slope": 0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "SERVICING",
+      "sensor": "LIDAR_FRONT",
+      "vertical_slope": 0,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "SERVICING",
+      "sensor": "LIDAR_FRONT",
+      "vertical_slope": -0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "SERVICING",
+      "sensor": "LIDAR_FRONT",
+      "vertical_slope": 0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "SERVICING",
+      "sensor": "LIDAR_REAR",
+      "vertical_slope": 0,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "SERVICING",
+      "sensor": "LIDAR_REAR",
+      "vertical_slope": -0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "SERVICING",
+      "sensor": "LIDAR_REAR",
+      "vertical_slope": 0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "SERVICING",
+      "sensor": "HAZ_SIDE_L",
+      "vertical_slope": 0,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "SERVICING",
+      "sensor": "HAZ_SIDE_L",
+      "vertical_slope": -0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "SERVICING",
+      "sensor": "HAZ_SIDE_L",
+      "vertical_slope": 0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "SERVICING",
+      "sensor": "HAZ_SIDE_R",
+      "vertical_slope": 0,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "SERVICING",
+      "sensor": "HAZ_SIDE_R",
+      "vertical_slope": -0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "SERVICING",
+      "sensor": "HAZ_SIDE_R",
+      "vertical_slope": 0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "RECOVERY",
+      "sensor": "NAV_L",
+      "vertical_slope": 0,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "RECOVERY",
+      "sensor": "NAV_L",
+      "vertical_slope": -0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "RECOVERY",
+      "sensor": "NAV_L",
+      "vertical_slope": 0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "RECOVERY",
+      "sensor": "NAV_R",
+      "vertical_slope": 0,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "RECOVERY",
+      "sensor": "NAV_R",
+      "vertical_slope": -0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "RECOVERY",
+      "sensor": "NAV_R",
+      "vertical_slope": 0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "RECOVERY",
+      "sensor": "LIDAR_FRONT",
+      "vertical_slope": 0,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "RECOVERY",
+      "sensor": "LIDAR_FRONT",
+      "vertical_slope": -0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "RECOVERY",
+      "sensor": "LIDAR_FRONT",
+      "vertical_slope": 0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "RECOVERY",
+      "sensor": "LIDAR_REAR",
+      "vertical_slope": 0,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "RECOVERY",
+      "sensor": "LIDAR_REAR",
+      "vertical_slope": -0.45,
+      "first_obstruction": [
+        0.8984145522117615,
+        "RECOVERY_deployed_50m_capacity_Vectran_line"
+      ],
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "RECOVERY",
+      "sensor": "LIDAR_REAR",
+      "vertical_slope": 0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "RECOVERY",
+      "sensor": "HAZ_SIDE_L",
+      "vertical_slope": 0,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "RECOVERY",
+      "sensor": "HAZ_SIDE_L",
+      "vertical_slope": -0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "RECOVERY",
+      "sensor": "HAZ_SIDE_L",
+      "vertical_slope": 0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "RECOVERY",
+      "sensor": "HAZ_SIDE_R",
+      "vertical_slope": 0,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "RECOVERY",
+      "sensor": "HAZ_SIDE_R",
+      "vertical_slope": -0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    },
+    {
+      "mode": "RECOVERY",
+      "sensor": "HAZ_SIDE_R",
+      "vertical_slope": 0.45,
+      "first_obstruction": null,
+      "distance_checked_m": 3
+    }
+  ],
+  "rocker_bogie_samples": [
+    {
+      "pivot": "TRAVERSE_rocker_pivot_L",
+      "degrees": -10,
+      "intersections": []
+    },
+    {
+      "pivot": "TRAVERSE_rocker_pivot_L",
+      "degrees": -5,
+      "intersections": []
+    },
+    {
+      "pivot": "TRAVERSE_rocker_pivot_L",
+      "degrees": 0,
+      "intersections": []
+    },
+    {
+      "pivot": "TRAVERSE_rocker_pivot_L",
+      "degrees": 5,
+      "intersections": []
+    },
+    {
+      "pivot": "TRAVERSE_rocker_pivot_L",
+      "degrees": 10,
+      "intersections": []
+    },
+    {
+      "pivot": "TRAVERSE_bogie_pivot_L",
+      "degrees": -10,
+      "intersections": []
+    },
+    {
+      "pivot": "TRAVERSE_bogie_pivot_L",
+      "degrees": -5,
+      "intersections": []
+    },
+    {
+      "pivot": "TRAVERSE_bogie_pivot_L",
+      "degrees": 0,
+      "intersections": []
+    },
+    {
+      "pivot": "TRAVERSE_bogie_pivot_L",
+      "degrees": 5,
+      "intersections": []
+    },
+    {
+      "pivot": "TRAVERSE_bogie_pivot_L",
+      "degrees": 10,
+      "intersections": []
+    },
+    {
+      "pivot": "TRAVERSE_rocker_pivot_R",
+      "degrees": -10,
+      "intersections": []
+    },
+    {
+      "pivot": "TRAVERSE_rocker_pivot_R",
+      "degrees": -5,
+      "intersections": []
+    },
+    {
+      "pivot": "TRAVERSE_rocker_pivot_R",
+      "degrees": 0,
+      "intersections": []
+    },
+    {
+      "pivot": "TRAVERSE_rocker_pivot_R",
+      "degrees": 5,
+      "intersections": []
+    },
+    {
+      "pivot": "TRAVERSE_rocker_pivot_R",
+      "degrees": 10,
+      "intersections": []
+    },
+    {
+      "pivot": "TRAVERSE_bogie_pivot_R",
+      "degrees": -10,
+      "intersections": []
+    },
+    {
+      "pivot": "TRAVERSE_bogie_pivot_R",
+      "degrees": -5,
+      "intersections": []
+    },
+    {
+      "pivot": "TRAVERSE_bogie_pivot_R",
+      "degrees": 0,
+      "intersections": []
+    },
+    {
+      "pivot": "TRAVERSE_bogie_pivot_R",
+      "degrees": 5,
+      "intersections": []
+    },
+    {
+      "pivot": "TRAVERSE_bogie_pivot_R",
+      "degrees": 10,
+      "intersections": []
+    }
+  ]
+}

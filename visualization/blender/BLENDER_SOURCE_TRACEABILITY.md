@@ -45,3 +45,7 @@ This map names logical collections/object families; procedural per-instance suff
 | Ground / neutral stage / lunar lighting | User directive §§43–45; VISUAL_RENDER_SPEC §7 | Presentation environment excluded from rover measured bounds |
 
 Read-source coverage: PROJECT_STATE first; full freeze/run config/layout/visual spec; all subsystem sheets (structure, mobility, manipulation, recovery, service_spine, power, thermal, sensors, dust, tools, avionics, communications, harness); materials matrix; interfaces; final specifications; architecture; ConOps; CDR; supporting configuration/crane/layout code, parameter register, mass budget and baseline result. Supporting trade outcomes are cross-checked through freeze and CDR; no rejected historical figure is geometry authority. No engineering generator was run and no frozen document changed.
+
+## Executed scene/object convention
+
+Each object has `engineering_source`, `configuration` and `subsystem` custom properties. Scene prefixes are TRAVERSE, SERVICING, RECOVERY, EMERGENCY_POWER and LANDER_STOW. Collections use `<MODE>/<SUBSYSTEM>` inside `TSR1_ROOT_<MODE>`. `RECOVERY_SLOPE_12DEG` is an additional presentation pose copied from RECOVERY and rotated with its terrain; the primary scene retains the ground coordinate frame. `CONTEXT`, `PRESENTATION`, and `LUNAR_TERRAIN` are labelled non-vehicle geometry and excluded from engineering bounds and interchange exports. No target rover design has been invented: emergency-power context is an interface datum and servicing context is an illustrative18kg ORU envelope.

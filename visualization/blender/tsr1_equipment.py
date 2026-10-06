@@ -72,7 +72,7 @@ def build(ctx):
         for x in (-.69,.69):
             box('PV_body_bracket_'+n,(x,side*.726,d+.125),(.035,.022,.25),'Ti','POWER')
             cyl('PV_upper_bracket_'+n,(x,side*.726,d+.255),(x,side*.775,d+.255),.008,'Ti','POWER')
-        label('branding_'+n,'TODARO CORP.  |  TSR-1',(0,side*.756,d-.32),.061,'Dark','BRANDING',rotation=(math.pi/2,0,math.pi if side<0 else 0))
+        label('branding_'+n,'TODARO CORP.  |  TSR-1',(0,side*.756,d-.065),.061,'Dark','BRANDING',rotation=(math.pi/2,0,math.pi if side>0 else 0))
     # Winch package hidden within rear chassis, complete drum and levelwind.
     winch=box('winch_internal_envelope',(-1.04,0,d-.23),(.45,.30,.30),'Al','INTERNAL_VOLUMES')
     winch.display_type='WIRE'; winch.hide_render=True
